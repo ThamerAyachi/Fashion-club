@@ -1,0 +1,33 @@
+{
+  "name": "fashion-club",
+  "version": "1.0.0",
+  "description": "Ecommerce rest api ",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/ThamerAyachi/Fashion-club.git"
+  },
+  "keywords": [
+    "e-commerce",
+    "rest",
+    "api",
+    "nodejs",
+    "express"
+  ],
+  "author": "Thamer Ayachi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ThamerAyachi/Fashion-club/issues"
+  },
+  "homepage": "https://github.com/ThamerAyachi/Fashion-club#readme",
+  "dependencies": {
+    "express": "^4.17.3"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
