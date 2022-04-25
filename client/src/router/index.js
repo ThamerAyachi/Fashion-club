@@ -12,7 +12,9 @@ import Shoes from '../views/user/Shoes.vue'
 import Handbags from '../views/user/Handbags.vue'
 import About from '../views/user/About.vue'
 import Contact from '../views/user/Contact.vue'
+import Single from '../views/user/Single.vue'
 import Test from '../views/test.vue'
+import PageNotFound from '../views/PageNotFound.vue'
 
 const routes = [
   {path: '/', redirect: '/home'},
@@ -31,6 +33,7 @@ const routes = [
       { path: '/handbags', name: 'Handbags', component: Handbags },
       { path: '/about', name: 'About', component: About },
       { path: '/contact', name: 'Contact', component: Contact },
+      { path: '/single/:id', name: 'Single', component: Single },
     ]
   },
   {
@@ -38,6 +41,8 @@ const routes = [
     component: AdminLayout
   },
   { path: '/test', name: 'test', component: Test },
+  { path: '/404', name: 'PageNotFound', component: PageNotFound },
+  {path: '/:catchAll(.*)', redirect: '/404'}
 
 ]
 

@@ -34,16 +34,16 @@
 
           <form class="col-span-2 text-center space-y-3 lg:mx-32 mx-5 mb-9">
               <input type="text" placeholder="Name" required
-                class="shadow appearance-none block border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:border-primary focus:outline-none focus:shadow-outline"
+                class="shadow-sm appearance-none block border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:border-primary focus:outline-none focus:shadow-outline"
               >
               <input type="email" placeholder="Email" required
-                class="shadow appearance-none block border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:border-primary focus:outline-none focus:shadow-outline"
+                class="shadow-sm appearance-none block border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:border-primary focus:outline-none focus:shadow-outline"
               >
               <input type="text" placeholder="subject" required
-                class="shadow appearance-none block border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:border-primary focus:outline-none focus:shadow-outline"
+                class="shadow-sm appearance-none block border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:border-primary focus:outline-none focus:shadow-outline"
               >
               <textarea placeholder="Message" rows="5" required
-                class="shadow appearance-none block border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:border-primary focus:outline-none focus:shadow-outline"
+                class="shadow-sm appearance-none block border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:border-primary focus:outline-none focus:shadow-outline"
               ></textarea>
 
               <button class="bg-primary hover:bg-secondary w-full p-2 text-white focus:border-primary rounded">
