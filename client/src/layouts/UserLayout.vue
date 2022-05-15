@@ -28,7 +28,7 @@
       <Footer/>
 
       <!-- cart button -->
-      <router-link to="/test" class="inline-block p-3 bg-primary text-white font-medium text-xs uppercase rounded-full shadow-md hover:bg-secondary hover:shadow-lg focus:bg-secondary focus:outline-none focus:ring-0 transition duration-150 ease-in-out bottom-5 right-5" id="btn-cart"
+      <router-link to="/cart" class="inline-block p-3 bg-primary text-white font-medium text-xs uppercase rounded-full shadow-md hover:bg-secondary hover:shadow-lg focus:bg-secondary focus:outline-none focus:ring-0 transition duration-150 ease-in-out bottom-5 right-5" id="btn-cart"
         active-class="hidden"
       >
         <fa-icon icon="cart-shopping" size="lg"/>

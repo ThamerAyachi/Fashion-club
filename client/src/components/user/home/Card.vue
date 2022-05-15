@@ -1,7 +1,7 @@
 <template>
-  <router-link :to="`/test/${_id}`" class="hover:shadow hover:rotate-3 transform duration-200 relative">
+  <router-link :to="`/single/${_id}`" class="hover:shadow hover:rotate-3 transform duration-200 relative">
       <div class="border border-gray-200 bg-white md:h-96 h-60 flex items-center justify-center overflow-hidden">
-        <img :src="img" alt="prodact img" class="">
+        <img :src="img" alt="product img" class="">
       </div>
       <div>
         <!-- name -->
