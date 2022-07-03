@@ -150,6 +150,15 @@
                 <option value="Home">Home</option>
                 <option value="Office">Office</option>
               </select>
+
+
+              <div class="bg-red-100 rounded-lg py-3 px-6 text-base text-red-700 mb-3"
+                v-if="v$.$error"
+              >
+                <p v-for="errorMessage, i in errors" :key="i" >
+                    {{ errorMessage }}
+                </p>
+              </div>
             </div>
         </ModelBody>
 
@@ -221,7 +230,8 @@ export default {
                 zip: '',
                 place: 'Home',
                 data: {},
-            }
+            },
+            errors: [],
         }
     },
     validations() {
@@ -249,8 +259,10 @@ export default {
                 console.log(this.orderData)
             }
             else {
-                // TODO error message 
-                console.log("value is required")
+                this.errors = [];
+                for(let i = 0; i<this.v$.$errors.length; i++){
+                    this.errors[i] = `${this.v$.$errors[i].$property} : ${this.v$.$errors[i].$message}` ;
+                }
             }
         }
     }
