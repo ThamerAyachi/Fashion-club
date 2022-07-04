@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+
 import UserLayout from '../layouts/UserLayout.vue'
 import AdminLayout from '../layouts/AdminLayout.vue'
 import Home from '../views/user/Home.vue'
@@ -14,8 +15,12 @@ import About from '../views/user/About.vue'
 import Contact from '../views/user/Contact.vue'
 import Single from '../views/user/Single.vue'
 import Cart from '../views/user/Cart.vue'
+
 import Test from '../views/test.vue'
 import PageNotFound from '../views/PageNotFound.vue'
+
+import Login from '../views/admin/Login.vue'
+import Dashboard from '../views/admin/Dashboard.vue'
 
 const routes = [
   {path: '/', redirect: '/home'},
@@ -40,8 +45,12 @@ const routes = [
   },
   {
     path: '/admin',
-    component: AdminLayout
+    component: AdminLayout,
+    children: [
+      { path: '/dashboard', name: 'Dashboard', component: Dashboard },
+    ]
   },
+  { path: '/login', name: 'Login', component: Login },
   { path: '/test', name: 'test', component: Test },
   { path: '/404', name: 'PageNotFound', component: PageNotFound },
   {path: '/:catchAll(.*)', redirect: '/404'}
