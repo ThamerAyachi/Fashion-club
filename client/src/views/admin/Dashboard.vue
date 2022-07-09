@@ -26,6 +26,101 @@
         </div>
       </div>
     </div>
+
+    <h4 class="text-2xl text-gray-700 mt-8 font-medium">Available Products</h4>
+    <!-- table -->
+    <div class="flex flex-col mt-3">
+      <div class="py-2 -my-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
+        <div
+          class="inline-block min-w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg"
+        >
+          <table class="min-w-full">
+            <thead>
+              <tr>
+                <th
+                  class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50"
+                >
+                  Product
+                </th>
+                <th
+                  class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50"
+                >
+                  Start on
+                </th>
+                <th
+                  class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50"
+                >
+                  Status
+                </th>
+                <th
+                  class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50"
+                >
+                  Price
+                </th>
+                <th class="px-6 py-3 border-b border-gray-200 bg-gray-50"></th>
+              </tr>
+            </thead>
+
+            <tbody class="bg-white">
+              <tr v-for="index in 5" :key="index">
+                <td
+                  class="px-6 py-4 border-b border-gray-200 whitespace-nowrap"
+                >
+                  <!-- Product -->
+                  <div class="flex items-center">
+                    <div class="flex-shrink-0 w-10 h-10">
+                      <img
+                        class="w-10 h-10 rounded-full"
+                        src="/img/tp1.jpg"
+                        alt="Product Image"
+                      />
+                    </div>
+
+                    <div class="ml-4">
+                      <div class="text-sm font-medium leading-5 text-gray-900">
+                        {{ user.name }}
+                      </div>
+                    </div>
+                  </div>
+                </td>
+
+                <td
+                  class="px-6 py-4 border-b border-gray-200 whitespace-nowrap"
+                >
+                  <!-- start on -->
+                  <div class="text-sm leading-5 text-gray-500">Oct,15th</div>
+                </td>
+
+                <td
+                  class="px-6 py-4 border-b border-gray-200 whitespace-nowrap"
+                >
+                  <!-- status -->
+                  <span
+                    class="inline-flex px-2 text-xs font-semibold leading-5 text-green-800 bg-green-100 rounded-full"
+                    >{{ user.status }}</span
+                  >
+                </td>
+
+                <td
+                  class="px-6 py-4 text-sm leading-5 text-gray-500 border-b border-gray-200 whitespace-nowrap"
+                >
+                  <!-- price -->
+                  42 TND
+                </td>
+
+                <td
+                  class="px-6 py-4 text-sm font-medium leading-5 text-right border-b border-gray-200 whitespace-nowrap space-x-3"
+                >
+                  <a href="#" class="text-blue-600 hover:text-blue-900">Edit</a>
+                  <a href="#" class="text-red-600 hover:text-red-900">Delete</a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <!-- /table -->
   </div>
 </template>
 
@@ -119,6 +214,14 @@ export default {
           number: "215,542",
         },
       ],
+      user: {
+        name: "Product name",
+        email: "john@example.com",
+        title: "Software Engineer",
+        title2: "Web dev",
+        status: "Defiant",
+        role: "Owner",
+      },
     };
   },
 };
