@@ -5,7 +5,7 @@
     <div class="mt-4">
       <div class="flex flex-wrap -mx-6">
         <div
-          class="w-full px-6 sm:w-1/2 xl:w-1/3 my-2"
+          class="w-full px-6 sm:w-1/2 xl:w-1/3 my-2 text-white"
           v-for="(card, i) in cards"
           :key="i"
         >
@@ -216,11 +216,7 @@ export default {
       ],
       user: {
         name: "Product name",
-        email: "john@example.com",
-        title: "Software Engineer",
-        title2: "Web dev",
         status: "Defiant",
-        role: "Owner",
       },
     };
   },
