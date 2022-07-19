@@ -1,10 +1,23 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { MessagesModule } from './messages/messages.module';
+import entities from './typeorm';
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    TypeOrmModule.forRoot({
+      type: 'mysql',
+      host: 'bjigseq8k9fvwbrmzx5k-mysql.services.clever-cloud.com',
+      port: 3306,
+      username: 'uoxdfmcc0ahafmz6',
+      password: 'gkzr4xEoJacvozTDnbeM',
+      database: 'bjigseq8k9fvwbrmzx5k',
+      entities: entities,
+      synchronize: true,
+    }),
+    MessagesModule,
+  ],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
