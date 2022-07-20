@@ -47,6 +47,7 @@ const routes = [
       { path: "/cart", name: "Cart", component: Cart },
     ],
   },
+  { path: "/admin", redirect: "dashboard" },
   {
     path: "/admin",
     component: AdminLayout,

@@ -161,14 +161,13 @@
           <!-- image -->
           <div class="mb-3">
             <label
-              class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300"
-              for="user_avatar"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+              for="file_input"
               >Upload image</label
             >
             <input
-              class="block w-full text-sm text-gray-700 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-              aria-describedby="user_avatar_help"
-              id="user_avatar"
+              class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+              id="file_input"
               type="file"
             />
           </div>
@@ -182,11 +181,43 @@
             >
             <select
               id="countries"
+              @change="enSelect"
+              v-model="type"
+              placeholder="Select Type"
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 focus:outline-none block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             >
-              <option v-for="(type, i) in types" :key="i">{{ type }}</option>
+              <option v-for="(type, i) in types" :key="i" :value="type.value">
+                {{ type.name }}
+              </option>
             </select>
           </div>
+          <transition
+            mode="out-in"
+            enter-active-class="animate__animated animate__fadeIn"
+            leave-active-class="animate__animated animate__fadeOut"
+          >
+            <!-- categories -->
+            <div class="mb-3" v-if="categories.isVisible">
+              <label
+                for="countries"
+                class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400"
+                >Categories</label
+              >
+              <select
+                id="countries"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 focus:outline-none block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              >
+                <option value="">Select categories</option>
+                <option
+                  v-for="(categorie, i) in categories.data"
+                  :key="i"
+                  :value="categorie.value"
+                >
+                  {{ categorie.name }}
+                </option>
+              </select>
+            </div>
+          </transition>
 
           <button
             type="submit"
@@ -201,6 +232,8 @@
 </template>
 
 <script>
+import { ProductTypes } from "../../hooks/ProductTypes";
+
 export default {
   data: () => {
     return {
@@ -208,19 +241,27 @@ export default {
         name: "Product name",
         status: "Defiant",
       },
-      types: [
-        "Women's Clothing",
-        "Men's Clothing",
-        "Kid's Wear",
-        "Party Wear",
-        "Jewellery",
-        "Watches",
-        "Shoes",
-        "Handbags",
-      ],
+      types: ProductTypes,
+      categories: {
+        isVisible: false,
+        data: [],
+      },
+      formData: {
+        type: "",
+      },
     };
+  },
+  methods: {
+    enSelect() {
+      if (this.type === "") {
+        return;
+      }
+      this.categories.isVisible = true;
+      const categorie = ProductTypes.find((type) => type.value === this.type);
+      this.categories.data = categorie.categories;
+    },
   },
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped></style>
