@@ -1,6 +1,6 @@
 <template>
   <div class="flex h-screen bg-gray-200 font-roboto">
-    <Sidebar/>
+    <Sidebar />
     <div class="flex-1 flex flex-col overflow-hidden">
       <Header />
 
@@ -14,25 +14,24 @@
             <router-view></router-view>
           </transition>
         </div>
+        <Footer />
       </main>
     </div>
-
-
   </div>
 </template>
 
 <script>
 import Sidebar from "../components/admin/Sidebar.vue";
 import Header from "../components/admin/Header.vue";
+import Footer from "../components/admin/Footer.vue";
 
 export default {
   components: {
     Sidebar,
-    Header
-  }
-}
+    Header,
+    Footer,
+  },
+};
 </script>
 
-<style>
-
-</style>
+<style></style>

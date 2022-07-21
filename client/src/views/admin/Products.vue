@@ -43,7 +43,7 @@
                 </thead>
 
                 <tbody class="bg-white">
-                  <tr v-for="index in 5" :key="index">
+                  <tr v-for="index in 10" :key="index">
                     <td
                       class="px-6 py-4 border-b border-gray-200 whitespace-nowrap"
                     >
@@ -112,7 +112,11 @@
       </div>
       <!-- grid 2 -->
       <div>
-        <form class="bg-white m-2 p-3 mt-5 rounded-md shadow">
+        <form
+          class="bg-white m-2 p-3 mt-5 rounded-md shadow"
+          @submit.prevent="enSubmit"
+          enctype="multipart/form-data"
+        >
           <h3 class="my-3 text-xl text-gray-800">Create new Product</h3>
 
           <!-- product name -->
@@ -125,6 +129,7 @@
             <input
               type="text"
               id="base-input"
+              v-model="formData.name"
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 focus:outline-none block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             />
           </div>
@@ -139,6 +144,7 @@
             <input
               type="number"
               id="base-input"
+              v-model="formData.price"
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 focus:outline-none block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             />
           </div>
@@ -151,6 +157,7 @@
               >Description</label
             >
             <textarea
+              v-model="formData.description"
               id="message"
               rows="4"
               class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -167,8 +174,11 @@
             >
             <input
               class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+              accept="image/png, image/jpg, image/gif, image/jpeg"
               id="file_input"
               type="file"
+              ref="file"
+              @change="selectFile"
             />
           </div>
 
@@ -182,10 +192,11 @@
             <select
               id="countries"
               @change="enSelect"
-              v-model="type"
+              v-model="formData.type"
               placeholder="Select Type"
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 focus:outline-none block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             >
+              <option value="">Select Type</option>
               <option v-for="(type, i) in types" :key="i" :value="type.value">
                 {{ type.name }}
               </option>
@@ -205,9 +216,10 @@
               >
               <select
                 id="countries"
+                v-model="formData.categories"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 focus:outline-none block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               >
-                <option value="">Select categories</option>
+                <option value="">Select Type</option>
                 <option
                   v-for="(categorie, i) in categories.data"
                   :key="i"
@@ -221,7 +233,7 @@
 
           <button
             type="submit"
-            class="mt-3 text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            class="mt-3 text-white bg-primaryAdmin hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
           >
             Submit
           </button>
@@ -248,6 +260,11 @@ export default {
       },
       formData: {
         type: "",
+        name: "",
+        price: "",
+        description: "",
+        categories: "",
+        file: "",
       },
     };
   },
@@ -257,8 +274,16 @@ export default {
         return;
       }
       this.categories.isVisible = true;
-      const categorie = ProductTypes.find((type) => type.value === this.type);
+      const categorie = ProductTypes.find(
+        (type) => type.value === this.formData.type
+      );
       this.categories.data = categorie.categories;
+    },
+    enSubmit() {
+      console.log(this.formData);
+    },
+    selectFile() {
+      this.formData.file = this.$refs.file.files[0];
     },
   },
 };

@@ -5,6 +5,7 @@ module.exports = {
       colors: {
         primary: "#00E58B",
         secondary: "#00b66d",
+        primaryAdmin: "rgba(59, 130, 246)",
       },
     },
     fontFamily: {
