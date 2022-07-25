@@ -11,60 +11,74 @@
             Users settings
           </h2>
 
-          <form @submit.prevent="register">
+          <form @submit.prevent="register" enctype="multipart/form-data">
             <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
-              <!-- username -->
+              <!-- product_name -->
               <div>
-                <label class="text-gray-700" for="username">Username</label>
+                <label class="text-gray-700" for="product_name"
+                  >Product Name</label
+                >
                 <input
                   class="bg-gray-50 border border-gray-300 text-gray-900 my-2 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 focus:outline-none block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   type="text"
-                  name="username"
-                  v-model="formData.name"
+                  id="product_name"
                   required
                 />
               </div>
 
-              <!-- email -->
+              <!-- price -->
               <div>
-                <label class="text-gray-700" for="emailAddress"
-                  >Email Address</label
+                <label class="text-gray-700" for="Price">Price</label>
+                <input
+                  class="bg-gray-50 border border-gray-300 text-gray-900 my-2 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 focus:outline-none block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  type="number"
+                  name="price"
+                  required
+                />
+              </div>
+
+              <!-- Quantity -->
+              <div>
+                <label class="text-gray-700" for="Quantity">Quantity</label>
+                <input
+                  class="bg-gray-50 border border-gray-300 text-gray-900 my-2 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 focus:outline-none block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  type="number"
+                  name="Quantity"
+                  required
+                />
+              </div>
+
+              <!-- product_image -->
+              <div>
+                <label class="text-gray-700" for="file_input"
+                  >Upload image</label
                 >
                 <input
-                  class="bg-gray-50 border border-gray-300 text-gray-900 my-2 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 focus:outline-none block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  type="email"
-                  name="email"
-                  v-model="formData.email"
+                  class="form-control my-2 block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                  accept="image/png, image/jpg, image/gif, image/jpeg"
+                  id="file_input"
+                  type="file"
+                  ref="file"
                   required
                 />
               </div>
 
-              <!-- password -->
+              <!-- product_image -->
               <div>
-                <label class="text-gray-700" for="password">Password</label>
-                <input
-                  class="bg-gray-50 border border-gray-300 text-gray-900 my-2 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 focus:outline-none block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  type="password"
-                  name="password"
-                  v-model="formData.password"
-                  required
-                />
-              </div>
-
-              <!-- role -->
-              <div>
-                <label class="text-gray-700" for="role">Role</label>
+                <label class="text-gray-700" for="type">Type</label>
                 <select
-                  id="role"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 my-3 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 focus:outline-none block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  name="role"
-                  v-model="formData.role"
-                  required
+                  id="type"
+                  placeholder="Select Type"
+                  class="bg-gray-50 my-2 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 focus:outline-none block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 >
-                  <option value="">Select Role</option>
-                  <option value="super_admin">Super Admin</option>
-                  <option value="admin">Admin</option>
-                  <option value="editor">Editor</option>
+                  <option value="">Select Type</option>
+                  <option
+                    v-for="(type, i) in types"
+                    :key="i"
+                    :value="type.value"
+                  >
+                    {{ type.name }}
+                  </option>
                 </select>
               </div>
             </div>
@@ -248,9 +262,12 @@
 </template>
 
 <script>
+import { ProductTypes } from "../../hooks/ProductTypes";
+
 export default {
   data() {
     return {
+      types: ProductTypes,
       users: [
         {
           picture:

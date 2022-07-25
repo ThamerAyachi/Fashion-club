@@ -30,21 +30,18 @@
         </div>
         <router-link
           to="/dashboard"
-          active-class="text-primaryAdmin"
           class="my-3 block text-sm hover:text-primaryAdmin transform duration-300"
         >
           <span>Dashboard</span>
         </router-link>
         <router-link
           to="/products"
-          active-class="text-primaryAdmin"
           class="my-3 block text-sm hover:text-primaryAdmin transform duration-300"
         >
           <span>Products</span>
         </router-link>
         <router-link
           to="/orders"
-          active-class="text-primaryAdmin"
           class="my-3 block text-sm hover:text-primaryAdmin transform duration-300"
         >
           <span>Orders</span>
@@ -81,14 +78,12 @@
         </div>
         <router-link
           to="/profile"
-          active-class="text-primaryAdmin"
           class="my-3 block text-sm hover:text-primaryAdmin transform duration-300"
         >
           <span>Profile</span>
         </router-link>
         <router-link
           to="/users"
-          active-class="text-primaryAdmin"
           class="my-3 block text-sm hover:text-primaryAdmin transform duration-300"
         >
           <span>Users</span>
