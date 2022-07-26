@@ -1,5 +1,6 @@
 import { Messages } from './Messages';
+import { User } from './User';
 
-const entities = [Messages];
+const entities = [Messages, User];
 
 export default entities;

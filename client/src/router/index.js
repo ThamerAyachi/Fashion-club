@@ -25,7 +25,6 @@ import Orders from "../views/admin/Orders.vue";
 import Products from "../views/admin/Products.vue";
 import Profile from "../views/admin/Profile.vue";
 import Users from "../views/admin/Users.vue";
-import _Products from "../views/admin/_Products.vue";
 
 const routes = [
   { path: "/", redirect: "/home" },
@@ -56,7 +55,6 @@ const routes = [
       { path: "/dashboard", name: "Dashboard", component: Dashboard },
       { path: "/orders", name: "Orders", component: Orders },
       { path: "/products", name: "Products", component: Products },
-      { path: "/_products", name: "_Products", component: _Products },
       { path: "/profile", name: "Profile", component: Profile },
       { path: "/users", name: "Users", component: Users },
     ],
