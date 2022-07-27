@@ -163,7 +163,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="(u, index) in users" :key="index">
+                  <tr v-for="(u, index) in Users" :key="index">
                     <td
                       class="px-5 py-5 text-sm bg-white border-b border-gray-200"
                     >
@@ -171,7 +171,7 @@
                         <div class="flex-shrink-0 w-10 h-10">
                           <img
                             class="w-full h-full rounded-full"
-                            :src="u.picture"
+                            :src="u.imgUrl"
                             alt="profile pic"
                           />
                         </div>
@@ -180,10 +180,10 @@
                           <div
                             class="text-sm font-medium leading-5 text-gray-900"
                           >
-                            {{ u.name }}
+                            {{ u.username }}
                           </div>
                           <div class="text-sm leading-5 text-gray-500">
-                            john@example.com
+                            {{ u.email }}
                           </div>
                         </div>
                       </div>
@@ -199,14 +199,14 @@
                       class="px-5 py-5 text-sm bg-white border-b border-gray-200"
                     >
                       <p class="text-gray-900 whitespace-nowrap">
-                        {{ u.created }}
+                        {{ u.createAt }}
                       </p>
                     </td>
                     <td
                       class="px-5 py-5 text-sm bg-white border-b border-gray-200"
                     >
                       <p class="text-gray-900 whitespace-nowrap">
-                        {{ u.created }}
+                        {{ u.updateAt }}
                       </p>
                     </td>
                     <td
@@ -248,47 +248,13 @@
 </template>
 
 <script>
+import store from "../../store";
+import { dateFormat } from "../../assets/Methods";
+
 export default {
   data() {
     return {
-      users: [
-        {
-          picture:
-            "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&w=160&h=160&q=80",
-          name: "Vera Carpenter",
-          role: "Admin",
-          created: "Jan 21, 2020",
-          status: "Active",
-          statusColor: "green",
-        },
-        {
-          picture:
-            "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&w=160&h=160&q=80",
-          name: "Blake Bowman",
-          role: "Editor",
-          created: "Jan 01, 2020",
-          status: "Active",
-          statusColor: "green",
-        },
-        {
-          picture:
-            "https://images.unsplash.com/photo-1540845511934-7721dd7adec3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&w=160&h=160&q=80",
-          name: "Dana Moore",
-          role: "Editor",
-          created: "Jan 10, 2020",
-          status: "Suspended",
-          statusColor: "orange",
-        },
-        {
-          picture:
-            "https://images.unsplash.com/photo-1522609925277-66fea332c575?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&h=160&w=160&q=80",
-          name: "Alonzo Cox",
-          role: "Admin",
-          created: "Jan 18, 2020",
-          status: "Inactive",
-          statusColor: "red",
-        },
-      ],
+      Users: [],
       formData: {
         name: "",
         email: "",
@@ -301,6 +267,22 @@ export default {
     register() {
       console.log(this.formData);
     },
+    getUsers: async () => {
+      try {
+        const res = await store.dispatch("getUsers");
+        res.data.map((user) => {
+          user.createAt = dateFormat(user.createAt);
+          user.updateAt = dateFormat(user.updateAt);
+        });
+        console.log(res.data);
+        return res.data;
+      } catch (err) {
+        console.log(err);
+      }
+    },
+  },
+  async mounted() {
+    this.Users = await this.getUsers();
   },
 };
 </script>
