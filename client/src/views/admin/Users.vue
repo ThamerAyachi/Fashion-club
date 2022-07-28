@@ -103,10 +103,13 @@
               <div class="relative">
                 <select
                   class="block w-full h-full px-4 py-2 pr-8 leading-tight text-gray-700 bg-white border-t border-b border-r border-gray-400 rounded-r appearance-none sm:rounded-r-none sm:border-r-0 focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500"
+                  @change="searchedByRole"
+                  v-model="roleSelect"
                 >
-                  <option>All</option>
-                  <option>Active</option>
-                  <option>Inactive</option>
+                  <option value="all">All</option>
+                  <option value="Super admin">Super admin</option>
+                  <option value="Admin">Admin</option>
+                  <option value="Editor">Editor</option>
                 </select>
               </div>
             </div>
@@ -221,6 +224,7 @@
               </table>
               <div
                 class="flex flex-col items-center px-5 py-5 bg-white border-t xs:flex-row xs:justify-between"
+                v-if="Users != []"
               >
                 <span class="text-xs text-gray-900 xs:text-sm"
                   >Showing 1 to 4 of 50 Entries</span
@@ -249,18 +253,20 @@
 
 <script>
 import store from "../../store";
-import { dateFormat } from "../../assets/Methods";
+import { dateFormat, roleFormat } from "../../assets/Methods";
 
 export default {
   data() {
     return {
       Users: [],
+      DBUser: [],
       formData: {
         name: "",
         email: "",
         password: "",
         role: "",
       },
+      roleSelect: "all",
     };
   },
   methods: {
@@ -273,16 +279,24 @@ export default {
         res.data.map((user) => {
           user.createAt = dateFormat(user.createAt);
           user.updateAt = dateFormat(user.updateAt);
+          user.role = roleFormat(user.role);
         });
-        console.log(res.data);
         return res.data;
       } catch (err) {
         console.log(err);
       }
     },
+    searchedByRole() {
+      if (this.roleSelect == "all") {
+        this.Users = this.DBUser;
+        return;
+      }
+      this.Users = this.DBUser.filter((user) => user.role == this.roleSelect);
+    },
   },
   async mounted() {
     this.Users = await this.getUsers();
+    this.DBUser = this.Users;
   },
 };
 </script>
