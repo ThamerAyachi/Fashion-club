@@ -12,6 +12,15 @@ const users = {
         return err;
       }
     },
+    createUser: async (test, data) => {
+      try {
+        const res = await instance.post("users/create", data);
+        return res.request.status;
+      } catch (err) {
+        console.log(err);
+        return err;
+      }
+    },
   },
 };
 

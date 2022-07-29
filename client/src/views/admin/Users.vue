@@ -20,7 +20,7 @@
                   class="bg-gray-50 border border-gray-300 text-gray-900 my-2 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 focus:outline-none block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   type="text"
                   name="username"
-                  v-model="formData.name"
+                  v-model="formData.username"
                   required
                 />
               </div>
@@ -62,9 +62,8 @@
                   required
                 >
                   <option value="">Select Role</option>
-                  <option value="super_admin">Super Admin</option>
-                  <option value="admin">Admin</option>
-                  <option value="editor">Editor</option>
+                  <option value="ADMIN">Admin</option>
+                  <option value="EDITOR">Editor</option>
                 </select>
               </div>
             </div>
@@ -72,10 +71,85 @@
             <div class="flex justify-end mt-4">
               <button
                 class="px-4 py-2 text-gray-200 bg-gray-800 rounded-md hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
+                :disabled="isSending"
               >
-                Save
+                <fa-icon
+                  icon="rotate"
+                  class="text-xl"
+                  :spin="true"
+                  v-if="isSending"
+                />
+                <span v-else>Save</span>
               </button>
             </div>
+            <!-- error alert -->
+            <div
+              class="inline-flex w-full ml-3 overflow-hidden bg-white rounded-lg shadow-md"
+              v-if="errorsData.isVisible"
+            >
+              <div class="flex items-center justify-center w-12 bg-red-500">
+                <svg
+                  class="w-6 h-6 text-white fill-current"
+                  viewBox="0 0 40 40"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M20 3.36667C10.8167 3.36667 3.3667 10.8167 3.3667 20C3.3667 29.1833 10.8167 36.6333 20 36.6333C29.1834 36.6333 36.6334 29.1833 36.6334 20C36.6334 10.8167 29.1834 3.36667 20 3.36667ZM19.1334 33.3333V22.9H13.3334L21.6667 6.66667V17.1H27.25L19.1334 33.3333Z"
+                  />
+                </svg>
+              </div>
+
+              <div class="px-4 py-2 -mx-3">
+                <div class="mx-3">
+                  <span class="font-semibold text-red-500">Error</span>
+                  <p
+                    class="text-base text-gray-800"
+                    v-for="(errorMessage, i) in errorsData.messages"
+                    :key="i"
+                  >
+                    {{ errorMessage }}. <br />
+                  </p>
+                </div>
+              </div>
+            </div>
+            <!-- success alert -->
+            <transition
+              mode="out-in"
+              enter-active-class="animate__animated animate__fadeIn"
+              leave-active-class="animate__animated animate__fadeOut"
+            >
+              <div
+                class="px-4 py-4 overflow-x-auto bg-white rounded-md whitespace-nowrap"
+                v-if="isSuccess"
+              >
+                <div
+                  class="inline-flex w-full overflow-hidden bg-white rounded-lg shadow-md"
+                >
+                  <div
+                    class="flex items-center justify-center w-12 bg-green-500"
+                  >
+                    <svg
+                      class="w-6 h-6 text-white fill-current"
+                      viewBox="0 0 40 40"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M20 3.33331C10.8 3.33331 3.33337 10.8 3.33337 20C3.33337 29.2 10.8 36.6666 20 36.6666C29.2 36.6666 36.6667 29.2 36.6667 20C36.6667 10.8 29.2 3.33331 20 3.33331ZM16.6667 28.3333L8.33337 20L10.6834 17.65L16.6667 23.6166L29.3167 10.9666L31.6667 13.3333L16.6667 28.3333Z"
+                      />
+                    </svg>
+                  </div>
+
+                  <div class="px-4 py-2 -mx-3">
+                    <div class="mx-3">
+                      <span class="font-semibold text-green-500">Success</span>
+                      <p class="text-sm text-gray-600">
+                        Your account was registered!
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </transition>
           </form>
         </div>
       </div>
@@ -129,6 +203,8 @@
               <input
                 placeholder="Search"
                 class="block w-full py-2 pl-8 pr-6 text-sm text-gray-700 placeholder-gray-400 bg-white border border-b border-gray-400 rounded-l rounded-r appearance-none sm:rounded-l-none focus:bg-white focus:placeholder-gray-600 focus:text-gray-700 focus:outline-none"
+                v-model="research"
+                @input="searchedByName"
               />
             </div>
           </div>
@@ -224,7 +300,6 @@
               </table>
               <div
                 class="flex flex-col items-center px-5 py-5 bg-white border-t xs:flex-row xs:justify-between"
-                v-if="Users != []"
               >
                 <span class="text-xs text-gray-900 xs:text-sm"
                   >Showing 1 to 4 of 50 Entries</span
@@ -261,17 +336,52 @@ export default {
       Users: [],
       DBUser: [],
       formData: {
-        name: "",
+        username: "",
         email: "",
         password: "",
         role: "",
       },
       roleSelect: "all",
+      research: "",
+      errorsData: {
+        messages: [],
+        isVisible: false,
+      },
+      isSending: false,
+      isSuccess: false,
     };
   },
   methods: {
-    register() {
-      console.log(this.formData);
+    async register() {
+      this.isSending = true;
+      try {
+        const data = await store.dispatch("createUser", this.formData);
+        if (data === 201) {
+          this.isSuccess = true;
+          this.errorsData.isVisible = false;
+          this.formData = { username: "", email: "", password: "", role: "" };
+          this.isSending = false;
+
+          setTimeout(() => {
+            this.isSuccess = false;
+          }, 3000);
+          const res = await store.dispatch("getUsers");
+          res.data.map((user) => {
+            user.createAt = dateFormat(user.createAt);
+            user.updateAt = dateFormat(user.updateAt);
+            user.role = roleFormat(user.role);
+
+            this.Users = res.data;
+            this.DBUser = this.Users;
+          });
+          return;
+        }
+        this.errorsData.messages = data.response.data.message;
+        this.errorsData.isVisible = true;
+      } catch (err) {
+        console.log(err);
+      }
+      this.isSending = false;
     },
     getUsers: async () => {
       try {
@@ -292,6 +402,15 @@ export default {
         return;
       }
       this.Users = this.DBUser.filter((user) => user.role == this.roleSelect);
+    },
+    searchedByName() {
+      if (this.research == "") {
+        this.Users = this.DBUser;
+        return;
+      }
+      this.Users = this.DBUser.filter((user) =>
+        user.username.toLowerCase().includes(this.research.toLowerCase())
+      );
     },
   },
   async mounted() {

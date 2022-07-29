@@ -39,7 +39,7 @@ export class UsersController {
     });
 
     if (ifUserFound) {
-      throw new BadRequestException('email is already taken!');
+      throw new BadRequestException(['email is already taken!']);
     }
     const user = await this.usersService.createUser(createUserDto);
 
