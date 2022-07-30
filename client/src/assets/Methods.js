@@ -14,3 +14,23 @@ export const roleFormat = (role) => {
   const newRole = role.replace("_", " ").toLowerCase();
   return firstLetterUpper(newRole);
 };
+
+export const showFive = (data) => {
+  let num = Math.ceil(data.length / 5);
+  let arr = [];
+
+  for (let i = 0; i < num; i++) {
+    let inArr = [];
+    if (i == num - 1) {
+      for (let j = i * 5; j < data.length; j++) {
+        inArr.push(data[j]);
+      }
+    } else {
+      for (let j = i * 5; j < i * 5 + 5; j++) {
+        inArr.push(data[j]);
+      }
+    }
+    arr.push(inArr);
+  }
+  return arr;
+};

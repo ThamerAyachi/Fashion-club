@@ -166,17 +166,7 @@
             <div class="flex">
               <div class="relative">
                 <select
-                  class="block w-full h-full px-4 py-2 pr-8 leading-tight text-gray-700 bg-white border border-gray-400 rounded-l appearance-none focus:outline-none focus:bg-white focus:border-gray-500"
-                >
-                  <option>5</option>
-                  <option>10</option>
-                  <option>20</option>
-                </select>
-              </div>
-
-              <div class="relative">
-                <select
-                  class="block w-full h-full px-4 py-2 pr-8 leading-tight text-gray-700 bg-white border-t border-b border-r border-gray-400 rounded-r appearance-none sm:rounded-r-none sm:border-r-0 focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500"
+                  class="block w-full h-full rounded-l px-4 py-2 pr-8 leading-tight text-gray-700 bg-white border-t border-b border-r border-gray-400 rounded-r appearance-none sm:rounded-r-none sm:border-r-0 focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500"
                   @change="searchedByRole"
                   v-model="roleSelect"
                 >
@@ -242,7 +232,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="(u, index) in Users" :key="index">
+                  <tr v-for="(u, index) in arrayUsers[page]" :key="index">
                     <td
                       class="px-5 py-5 text-sm bg-white border-b border-gray-200"
                     >
@@ -301,20 +291,18 @@
               <div
                 class="flex flex-col items-center px-5 py-5 bg-white border-t xs:flex-row xs:justify-between"
               >
-                <span class="text-xs text-gray-900 xs:text-sm"
-                  >Showing 1 to 4 of 50 Entries</span
-                >
+                <span class="text-xs text-gray-900 xs:text-sm">
+                  There is {{ Users.length }} Users.
+                </span>
 
                 <div class="inline-flex mt-2 xs:mt-0">
                   <button
-                    class="px-4 py-2 text-sm font-semibold text-gray-800 bg-gray-300 rounded-l hover:bg-gray-400"
+                    class="px-4 py-2 text-sm font-semibold text-gray-800 bg-gray-300 hover:bg-gray-400"
+                    v-for="i in arrayUsers.length"
+                    :key="i"
+                    @click="changePage(i)"
                   >
-                    Prev
-                  </button>
-                  <button
-                    class="px-4 py-2 text-sm font-semibold text-gray-800 bg-gray-300 rounded-r hover:bg-gray-400"
-                  >
-                    Next
+                    {{ i }}
                   </button>
                 </div>
               </div>
@@ -328,13 +316,16 @@
 
 <script>
 import store from "../../store";
-import { dateFormat, roleFormat } from "../../assets/Methods";
+import { dateFormat, roleFormat, showFive } from "../../assets/Methods";
 
 export default {
   data() {
     return {
       Users: [],
       DBUser: [],
+      arrayUsers: [],
+      DBArrayUsers: [],
+      page: 0,
       formData: {
         username: "",
         email: "",
@@ -371,8 +362,8 @@ export default {
             user.updateAt = dateFormat(user.updateAt);
             user.role = roleFormat(user.role);
 
-            this.Users = res.data;
-            this.DBUser = this.Users;
+            this.arrayUsers = showFive(res.data);
+            this.DBArrayUsers = this.arrayUsers;
           });
           return;
         }
@@ -397,25 +388,44 @@ export default {
       }
     },
     searchedByRole() {
+      this.page = 0;
       if (this.roleSelect == "all") {
-        this.Users = this.DBUser;
+        this.arrayUsers = this.DBArrayUsers;
         return;
       }
-      this.Users = this.DBUser.filter((user) => user.role == this.roleSelect);
+      let newArray = [];
+      this.DBArrayUsers.forEach((users) => {
+        newArray = newArray.concat(
+          users.filter((user) => user.role == this.roleSelect)
+        );
+      });
+      this.arrayUsers = showFive(newArray);
     },
     searchedByName() {
+      this.page = 0;
       if (this.research == "") {
-        this.Users = this.DBUser;
+        this.arrayUsers = this.DBArrayUsers;
         return;
       }
-      this.Users = this.DBUser.filter((user) =>
-        user.username.toLowerCase().includes(this.research.toLowerCase())
-      );
+      let newArray = [];
+      this.DBArrayUsers.forEach((users) => {
+        newArray = newArray.concat(
+          users.filter((user) =>
+            user.username.toLowerCase().includes(this.research.toLowerCase())
+          )
+        );
+      });
+      this.arrayUsers = showFive(newArray);
+    },
+    changePage(i) {
+      this.page = i - 1;
     },
   },
   async mounted() {
     this.Users = await this.getUsers();
     this.DBUser = this.Users;
+    this.arrayUsers = showFive(this.Users);
+    this.DBArrayUsers = this.arrayUsers;
   },
 };
 </script>
