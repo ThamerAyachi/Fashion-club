@@ -34,3 +34,16 @@ export const showFive = (data) => {
   }
   return arr;
 };
+
+export const numberFormate = (number) => {
+  if (typeof number === typeof 1) {
+    number = number.toString();
+  }
+  let newNumber = "";
+  number = number.split("").reverse().join("");
+  for (let i = 0; i < number.length; i++) {
+    if (i % 3 == 0 && i != 0) newNumber = newNumber + ",";
+    newNumber = newNumber + number[i];
+  }
+  return newNumber.split("").reverse().join("");
+};

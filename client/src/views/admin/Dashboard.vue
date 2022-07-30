@@ -125,6 +125,8 @@
 </template>
 
 <script>
+import { numberFormate } from "../../assets/Methods";
+
 export default {
   data() {
     return {
@@ -163,7 +165,7 @@ export default {
               </svg>`,
           color: "bg-blue-600",
           text: "All Users",
-          number: "8,282",
+          number: "9,999",
         },
         {
           icon: `<svg
@@ -219,6 +221,20 @@ export default {
         status: "Defiant",
       },
     };
+  },
+  methods: {
+    async getUsers() {
+      try {
+        const res = await this.$store.dispatch("getUsers");
+        return res.data;
+      } catch (err) {
+        throw new Error(err);
+      }
+    },
+  },
+  async mounted() {
+    let messages = await this.getUsers();
+    this.cards[0].number = numberFormate(messages.length);
   },
 };
 </script>

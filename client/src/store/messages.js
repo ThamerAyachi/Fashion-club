@@ -12,6 +12,14 @@ const messages = {
         return err;
       }
     },
+    getMessages: async () => {
+      try {
+        const res = await instance.get("messages");
+        return res;
+      } catch (err) {
+        return err;
+      }
+    },
   },
 };
 
