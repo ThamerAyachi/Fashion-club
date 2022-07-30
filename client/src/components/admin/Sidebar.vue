@@ -26,7 +26,7 @@
           :key="i"
           active-class="bg-gray-600 bg-opacity-25 text-gray-100 border-gray-100"
           class="flex items-center border-gray-900 px-6 py-2 mt-4 duration-200 border-l-4 hover:bg-gray-600 hover:bg-opacity-25 hover:text-gray-50"
-          :to="router.to"
+          :to="{ name: router.to }"
         >
           <span v-html="router.icon"></span>
 
@@ -54,29 +54,34 @@ export default {
       logoutIcon: icons.logout,
       routers: [
         {
-          to: "/dashboard",
+          to: "Dashboard",
           icon: icons.dashboard,
           text: "Dashboard",
         },
         {
-          to: "/products",
+          to: "Products",
           icon: icons.shoppingBag,
           text: "Products",
         },
         {
-          to: "/users",
+          to: "Orders",
+          icon: icons.orders,
+          text: "Orders",
+        },
+        {
+          to: "Messages",
+          icon: icons.mail,
+          text: "Messages",
+        },
+        {
+          to: "Users",
           icon: icons.users,
           text: "Users",
         },
         {
-          to: "/profile",
+          to: "Profile",
           icon: icons.user,
           text: "Profile",
-        },
-        {
-          to: "/orders",
-          icon: icons.orders,
-          text: "Orders",
         },
       ],
     };
