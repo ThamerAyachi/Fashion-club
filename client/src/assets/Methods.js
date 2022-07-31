@@ -47,3 +47,17 @@ export const numberFormate = (number) => {
   }
   return newNumber.split("").reverse().join("");
 };
+
+export const getDeviceType = (data) => {
+  if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(data)) {
+    return "tablet";
+  }
+  if (
+    /Mobile|iP(hone|od)|Android|BlackBerry|IEMobile|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(
+      data
+    )
+  ) {
+    return "mobile";
+  }
+  return "desktop";
+};

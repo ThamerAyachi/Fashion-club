@@ -17,12 +17,12 @@ export class Messages {
   @Column({ nullable: false })
   subject: string;
 
-  @Column({ nullable: false })
+  @Column({ nullable: false, type: 'longtext' })
   message: string;
 
   @Column({
     nullable: false,
-    type: 'date',
+    type: 'datetime',
     name: 'create_at',
     // default: new Date().toISOString().slice(0, 19).replace('T', ' '),
   })
