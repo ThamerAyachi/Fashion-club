@@ -155,3 +155,7 @@
   -webkit-margin-end: 1rem;
   margin-inline-end: 1rem;
 }
+
+.modal {
+  transition: opacity 0.25s ease;
+}

@@ -20,6 +20,14 @@ const messages = {
         return err;
       }
     },
+    deleteMessage: async (test, messageId) => {
+      try {
+        const res = await instance.delete(`messages/${messageId}`);
+        return res;
+      } catch (err) {
+        return err;
+      }
+    },
   },
 };
 

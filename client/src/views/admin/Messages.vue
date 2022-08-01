@@ -4,7 +4,7 @@
     <div>
       <div class="mt-2">
         <div class="mt-2">
-          <h2 class="text-xl font-semibold leading-tight text-gray-700">
+          <h2 class="text-3xl font-semibold leading-tight text-gray-700">
             Messages
           </h2>
 
@@ -100,15 +100,18 @@
                     >
                       <p
                         class="text-indigo-400 whitespace-nowrap"
-                        v-html="u.deviceType"
+                        v-html="u.iconDeviceType"
                       ></p>
                     </td>
                     <td
                       class="px-5 py-5 text-sm bg-white border-b border-gray-200"
                     >
-                      <a href="#" class="text-indigo-600 hover:text-indigo-900"
-                        >More</a
+                      <button
+                        @click="showMessage(u)"
+                        class="text-indigo-600 hover:text-indigo-900"
                       >
+                        More
+                      </button>
                     </td>
                   </tr>
                 </tbody>
@@ -136,6 +139,109 @@
         </div>
       </div>
     </div>
+
+    <!-- model -->
+    <div>
+      <div
+        :class="`modal ${
+          !open && 'opacity-0 pointer-events-none'
+        } z-50 fixed w-full h-full top-0 left-0 flex items-center justify-center`"
+      >
+        <div
+          @click="open = false"
+          class="absolute w-full h-full bg-gray-900 opacity-50 modal-overlay"
+        ></div>
+
+        <div
+          class="z-50 w-11/12 mx-auto overflow-y-auto bg-white rounded shadow-lg modal-container md:max-w-3xl"
+        >
+          <div
+            class="absolute top-0 right-0 z-50 flex flex-col items-center mt-4 mr-4 text-sm text-white cursor-pointer modal-close"
+          >
+            <svg
+              class="text-white fill-current"
+              xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              height="18"
+              viewBox="0 0 18 18"
+            >
+              <path
+                d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"
+              />
+            </svg>
+            <span class="text-sm">(Esc)</span>
+          </div>
+
+          <!-- Add margin if you want to see some of the overlay behind the modal-->
+          <div class="px-6 py-4 text-left modal-content">
+            <!--Title-->
+            <div class="flex items-center justify-between pb-3">
+              <p class="text-2xl font-medium text-gray-900">
+                {{ messageOpened.subject }}
+              </p>
+              <div
+                class="z-50 cursor-pointer modal-close"
+                @click="open = false"
+              >
+                <svg
+                  class="text-black fill-current"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="18"
+                  height="18"
+                  viewBox="0 0 18 18"
+                >
+                  <path
+                    d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"
+                  />
+                </svg>
+              </div>
+            </div>
+
+            <!--Body-->
+            <div class="mb-8 mt-6">
+              <div class="flex justify-between mb-8 text-gray-600 text-sm">
+                <div>
+                  <p class="text-gray-900 font-bold text-base">
+                    {{ messageOpened.name }}
+                  </p>
+                  <p>{{ messageOpened.email }}</p>
+                </div>
+                <div>
+                  {{ messageOpened.createAt }}
+                </div>
+              </div>
+              <!-- message -->
+              <div class="text-gray-800">
+                {{ messageOpened.message }}
+              </div>
+            </div>
+
+            <!--Footer-->
+            <div class="flex justify-end pt-2">
+              <button
+                @click="open = false"
+                class="p-3 px-6 py-3 mr-2 text-indigo-500 bg-transparent rounded-lg hover:bg-gray-100 hover:text-indigo-400 focus:outline-none"
+              >
+                Close
+              </button>
+              <button
+                @click="deleteMessage(messageOpened.messageId)"
+                class="p-3 px-6 py-3 mr-2 text-red-500 bg-transparent rounded-lg hover:bg-gray-100 hover:text-red-400 focus:outline-none"
+                :disabled="isSending"
+              >
+                <fa-icon
+                  icon="rotate"
+                  class="text-xl"
+                  :spin="true"
+                  v-if="isSending"
+                />
+                <span v-else>Delete</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -154,6 +260,16 @@ export default {
       arrayMessages: [],
       DBArrayMessages: [],
       page: 0,
+      open: false,
+      messageOpened: {
+        subject: "",
+        name: "",
+        email: "",
+        message: "",
+        messageId: "",
+        createAt: "",
+      },
+      isSending: false,
     };
   },
   methods: {
@@ -163,25 +279,41 @@ export default {
         res.data.map((message) => {
           message.createAt = dateFormat(message.createAt);
           let deviceType = getDeviceType(message.deviceType);
-          if (deviceType == "tablet") message.deviceType = icons.tablet;
-          else if (deviceType == "mobile") message.deviceType = icons.mobile;
-          else message.deviceType = icons.desktop;
+          message.deviceType = deviceType;
+          if (deviceType == "tablet") message.iconDeviceType = icons.tablet;
+          else if (deviceType == "mobile")
+            message.iconDeviceType = icons.mobile;
+          else message.iconDeviceType = icons.desktop;
         });
         return res.data.reverse();
       } catch (err) {
-        throw new Error(err);
+        console.log(err);
       }
     },
     changePage(i) {
       this.page = i - 1;
     },
+    showMessage(message) {
+      this.messageOpened = message;
+      this.open = true;
+    },
+    async deleteMessage(messageId) {
+      this.isSending = true;
+      await store.dispatch("deleteMessage", messageId);
+      await this.setData();
+      this.isSending = false;
+      this.open = false;
+    },
+    async setData() {
+      this.messages = await this.getMessages();
+      this.arrayMessages = showFive(this.messages);
+    },
   },
   async mounted() {
-    this.messages = await this.getMessages();
-    this.arrayMessages = showFive(this.messages);
+    await this.setData();
     this.DBArrayMessages = this.arrayMessages;
   },
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped></style>
