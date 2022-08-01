@@ -11,7 +11,7 @@
             Users settings
           </h2>
 
-          <form @submit.prevent="register">
+          <form @submit.prevent="register" autocomplete="off">
             <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
               <!-- username -->
               <div>
