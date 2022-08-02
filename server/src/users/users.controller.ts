@@ -7,10 +7,12 @@ import {
   HttpException,
   HttpStatus,
   Post,
+  UseGuards,
   UseInterceptors,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/guard/JwtAuth.guard';
 import { CreateUserDto } from './dto/CreateUser.dto';
 import { SerializedUser } from './SerializedUser';
 import { UsersService } from './users.service';
@@ -20,6 +22,7 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
+  @UseGuards(JwtAuthGuard)
   @UseInterceptors(ClassSerializerInterceptor)
   async getUsers() {
     const users = await this.usersService.getAllUsers();
@@ -31,6 +34,7 @@ export class UsersController {
   }
 
   @Post('create')
+  @UseGuards(JwtAuthGuard)
   @UsePipes(ValidationPipe)
   @UseInterceptors(ClassSerializerInterceptor)
   async createUser(@Body() createUserDto: CreateUserDto) {

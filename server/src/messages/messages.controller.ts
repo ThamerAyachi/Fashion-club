@@ -7,9 +7,11 @@ import {
   HttpStatus,
   Param,
   Post,
+  UseGuards,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/guard/JwtAuth.guard';
 import { CreateMessageDto } from './dto/CreateMessage.dto';
 import { MessagesService } from './messages.service';
 
@@ -18,6 +20,7 @@ export class MessagesController {
   constructor(private readonly messagesService: MessagesService) {}
 
   @Get()
+  @UseGuards(JwtAuthGuard)
   async getAllMessages() {
     const messages = await this.messagesService.fetchAllMessages();
 
@@ -31,6 +34,7 @@ export class MessagesController {
   }
 
   @Get(':id')
+  @UseGuards(JwtAuthGuard)
   async fetchMessageById(@Param('id') messageId: string) {
     const message = await this.messagesService.findOne({ messageId });
 
@@ -42,6 +46,7 @@ export class MessagesController {
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard)
   async deleteById(@Param('id') messageId: string) {
     const message = await this.messagesService.findOne({ messageId });
 
