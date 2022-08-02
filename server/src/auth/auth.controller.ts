@@ -5,6 +5,8 @@ import {
   Inject,
   Post,
   UnauthorizedException,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from 'src/users/users.service';
@@ -19,6 +21,7 @@ export class AuthController {
   ) {}
 
   @Post('login')
+  @UsePipes(ValidationPipe)
   async login(@Body() signInDto: SignInDto) {
     const email = signInDto.email;
     const user = await this.usersService.findOne({ email });
