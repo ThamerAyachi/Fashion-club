@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+import store from "../store";
 
 import UserLayout from "../layouts/UserLayout.vue";
 import AdminLayout from "../layouts/AdminLayout.vue";
@@ -52,6 +53,7 @@ const routes = [
   {
     path: "/admin",
     component: AdminLayout,
+    meta: { requireAuth: true },
     children: [
       { path: "/dashboard", name: "Dashboard", component: Dashboard },
       { path: "/orders", name: "Orders", component: Orders },
@@ -61,15 +63,38 @@ const routes = [
       { path: "/messages", name: "Messages", component: Messages },
     ],
   },
-  { path: "/login", name: "Login", component: Login },
-  { path: "/test", name: "test", component: Test },
-  { path: "/404", name: "PageNotFound", component: PageNotFound },
+  {
+    path: "/login",
+    name: "Login",
+    component: Login,
+    meta: { isGuest: true },
+  },
+  {
+    path: "/test",
+    name: "test",
+    component: Test,
+  },
+  {
+    path: "/404",
+    name: "PageNotFound",
+    component: PageNotFound,
+  },
   { path: "/:catchAll(.*)", redirect: "/404" },
 ];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.meta.requireAuth && !store.state.access_token) {
+    next({ name: "Login" });
+  } else if (store.state.access_token && to.meta.isGuest) {
+    next({ name: "Dashboard" });
+  } else {
+    next();
+  }
 });
 
 export default router;

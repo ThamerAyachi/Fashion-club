@@ -12,7 +12,7 @@
           <input
             type="email"
             class="bg-gray-50 border border-gray-300 text-gray-900 my-2 text-sm rounded-lg focus:ring-primary focus:border-primary focus:outline-none block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary dark:focus:border-primary"
-            v-model="email"
+            v-model="formData.email"
             name="email"
           />
         </label>
@@ -22,14 +22,14 @@
           <input
             type="password"
             class="bg-gray-50 border border-gray-300 text-gray-900 my-2 text-sm rounded-lg focus:ring-primary focus:border-primary focus:outline-none block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary dark:focus:border-primary"
-            v-model="password"
+            v-model="formData.password"
             name="password"
           />
         </label>
 
         <div
           class="bg-red-100 rounded-lg py-3 mt-2 px-6 text-base text-red-700 mb-3"
-          v-if="v$.$error"
+          v-if="v$.$error | btnData.isError"
         >
           Values is not a valid
         </div>
@@ -37,10 +37,18 @@
         <div class="mt-6">
           <button
             type="submit"
+            :disabled="btnData.isLoading"
             class="w-full px-4 py-2 text-sm text-center text-white bg-primary rounded-md focus:outline-none hover:bg-green-400 space-x-1"
           >
-            <fa-icon icon="right-to-bracket" />
-            <span>Sign in</span>
+            <fa-icon
+              icon="rotate"
+              class="text-xl"
+              :spin="true"
+              v-if="btnData.isLoading"
+            />
+            <span v-else>
+              <fa-icon icon="right-to-bracket" /> <span>Sign in</span>
+            </span>
           </button>
         </div>
       </form>
@@ -56,24 +64,37 @@ export default {
   data() {
     return {
       v$: useValidate(),
-      email: "",
-      password: "",
+      formData: { email: "", password: "" },
+      btnData: { isLoading: false, isError: false },
     };
   },
   methods: {
-    signUp() {
+    async signUp() {
+      this.btnData.isLoading = true;
       this.v$.$validate();
       if (!this.v$.$error) {
-        console.log("submit");
-      } else {
-        console.log(this.v$.$errors);
+        try {
+          const data = await this.$store.dispatch("login", this.formData);
+          if (data.statusCode === 401) {
+            this.btnData.isError = true;
+            this.btnData.isLoading = false;
+            return null;
+          }
+          window.location.replace("/login");
+        } catch (err) {
+          console.log(err);
+        }
       }
+      this.btnData.isLoading = false;
+      return;
     },
   },
   validations() {
     return {
-      email: { required, email },
-      password: { required },
+      formData: {
+        email: { required, email },
+        password: { required },
+      },
     };
   },
 };

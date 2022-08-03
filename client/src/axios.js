@@ -7,6 +7,6 @@ const instance = axios.create({
 
 instance.defaults.headers.common[
   "Authorization"
-] = `Bearer ${localStorage.getItem("access_token")}`;
+] = `Bearer ${sessionStorage.getItem("access_token")}`;
 
 export default instance;
