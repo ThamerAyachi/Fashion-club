@@ -7,11 +7,13 @@ import {
   HttpException,
   HttpStatus,
   Post,
+  Req,
   UseGuards,
   UseInterceptors,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
+import { Request } from 'express';
 import { JwtAuthGuard } from 'src/auth/guard/JwtAuth.guard';
 import { CreateUserDto } from './dto/CreateUser.dto';
 import { SerializedUser } from './SerializedUser';
@@ -48,5 +50,11 @@ export class UsersController {
     const user = await this.usersService.createUser(createUserDto);
 
     return new SerializedUser(user);
+  }
+
+  @Get('user')
+  @UseGuards(JwtAuthGuard)
+  getUser(@Req() req: Request) {
+    return req.user;
   }
 }
