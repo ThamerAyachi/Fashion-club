@@ -11,7 +11,7 @@
           <span class="text-sm text-gray-700">Email</span>
           <input
             type="email"
-            class="block w-full mt-1 p-2 border border-gray-300 rounded-md focus:border-primary focus:outline-none focus:shadow-outline"
+            class="bg-gray-50 border border-gray-300 text-gray-900 my-2 text-sm rounded-lg focus:ring-primary focus:border-primary focus:outline-none block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary dark:focus:border-primary"
             v-model="email"
             name="email"
           />
@@ -21,7 +21,7 @@
           <span class="text-sm text-gray-700">Password</span>
           <input
             type="password"
-            class="block w-full mt-1 p-2 border border-gray-300 rounded-md focus:border-primary focus:outline-none focus:shadow-outline"
+            class="bg-gray-50 border border-gray-300 text-gray-900 my-2 text-sm rounded-lg focus:ring-primary focus:border-primary focus:outline-none block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary dark:focus:border-primary"
             v-model="password"
             name="password"
           />
