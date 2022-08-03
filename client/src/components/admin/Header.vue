@@ -1,6 +1,6 @@
 <template>
   <header
-  class="flex items-center justify-between px-6 py-4 bg-white border-b-4 border-blue-500"
+    class="flex items-center justify-between px-6 py-4 bg-white border-b-4 border-blue-500"
   >
     <div class="flex items-center">
       <button
@@ -22,11 +22,9 @@
           />
         </svg>
       </button>
-
     </div>
 
     <div class="flex items-center">
-
       <div class="relative">
         <button
           @click="dropdownOpen = !dropdownOpen"
@@ -57,21 +55,22 @@
             v-show="dropdownOpen"
             class="absolute right-0 z-20 w-48 py-2 mt-2 bg-white rounded-md shadow-xl"
           >
-            <a
-              href="#"
+            <router-link
+              :to="{ name: 'Profile' }"
               class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-500 hover:text-white"
-              >Profile</a
-            >
-            <a
-              href="#"
-              class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-600 hover:text-white"
-              >Products</a
+              >Profile</router-link
             >
             <router-link
-              to="/"
-              class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-600 hover:text-white"
-              >Log out</router-link
+              :to="{ name: 'Products' }"
+              class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-500 hover:text-white"
+              >Products</router-link
             >
+            <button
+              @click="logout"
+              class="w-full text-left block px-4 py-2 text-sm text-gray-700 hover:bg-blue-500 hover:text-white"
+            >
+              Log out
+            </button>
           </div>
         </transition>
       </div>
@@ -83,21 +82,29 @@
 import { useSidebar } from "../../hooks/useSidebar";
 
 export default {
-    data(){
-        return{
-            dropdownOpen: false,
-        }
+  methods: {
+    async logout() {
+      try {
+        await this.$store.dispatch("logout");
+        this.$router.push({ name: "Home" });
+      } catch (err) {
+        console.log(err);
+      }
     },
-    setup() {
-        const { isOpen } = useSidebar();
+  },
+  data() {
+    return {
+      dropdownOpen: false,
+    };
+  },
+  setup() {
+    const { isOpen } = useSidebar();
 
-        return{
-            isOpen,
-        };
-    }
-}
+    return {
+      isOpen,
+    };
+  },
+};
 </script>
 
-<style>
-
-</style>
+<style></style>

@@ -34,6 +34,7 @@
         </router-link>
         <button
           class="flex w-full items-center border-gray-900 px-6 py-2 mt-4 duration-200 border-l-4 hover:bg-gray-600 hover:bg-opacity-25 hover:text-gray-50"
+          @click="logout"
         >
           <span v-html="logoutIcon"></span>
 
@@ -49,6 +50,16 @@ import { useSidebar } from "../../hooks/useSidebar";
 import icons from "../../icons";
 
 export default {
+  methods: {
+    async logout() {
+      try {
+        await this.$store.dispatch("logout");
+        this.$router.push({ name: "Home" });
+      } catch (err) {
+        console.log(err);
+      }
+    },
+  },
   data: () => {
     return {
       logoutIcon: icons.logout,
