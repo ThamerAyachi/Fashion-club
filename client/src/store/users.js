@@ -21,6 +21,14 @@ const users = {
         return err;
       }
     },
+    async getUser() {
+      try {
+        const res = await instance.get("users/user");
+        return res;
+      } catch (err) {
+        return err;
+      }
+    },
   },
 };
 

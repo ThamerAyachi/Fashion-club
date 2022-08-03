@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="mt-8">
     <!-- form -->
     <div>
       <div class="mt-4">

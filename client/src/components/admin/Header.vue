@@ -32,7 +32,7 @@
         >
           <img
             class="object-cover w-full h-full"
-            src="https://images.unsplash.com/photo-1528892952291-009c663ce843?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=296&q=80"
+            :src="img"
             alt="Your avatar"
           />
         </button>
@@ -43,6 +43,7 @@
           class="fixed inset-0 z-10 w-full h-full"
         ></div>
 
+        <!-- dropdown -->
         <transition
           enter-active-class="transition duration-150 ease-out transform"
           enter-from-class="scale-95 opacity-0"
@@ -82,6 +83,12 @@
 import { useSidebar } from "../../hooks/useSidebar";
 
 export default {
+  data() {
+    return {
+      dropdownOpen: false,
+      img: "https://images.unsplash.com/photo-1528892952291-009c663ce843?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=296&q=80",
+    };
+  },
   methods: {
     async logout() {
       try {
@@ -91,11 +98,18 @@ export default {
         console.log(err);
       }
     },
+    async getUser() {
+      try {
+        const res = await this.$store.dispatch("getUser");
+        return res.data;
+      } catch (err) {
+        console.log(err);
+      }
+    },
   },
-  data() {
-    return {
-      dropdownOpen: false,
-    };
+  async mounted() {
+    const user = await this.getUser();
+    this.img = user.imgUrl;
   },
   setup() {
     const { isOpen } = useSidebar();

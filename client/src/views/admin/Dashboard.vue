@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="mt-8">
     <h3 class="text-3xl font-semibold text-gray-700">Dashboard</h3>
     <!-- cards -->
     <div class="mt-4">
