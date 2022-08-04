@@ -4,6 +4,7 @@ import { User as UserEntity } from 'src/typeorm/User';
 import { encodePassword } from 'src/utils/bcrypt';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/CreateUser.dto';
+import { UpdateUserDto } from './dto/UpdateUser.dto';
 import { SerializedUser } from './SerializedUser';
 
 @Injectable()
@@ -37,5 +38,17 @@ export class UsersService {
 
   async findOne(condition: any) {
     return this.userRepository.findOneBy(condition);
+  }
+
+  async updateUser(updateUserDto: UpdateUserDto, user: UserEntity) {
+    const userId = user.id;
+    delete user.id;
+    updateUserDto.password = encodePassword(updateUserDto.password);
+    const updateUser = {
+      ...user,
+      ...updateUserDto,
+      updateAt: new Date().toISOString().slice(0, 19),
+    };
+    return await this.userRepository.update({ id: userId }, { ...updateUser });
   }
 }

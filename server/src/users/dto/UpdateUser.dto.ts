@@ -7,7 +7,7 @@ import {
 } from 'class-validator';
 import { UserRole } from './UserRole';
 
-export class CreateUserDto {
+export class UpdateUserDto {
   @IsNotEmpty()
   @MinLength(3)
   @MaxLength(16)
@@ -25,5 +25,5 @@ export class CreateUserDto {
 
   @IsNotEmpty()
   @IsEnum(UserRole)
-  role: UserRole;
+  role?: UserRole;
 }
