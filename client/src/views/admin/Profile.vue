@@ -14,7 +14,7 @@
       <div class="container mx-auto px-4 -mt-64 flex justify-center">
         <label
           for="test"
-          class="rounded-full overflow-hidden shadow-md bg-gray-200"
+          class="rounded-full overflow-hidden shadow-md bg-gray-100"
         >
           <img
             :src="img"
