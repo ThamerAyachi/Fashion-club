@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-8">
+  <div class="mt-8 px-6">
     <!-- table -->
     <div>
       <div class="mt-2">
