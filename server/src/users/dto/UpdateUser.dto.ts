@@ -19,11 +19,6 @@ export class UpdateUserDto {
   email: string;
 
   @IsNotEmpty()
-  @MinLength(8)
-  @MaxLength(30)
-  password: string;
-
-  @IsNotEmpty()
   @IsEnum(UserRole)
   role?: UserRole;
 }

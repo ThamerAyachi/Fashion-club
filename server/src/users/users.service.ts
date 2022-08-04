@@ -43,7 +43,6 @@ export class UsersService {
   async updateUser(updateUserDto: UpdateUserDto, user: UserEntity) {
     const userId = user.id;
     delete user.id;
-    updateUserDto.password = encodePassword(updateUserDto.password);
     const updateUser = {
       ...user,
       ...updateUserDto,

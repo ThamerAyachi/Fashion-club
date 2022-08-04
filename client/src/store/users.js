@@ -29,6 +29,14 @@ const users = {
         return err;
       }
     },
+    async updateUser(test, data) {
+      try {
+        const res = await instance.put(`users/update/${data.id}`, data);
+        return res;
+      } catch (err) {
+        return err;
+      }
+    },
   },
 };
 

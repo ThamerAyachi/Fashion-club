@@ -14,11 +14,11 @@
       <div class="container mx-auto px-4 -mt-64 flex justify-center">
         <label
           for="test"
-          class="rounded-full overflow-hidden shadow-md bg-gray-100"
+          class="rounded-full overflow-hidden shadow-md bg-gray-100 border-4 border-gray-200"
         >
           <img
-            :src="img"
-            class="w-44 rounded-full hover:rotate-45 duration-500 transform cursor-pointer border-4 border-gray-200"
+            :src="data.imgUrl"
+            class="w-40 rounded-full hover:rotate-12 hover:scale-110 duration-500 transform cursor-pointer"
             alt=""
           />
         </label>
@@ -33,13 +33,15 @@
             Account settings
           </h2>
 
-          <form>
+          <form @submit.prevent="updateUser">
             <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
               <div>
                 <label class="text-gray-700" for="username">Username</label>
                 <input
-                  class="w-full mt-2 border-gray-200 rounded-md focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 my-2 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 focus:outline-none block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   type="text"
+                  v-model="data.username"
+                  autocomplete="off"
                 />
               </div>
 
@@ -48,26 +50,22 @@
                   >Email Address</label
                 >
                 <input
-                  class="w-full mt-2 border-gray-200 rounded-md focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 my-2 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 focus:outline-none block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   type="email"
-                />
-              </div>
-
-              <div>
-                <label class="text-gray-700" for="password">Password</label>
-                <input
-                  class="w-full mt-2 border-gray-200 rounded-md focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500"
-                  type="password"
+                  v-model="data.email"
+                  autocomplete="off"
                 />
               </div>
 
               <div>
                 <label class="text-gray-700" for="passwordConfirmation"
-                  >Password Confirmation</label
+                  >Role</label
                 >
                 <input
-                  class="w-full mt-2 border-gray-200 rounded-md focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500"
-                  type="password"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 my-2 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 focus:outline-none block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  type="text"
+                  readonly
+                  v-model="data.role"
                 />
               </div>
             </div>
@@ -75,14 +73,55 @@
             <div class="flex justify-end mt-4">
               <button
                 class="px-4 py-2 text-gray-200 bg-gray-800 rounded-md hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
+                :disabled="isSending"
               >
-                Save
+                <fa-icon
+                  icon="rotate"
+                  class="text-xl"
+                  :spin="true"
+                  v-if="isSending"
+                />
+                <span v-else>Update profile</span>
               </button>
             </div>
           </form>
         </div>
       </div>
     </div>
+    <!-- success alert -->
+    <transition
+      mode="out-in"
+      enter-active-class="animate__animated animate__fadeIn"
+      leave-active-class="animate__animated animate__fadeOut"
+    >
+      <div
+        class="px-4 py-20 overflow-x-auto absolute top-1 rounded-md whitespace-nowrap"
+        v-if="isSuccess"
+      >
+        <div
+          class="inline-flex w-full overflow-hidden bg-white rounded-lg shadow-md"
+        >
+          <div class="flex items-center justify-center w-12 bg-green-500">
+            <svg
+              class="w-6 h-6 text-white fill-current"
+              viewBox="0 0 40 40"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M20 3.33331C10.8 3.33331 3.33337 10.8 3.33337 20C3.33337 29.2 10.8 36.6666 20 36.6666C29.2 36.6666 36.6667 29.2 36.6667 20C36.6667 10.8 29.2 3.33331 20 3.33331ZM16.6667 28.3333L8.33337 20L10.6834 17.65L16.6667 23.6166L29.3167 10.9666L31.6667 13.3333L16.6667 28.3333Z"
+              />
+            </svg>
+          </div>
+
+          <div class="px-4 py-2 -mx-3">
+            <div class="mx-3">
+              <span class="font-semibold text-green-500">Success</span>
+              <p class="text-sm text-gray-600">Your account was updated!</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -90,7 +129,16 @@
 export default {
   data() {
     return {
-      img: "https://demos.creative-tim.com/notus-js/assets/img/team-2-800x800.jpg",
+      isSending: false,
+      isSuccess: false,
+      data: {
+        id: "",
+        imgUrl:
+          "https://demos.creative-tim.com/notus-js/assets/img/team-2-800x800.jpg",
+        email: "",
+        username: "",
+        role: "",
+      },
     };
   },
   methods: {
@@ -102,10 +150,24 @@ export default {
         console.log(err);
       }
     },
+    async updateUser() {
+      this.isSending = true;
+      try {
+        await this.$store.dispatch("updateUser", this.data);
+        this.isSending = false;
+        this.isSuccess = true;
+        setTimeout(() => {
+          this.isSuccess = false;
+        }, 3000);
+      } catch (err) {
+        console.log(err);
+      }
+      this.isSending = false;
+    },
   },
   async mounted() {
     const user = await this.getUser();
-    this.img = user.imgUrl;
+    this.data = user;
   },
 };
 </script>
