@@ -18,6 +18,7 @@ import {
 import { Request } from 'express';
 import { JwtAuthGuard } from 'src/auth/guard/JwtAuth.guard';
 import { CreateUserDto } from './dto/CreateUser.dto';
+import { UpdateAvatarDto } from './dto/UpdateAvatar.dto';
 import { UpdateUserDto } from './dto/UpdateUser.dto';
 import { SerializedUser } from './SerializedUser';
 import { UsersService } from './users.service';
@@ -93,6 +94,32 @@ export class UsersController {
     }
 
     await this.usersService.updateUser(updateUserDto, oldUser);
+
+    return { message: 'User Updated', status: HttpStatus.OK };
+  }
+
+  @Put('update/avatar/:userId')
+  @UseGuards(JwtAuthGuard)
+  @UsePipes(ValidationPipe)
+  async updateAvatar(
+    @Body() updateAvatarDto: UpdateAvatarDto,
+    @Param('userId') userId: string,
+    @Req() req: Request,
+  ) {
+    // if User found
+    const oldUser = await this.usersService.findOne({ id: userId });
+    if (!oldUser) {
+      throw new BadRequestException([`User with id: ${userId} not found`]);
+    }
+    // test role and same user
+    const user: any = req.user;
+    if (user.role !== 'SUPER_ADMIN' && user.id !== userId) {
+      throw new BadRequestException([
+        `You don't have proems to update this user`,
+      ]);
+    }
+
+    await this.usersService.updateAvatar(updateAvatarDto, userId);
 
     return { message: 'User Updated', status: HttpStatus.OK };
   }

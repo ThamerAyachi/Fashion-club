@@ -4,6 +4,7 @@ import { User as UserEntity } from 'src/typeorm/User';
 import { encodePassword } from 'src/utils/bcrypt';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/CreateUser.dto';
+import { UpdateAvatarDto } from './dto/UpdateAvatar.dto';
 import { UpdateUserDto } from './dto/UpdateUser.dto';
 import { SerializedUser } from './SerializedUser';
 
@@ -49,5 +50,12 @@ export class UsersService {
       updateAt: new Date().toISOString().slice(0, 19),
     };
     return await this.userRepository.update({ id: userId }, { ...updateUser });
+  }
+
+  async updateAvatar(updateAvatarDto: UpdateAvatarDto, userId: string) {
+    const imgUrl = updateAvatarDto.imgUrl;
+    const id = parseInt(userId);
+
+    return await this.userRepository.update({ id }, { imgUrl });
   }
 }
