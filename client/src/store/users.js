@@ -1,3 +1,4 @@
+import axios from "axios";
 import instance from "../axios";
 
 const users = {
@@ -33,6 +34,26 @@ const users = {
       try {
         const res = await instance.put(`users/update/${data.id}`, data);
         return res;
+      } catch (err) {
+        return err;
+      }
+    },
+    async updateAvatar(test, data) {
+      const form = new FormData();
+      form.append("image", data.image);
+      try {
+        const res = await axios.post(
+          "https://api.imgbb.com/1/upload?key=e6a735fac9ee98b1897034ee6315d69b",
+          form
+        );
+        // const imgUrl = res.data.data.display_url;
+        if (res.status === 200) {
+          const _res = await instance.put(`users/update/avatar/${data.id}`, {
+            imgUrl: res.data.data.display_url,
+          });
+          return _res.status;
+        }
+        return 400;
       } catch (err) {
         return err;
       }

@@ -237,12 +237,10 @@
                       class="px-5 py-5 text-sm bg-white border-b border-gray-200"
                     >
                       <div class="flex items-center">
-                        <div class="flex-shrink-0 w-10 h-10">
-                          <img
-                            class="w-full h-full rounded-full"
-                            :src="u.imgUrl"
-                            alt="profile pic"
-                          />
+                        <div
+                          class="flex-shrink-0 w-10 h-10 overflow-hidden rounded-full"
+                        >
+                          <img class="w-10" :src="u.imgUrl" alt="profile pic" />
                         </div>
 
                         <div class="ml-4">

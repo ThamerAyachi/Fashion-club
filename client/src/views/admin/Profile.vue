@@ -13,8 +13,8 @@
     <section class="relative py-16 mt-20 bg-blueGray-200">
       <div class="container mx-auto px-4 -mt-64 flex justify-center">
         <label
-          for="test"
-          class="rounded-full overflow-hidden shadow-md bg-gray-100 border-4 border-gray-200"
+          for="avatar"
+          class="rounded-full overflow-hidden w-40 h-40 shadow-md bg-gray-100 border-4 border-gray-200"
         >
           <img
             :src="data.imgUrl"
@@ -23,7 +23,14 @@
           />
         </label>
       </div>
-      <input type="file" id="test" class="hidden" />
+      <input
+        type="file"
+        accept="image/png, image/jpg, image/gif, image/jpeg"
+        id="avatar"
+        class="hidden"
+        ref="file"
+        @change="selectFile"
+      />
     </section>
     <!-- form -->
     <div class="relative -mt-36 mx-3">
@@ -122,6 +129,49 @@
         </div>
       </div>
     </transition>
+    <!-- error alert -->
+    <transition
+      mode="out-in"
+      enter-active-class="animate__animated animate__fadeIn"
+      leave-active-class="animate__animated animate__fadeOut"
+    >
+      <div
+        class="px-4 py-20 overflow-x-auto absolute top-1 rounded-md whitespace-nowrap"
+        v-if="isError"
+      >
+        <div
+          class="inline-flex w-full overflow-hidden bg-white rounded-lg shadow-md"
+        >
+          <div class="flex items-center justify-center w-12 bg-red-500">
+            <svg
+              class="w-6 h-6 text-white fill-current"
+              viewBox="0 0 40 40"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M20 3.36667C10.8167 3.36667 3.3667 10.8167 3.3667 20C3.3667 29.1833 10.8167 36.6333 20 36.6333C29.1834 36.6333 36.6334 29.1833 36.6334 20C36.6334 10.8167 29.1834 3.36667 20 3.36667ZM19.1334 33.3333V22.9H13.3334L21.6667 6.66667V17.1H27.25L19.1334 33.3333Z"
+              />
+            </svg>
+          </div>
+
+          <div class="px-4 py-2 -mx-3">
+            <div class="mx-3">
+              <span class="font-semibold text-red-500">Error</span>
+              <p class="text-base text-gray-800">
+                Can't get target upload source info
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </transition>
+    <!-- background-sending -->
+    <div
+      class="absolute top-0 left-0 opacity-50 w-full h-full bg-black text-white z-50 flex justify-center items-center"
+      v-if="isUpdate"
+    >
+      <fa-icon icon="rotate" class="text-2xl" :spin="true" />
+    </div>
   </div>
 </template>
 
@@ -131,6 +181,8 @@ export default {
     return {
       isSending: false,
       isSuccess: false,
+      isError: false,
+      isUpdate: false,
       data: {
         id: "",
         imgUrl:
@@ -163,6 +215,25 @@ export default {
         console.log(err);
       }
       this.isSending = false;
+    },
+    async selectFile() {
+      this.isUpdate = true;
+      const data = { image: this.$refs.file.files[0], id: this.data.id };
+      try {
+        const res = await this.$store.dispatch("updateAvatar", data);
+        console.log(res);
+        if (res === 200) {
+          window.location.reload();
+          return;
+        }
+      } catch (err) {
+        console.log(err);
+      }
+      this.isUpdate = false;
+      this.isError = true;
+      setTimeout(() => {
+        this.isError = false;
+      }, 3000);
     },
   },
   async mounted() {
