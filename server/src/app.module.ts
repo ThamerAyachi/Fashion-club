@@ -5,6 +5,7 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { ProductsModule } from './products/products.module';
 import entities from './typeorm';
+import { MulterModule } from '@nestjs/platform-express';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import entities from './typeorm';
       entities: entities,
       synchronize: true,
     }),
+    MulterModule.register({ dest: './uploads' }),
     MessagesModule,
     UsersModule,
     AuthModule,
