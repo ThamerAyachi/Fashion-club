@@ -15,39 +15,41 @@ export class CreateProductsDto {
   @MaxLength(20)
   name: string;
 
-  // @IsNotEmpty()
-  // @IsNumberString()
-  // @MinLength(1)
-  // @MaxLength(10)
-  // price: string;
+  @IsNotEmpty()
+  @IsNumberString()
+  @MinLength(1)
+  @MaxLength(10)
+  price: string;
 
-  // @IsNotEmpty()
-  // @IsNumberString()
-  // @MinLength(1)
-  // @MaxLength(5)
-  // quantity: string;
+  @IsNotEmpty()
+  @IsNumberString()
+  @MinLength(1)
+  @MaxLength(5)
+  quantity: string;
 
-  // createAt: Date;
+  createAt: Date;
 
-  // updateAt: Date;
+  updateAt: Date;
 
-  // @IsNotEmpty()
-  // @IsEnum(Types)
-  // types: Types;
+  @IsNotEmpty()
+  @IsEnum(Types)
+  types: Types;
 
-  // @IsNotEmpty()
-  // @IsEnum(Categories)
-  // categories: Categories;
+  @IsNotEmpty()
+  @IsEnum(Categories)
+  categories: Categories;
 
-  // @IsNotEmpty()
-  // @MaxLength(400)
-  // @MinLength(15)
-  // description: string;
+  @IsNotEmpty()
+  @MaxLength(400)
+  @MinLength(15)
+  description: string;
+
+  imgUrl: string;
 }
 
 export const fileName = (file) => {
   const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
   const ext = extname(file.originalname);
-  const filename = `${file.originalname}-${uniqueSuffix}${ext}`;
+  const filename = `${file.originalname.split('.')[0]}-${uniqueSuffix}${ext}`;
   return filename;
 };

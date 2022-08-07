@@ -1,14 +1,20 @@
 import {
   Body,
   Controller,
+  Get,
+  Param,
   Post,
+  Res,
   UploadedFile,
+  UseGuards,
   UseInterceptors,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { Response } from 'express';
 import { diskStorage } from 'multer';
+import { JwtAuthGuard } from 'src/auth/guard/JwtAuth.guard';
 import { CreateProductsDto, fileName } from './dto/CreateProducts.dto';
 import { ProductsService } from './products.service';
 
@@ -18,6 +24,7 @@ export class ProductsController {
 
   @Post('create')
   @UsePipes(ValidationPipe)
+  @UseGuards(JwtAuthGuard)
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({
@@ -29,11 +36,20 @@ export class ProductsController {
     }),
   )
   async createProduct(
-    @UploadedFile() file: Express.Multer.File,
     @Body() createProductsDto: CreateProductsDto,
+    @UploadedFile() file: Express.Multer.File,
   ) {
-    console.log(file);
-    return { createProductsDto };
-    return;
+    createProductsDto.imgUrl = file.filename;
+    return await this.productsService.createProduct(createProductsDto);
+  }
+
+  @Get(':imgPath')
+  async seeUploadedFile(@Param('imgPath') imgPath, @Res() res: Response) {
+    return res.sendFile(imgPath, { root: 'uploads' });
+  }
+
+  @Get()
+  async fetchProducts() {
+    return await this.productsService.fetchProducts();
   }
 }
