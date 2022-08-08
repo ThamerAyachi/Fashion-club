@@ -408,10 +408,6 @@ export default {
     return {
       types: ProductTypes,
       baseUrl: this.$store.state.baseUrl,
-      user: {
-        name: "Product name",
-        status: "Defiant",
-      },
       categories: [],
       formData: {
         types: "",

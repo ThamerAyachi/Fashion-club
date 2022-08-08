@@ -27,96 +27,175 @@
       </div>
     </div>
 
-    <h4 class="text-2xl text-gray-700 mt-8 font-medium">Available Products</h4>
     <!-- table -->
-    <div class="flex flex-col mt-3">
-      <div class="py-2 -my-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
-        <div
-          class="inline-block min-w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg"
-        >
-          <table class="min-w-full">
-            <thead>
-              <tr>
-                <th
-                  class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50"
-                >
-                  Product
-                </th>
-                <th
-                  class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50"
-                >
-                  Start on
-                </th>
-                <th
-                  class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50"
-                >
-                  Status
-                </th>
-                <th
-                  class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50"
-                >
-                  Price
-                </th>
-                <th class="px-6 py-3 border-b border-gray-200 bg-gray-50"></th>
-              </tr>
-            </thead>
+    <div>
+      <div class="mt-8">
+        <div class="mt-6">
+          <h2 class="text-xl font-semibold leading-tight text-gray-700">
+            Available Products
+          </h2>
 
-            <tbody class="bg-white">
-              <tr v-for="index in 5" :key="index">
-                <td
-                  class="px-6 py-4 border-b border-gray-200 whitespace-nowrap"
+          <div class="flex flex-col mt-3 sm:flex-row">
+            <div class="flex">
+              <div class="relative">
+                <select
+                  class="block w-full h-full rounded-l px-4 py-2 pr-8 leading-tight text-gray-700 bg-white border-t border-b border-r border-gray-400 rounded-r appearance-none sm:rounded-r-none sm:border-r-0 focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500"
+                  v-model="select"
+                  @change="searchedByStatus"
                 >
-                  <!-- Product -->
-                  <div class="flex items-center">
-                    <div class="flex-shrink-0 w-10 h-10">
-                      <img
-                        class="w-10 h-10 rounded-full"
-                        src="/img/tp1.jpg"
-                        alt="Product Image"
-                      />
-                    </div>
+                  <option value="all">All</option>
+                  <option value="1">Defiant</option>
+                  <option value="0">Not Defiant</option>
+                </select>
+              </div>
+            </div>
 
-                    <div class="ml-4">
-                      <div class="text-sm font-medium leading-5 text-gray-900">
-                        {{ user.name }}
+            <div class="relative block mt-2 sm:mt-0">
+              <span class="absolute inset-y-0 left-0 flex items-center pl-2">
+                <svg
+                  viewBox="0 0 24 24"
+                  class="w-4 h-4 text-gray-500 fill-current"
+                >
+                  <path
+                    d="M10 4a6 6 0 100 12 6 6 0 000-12zm-8 6a8 8 0 1114.32 4.906l5.387 5.387a1 1 0 01-1.414 1.414l-5.387-5.387A8 8 0 012 10z"
+                  />
+                </svg>
+              </span>
+
+              <input
+                placeholder="Search"
+                class="block w-full py-2 pl-8 pr-6 text-sm text-gray-700 placeholder-gray-400 bg-white border border-b border-gray-400 rounded-l rounded-r appearance-none sm:rounded-l-none focus:bg-white focus:placeholder-gray-600 focus:text-gray-700 focus:outline-none"
+                v-model="search"
+                @input="searchedByName"
+              />
+            </div>
+          </div>
+
+          <div class="px-4 py-4 -mx-4 overflow-x-auto sm:-mx-8 sm:px-8">
+            <div
+              class="inline-block min-w-full overflow-hidden rounded-lg shadow"
+            >
+              <table class="min-w-full">
+                <thead>
+                  <tr>
+                    <th
+                      class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50"
+                    >
+                      Product
+                    </th>
+                    <th
+                      class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50"
+                    >
+                      Start on
+                    </th>
+                    <th
+                      class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50"
+                    >
+                      Status
+                    </th>
+                    <th
+                      class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50"
+                    >
+                      Price
+                    </th>
+                    <th
+                      class="px-6 py-3 border-b border-gray-200 bg-gray-50"
+                    ></th>
+                  </tr>
+                </thead>
+
+                <tbody class="bg-white">
+                  <tr v-for="(p, index) in arrayProducts[page]" :key="index">
+                    <td
+                      class="px-6 py-4 border-b border-gray-200 whitespace-nowrap"
+                    >
+                      <!-- Product -->
+                      <div class="flex items-center">
+                        <div
+                          class="flex-shrink-0 w-10 h-10 rounded-full overflow-hidden"
+                        >
+                          <img
+                            class="w-10"
+                            :src="p.imgUrl"
+                            alt="Product Image"
+                          />
+                        </div>
+
+                        <div class="ml-4">
+                          <div
+                            class="text-sm font-medium leading-5 text-gray-900"
+                          >
+                            {{ p.name }}
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                </td>
+                    </td>
 
-                <td
-                  class="px-6 py-4 border-b border-gray-200 whitespace-nowrap"
-                >
-                  <!-- start on -->
-                  <div class="text-sm leading-5 text-gray-500">Oct,15th</div>
-                </td>
+                    <td
+                      class="px-6 py-4 border-b border-gray-200 whitespace-nowrap"
+                    >
+                      <!-- start on -->
+                      <div class="text-sm leading-5 text-gray-500">
+                        {{ p.createAt }}
+                      </div>
+                    </td>
 
-                <td
-                  class="px-6 py-4 border-b border-gray-200 whitespace-nowrap"
-                >
-                  <!-- status -->
-                  <span
-                    class="inline-flex px-2 text-xs font-semibold leading-5 text-green-800 bg-green-100 rounded-full"
-                    >{{ user.status }}</span
+                    <td
+                      class="px-6 py-4 border-b border-gray-200 whitespace-nowrap"
+                    >
+                      <!-- status -->
+                      <span
+                        class="inline-flex px-2 text-xs font-semibold leading-5 text-green-800 bg-green-100 rounded-full"
+                        v-if="p.quantity > 0"
+                        >Defiant</span
+                      >
+                      <span
+                        class="inline-flex px-2 text-xs font-semibold leading-5 text-yellow-800 bg-yellow-100 rounded-full"
+                        v-else
+                        >Not Defiant</span
+                      >
+                    </td>
+
+                    <td
+                      class="px-6 py-4 text-sm leading-5 text-gray-500 border-b border-gray-200 whitespace-nowrap"
+                    >
+                      <!-- price -->
+                      {{ p.price }} TND
+                    </td>
+
+                    <td
+                      class="px-6 py-4 text-sm font-medium leading-5 text-right border-b border-gray-200 whitespace-nowrap space-x-3"
+                    >
+                      <button
+                        href="#"
+                        class="text-indigo-600 hover:text-indigo-900"
+                      >
+                        Edit
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div
+                class="flex flex-col items-center px-5 py-5 bg-white border-t xs:flex-row xs:justify-between"
+              >
+                <span class="text-xs text-gray-900 xs:text-sm"
+                  >There is {{ products.length }} Products.
+                </span>
+
+                <div class="inline-flex mt-2 xs:mt-0 space-x-2">
+                  <button
+                    class="px-4 py-2 text-sm rounded font-semibold text-gray-800 bg-gray-300 hover:bg-gray-400"
+                    v-for="i in arrayProducts.length"
+                    :key="i"
+                    @click="changePage(i)"
                   >
-                </td>
-
-                <td
-                  class="px-6 py-4 text-sm leading-5 text-gray-500 border-b border-gray-200 whitespace-nowrap"
-                >
-                  <!-- price -->
-                  42 TND
-                </td>
-
-                <td
-                  class="px-6 py-4 text-sm font-medium leading-5 text-right border-b border-gray-200 whitespace-nowrap space-x-3"
-                >
-                  <a href="#" class="text-blue-600 hover:text-blue-900">Edit</a>
-                  <a href="#" class="text-red-600 hover:text-red-900">Delete</a>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+                    {{ i }}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -125,6 +204,7 @@
 </template>
 
 <script>
+import { dateFormat, showFive } from "../../assets/Methods";
 import { numberFormate } from "../../assets/Methods";
 
 export default {
@@ -220,6 +300,13 @@ export default {
         name: "Product name",
         status: "Defiant",
       },
+      products: [],
+      arrayProducts: [],
+      DBArrayProducts: [],
+      page: 0,
+      select: "all",
+      search: "",
+      baseUrl: this.$store.state.baseUrl,
     };
   },
   methods: {
@@ -231,10 +318,71 @@ export default {
         throw new Error(err);
       }
     },
+    async getProducts() {
+      try {
+        const res = await this.$store.dispatch("getProducts");
+        res.data.map((product) => {
+          product.createAt = dateFormat(product.createAt);
+          product.updateAt = dateFormat(product.updateAt);
+          product.imgUrl = this.baseUrl + product.imgUrl;
+        });
+        return res.data.reverse();
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    async setData() {
+      this.products = await this.getProducts();
+      this.arrayProducts = showFive(this.products);
+    },
+    searchedByStatus() {
+      this.page = 0;
+      if (this.select == "all") {
+        this.arrayProducts = this.DBArrayProducts;
+        return;
+      }
+      let newArray = [];
+      this.DBArrayProducts.forEach((products) => {
+        if (this.select == "1") {
+          newArray = newArray.concat(
+            products.filter((product) => product.quantity >= 1)
+          );
+        } else if (this.select == "0") {
+          newArray = newArray.concat(
+            products.filter((product) => product.quantity == 0)
+          );
+        }
+      });
+      this.arrayProducts = showFive(newArray);
+    },
+    searchedByName() {
+      this.page = 0;
+      if (this.search == "") {
+        this.arrayProducts = this.DBArrayProducts;
+        return;
+      }
+      let newArray = [];
+      this.DBArrayProducts.forEach((products) => {
+        newArray = newArray.concat(
+          products.filter((product) =>
+            product.name.toLowerCase().includes(this.search.toLowerCase())
+          )
+        );
+      });
+      this.arrayProducts = showFive(newArray);
+    },
   },
   async mounted() {
-    let messages = await this.getUsers();
-    this.cards[0].number = numberFormate(messages.length);
+    // get and set number of users
+    let users = await this.getUsers();
+    this.cards[0].number = numberFormate(users.length);
+
+    // get products and set hem in table
+    await this.setData();
+    this.DBArrayProducts = this.arrayProducts;
+
+    // set number of products
+    this.cards[2].number = numberFormate(this.products.length);
   },
 };
 </script>
