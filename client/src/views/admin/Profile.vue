@@ -47,6 +47,9 @@
                 <input
                   class="bg-gray-50 border border-gray-300 text-gray-900 my-2 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 focus:outline-none block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   type="text"
+                  minlength="3"
+                  maxlength="20"
+                  required
                   v-model="data.username"
                   autocomplete="off"
                 />
@@ -60,6 +63,8 @@
                   class="bg-gray-50 border border-gray-300 text-gray-900 my-2 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 focus:outline-none block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   type="email"
                   v-model="data.email"
+                  required
+                  maxlength="30"
                   autocomplete="off"
                 />
               </div>
