@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   IsEnum,
   IsNotEmpty,
@@ -44,6 +43,7 @@ export class CreateProductsDto {
   @MinLength(15)
   description: string;
 
+  @IsNotEmpty()
   imgUrl: string;
 }
 

@@ -22,6 +22,8 @@
                   class="bg-gray-50 border border-gray-300 text-gray-900 my-2 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 focus:outline-none block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   type="text"
                   id="product_name"
+                  minlength="3"
+                  maxlength="20"
                   v-model="formData.name"
                   required
                 />
@@ -34,6 +36,8 @@
                   class="bg-gray-50 border border-gray-300 text-gray-900 my-2 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 focus:outline-none block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   type="number"
                   id="Price"
+                  minlength="1"
+                  maxlength="10"
                   v-model="formData.price"
                   required
                 />
@@ -45,6 +49,8 @@
                 <input
                   class="bg-gray-50 border border-gray-300 text-gray-900 my-2 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 focus:outline-none block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   type="number"
+                  minlength="1"
+                  maxlength="5"
                   v-model="formData.quantity"
                   required
                 />
@@ -71,7 +77,7 @@
                 <label class="text-gray-700" for="type">Type</label>
                 <select
                   @change="enSelect"
-                  v-model="formData.type"
+                  v-model="formData.types"
                   id="type"
                   placeholder="Select Type"
                   class="bg-gray-50 my-2 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 focus:outline-none block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -95,7 +101,7 @@
                   id="Categories"
                   placeholder="Select Categorie"
                   class="bg-gray-50 my-2 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 focus:outline-none block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  v-model="formData.categorie"
+                  v-model="formData.categories"
                   required
                 >
                   <option value="">Select Categorie</option>
@@ -118,6 +124,8 @@
                 >
                 <textarea
                   v-model="formData.description"
+                  minlength="15"
+                  maxlength="400"
                   id="message"
                   rows="4"
                   class="block p-2.5 w-full my-2 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -130,8 +138,15 @@
             <div class="flex justify-end mt-4">
               <button
                 class="px-4 py-2 text-gray-200 bg-gray-800 rounded-md hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
+                :disabled="isSending"
               >
-                Save
+                <fa-icon
+                  icon="rotate"
+                  class="text-xl"
+                  :spin="true"
+                  v-if="isSending"
+                />
+                <span v-else>Save</span>
               </button>
             </div>
           </form>
@@ -150,17 +165,7 @@
             <div class="flex">
               <div class="relative">
                 <select
-                  class="block w-full h-full px-4 py-2 pr-8 leading-tight text-gray-700 bg-white border border-gray-400 rounded-l appearance-none focus:outline-none focus:bg-white focus:border-gray-500"
-                >
-                  <option>5</option>
-                  <option>10</option>
-                  <option>20</option>
-                </select>
-              </div>
-
-              <div class="relative">
-                <select
-                  class="block w-full h-full px-4 py-2 pr-8 leading-tight text-gray-700 bg-white border-t border-b border-r border-gray-400 rounded-r appearance-none sm:rounded-r-none sm:border-r-0 focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500"
+                  class="block w-full h-full rounded-l px-4 py-2 pr-8 leading-tight text-gray-700 bg-white border-t border-b border-r border-gray-400 rounded-r appearance-none sm:rounded-r-none sm:border-r-0 focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500"
                 >
                   <option>All</option>
                   <option>Active</option>
@@ -222,16 +227,18 @@
                 </thead>
 
                 <tbody class="bg-white">
-                  <tr v-for="index in 5" :key="index">
+                  <tr v-for="(p, index) in arrayProducts[page]" :key="index">
                     <td
                       class="px-6 py-4 border-b border-gray-200 whitespace-nowrap"
                     >
                       <!-- Product -->
                       <div class="flex items-center">
-                        <div class="flex-shrink-0 w-10 h-10">
+                        <div
+                          class="flex-shrink-0 w-10 h-10 rounded-full overflow-hidden"
+                        >
                           <img
-                            class="w-10 h-10 rounded-full"
-                            src="/img/tp1.jpg"
+                            class="w-10"
+                            :src="p.imgUrl"
                             alt="Product Image"
                           />
                         </div>
@@ -240,7 +247,7 @@
                           <div
                             class="text-sm font-medium leading-5 text-gray-900"
                           >
-                            {{ user.name }}
+                            {{ p.name }}
                           </div>
                         </div>
                       </div>
@@ -251,7 +258,7 @@
                     >
                       <!-- start on -->
                       <div class="text-sm leading-5 text-gray-500">
-                        Oct,15th
+                        {{ p.createAt }}
                       </div>
                     </td>
 
@@ -261,7 +268,13 @@
                       <!-- status -->
                       <span
                         class="inline-flex px-2 text-xs font-semibold leading-5 text-green-800 bg-green-100 rounded-full"
-                        >{{ user.status }}</span
+                        v-if="p.quantity > 0"
+                        >Defiant</span
+                      >
+                      <span
+                        class="inline-flex px-2 text-xs font-semibold leading-5 text-yellow-800 bg-yellow-100 rounded-full"
+                        v-else
+                        >Not Defiant</span
                       >
                     </td>
 
@@ -269,18 +282,18 @@
                       class="px-6 py-4 text-sm leading-5 text-gray-500 border-b border-gray-200 whitespace-nowrap"
                     >
                       <!-- price -->
-                      42 TND
+                      {{ p.price }} TND
                     </td>
 
                     <td
                       class="px-6 py-4 text-sm font-medium leading-5 text-right border-b border-gray-200 whitespace-nowrap space-x-3"
                     >
-                      <a href="#" class="text-blue-600 hover:text-blue-900"
-                        >Edit</a
+                      <button
+                        href="#"
+                        class="text-indigo-600 hover:text-indigo-900"
                       >
-                      <a href="#" class="text-red-600 hover:text-red-900"
-                        >Delete</a
-                      >
+                        Edit
+                      </button>
                     </td>
                   </tr>
                 </tbody>
@@ -289,19 +302,17 @@
                 class="flex flex-col items-center px-5 py-5 bg-white border-t xs:flex-row xs:justify-between"
               >
                 <span class="text-xs text-gray-900 xs:text-sm"
-                  >Showing 1 to 4 of 50 Entries</span
-                >
+                  >There is {{ products.length }} Products.
+                </span>
 
-                <div class="inline-flex mt-2 xs:mt-0">
+                <div class="inline-flex mt-2 xs:mt-0 space-x-2">
                   <button
-                    class="px-4 py-2 text-sm font-semibold text-gray-800 bg-gray-300 rounded-l hover:bg-gray-400"
+                    class="px-4 py-2 text-sm rounded font-semibold text-gray-800 bg-gray-300 hover:bg-gray-400"
+                    v-for="i in arrayProducts.length"
+                    :key="i"
+                    @click="changePage(i)"
                   >
-                    Prev
-                  </button>
-                  <button
-                    class="px-4 py-2 text-sm font-semibold text-gray-800 bg-gray-300 rounded-r hover:bg-gray-400"
-                  >
-                    Next
+                    {{ i }}
                   </button>
                 </div>
               </div>
@@ -310,50 +321,181 @@
         </div>
       </div>
     </div>
+    <!-- success alert -->
+    <transition
+      mode="out-in"
+      enter-active-class="animate__animated animate__fadeIn"
+      leave-active-class="animate__animated animate__fadeOut"
+    >
+      <div
+        class="px-4 py-20 overflow-x-auto absolute top-1 rounded-md whitespace-nowrap"
+        v-if="isSuccess"
+      >
+        <div
+          class="inline-flex w-full overflow-hidden bg-white rounded-lg shadow-md"
+        >
+          <div class="flex items-center justify-center w-12 bg-green-500">
+            <svg
+              class="w-6 h-6 text-white fill-current"
+              viewBox="0 0 40 40"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M20 3.33331C10.8 3.33331 3.33337 10.8 3.33337 20C3.33337 29.2 10.8 36.6666 20 36.6666C29.2 36.6666 36.6667 29.2 36.6667 20C36.6667 10.8 29.2 3.33331 20 3.33331ZM16.6667 28.3333L8.33337 20L10.6834 17.65L16.6667 23.6166L29.3167 10.9666L31.6667 13.3333L16.6667 28.3333Z"
+              />
+            </svg>
+          </div>
+
+          <div class="px-4 py-2 -mx-3">
+            <div class="mx-3">
+              <span class="font-semibold text-green-500">Success</span>
+              <p class="text-sm text-gray-600">Your product was created!</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </transition>
+    <!-- error alert -->
+    <transition
+      mode="out-in"
+      enter-active-class="animate__animated animate__fadeIn"
+      leave-active-class="animate__animated animate__fadeOut"
+    >
+      <div
+        class="px-4 py-20 overflow-x-auto absolute top-1 rounded-md whitespace-nowrap"
+        v-if="isError"
+      >
+        <div
+          class="inline-flex w-full overflow-hidden bg-white rounded-lg shadow-md"
+        >
+          <div class="flex items-center justify-center w-12 bg-red-500">
+            <svg
+              class="w-6 h-6 text-white fill-current"
+              viewBox="0 0 40 40"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M20 3.36667C10.8167 3.36667 3.3667 10.8167 3.3667 20C3.3667 29.1833 10.8167 36.6333 20 36.6333C29.1834 36.6333 36.6334 29.1833 36.6334 20C36.6334 10.8167 29.1834 3.36667 20 3.36667ZM19.1334 33.3333V22.9H13.3334L21.6667 6.66667V17.1H27.25L19.1334 33.3333Z"
+              />
+            </svg>
+          </div>
+
+          <div class="px-4 py-2 -mx-3">
+            <div class="mx-3">
+              <span class="font-semibold text-red-500">Error</span>
+              <p class="text-base text-gray-800">
+                Can't get target upload source info
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
 
 <script>
+import { dateFormat, showFive } from "../../assets/Methods";
 import { ProductTypes } from "../../hooks/ProductTypes";
 
 export default {
   data() {
     return {
       types: ProductTypes,
+      baseUrl: this.$store.state.baseUrl,
       user: {
         name: "Product name",
         status: "Defiant",
       },
       categories: [],
       formData: {
-        type: "",
+        types: "",
         name: "",
         price: "",
         description: "",
-        categorie: "",
+        categories: "",
         file: "",
         quantity: "",
       },
+      isSending: false,
+      isSuccess: false,
+      isError: false,
+      products: [],
+      arrayProducts: [],
+      DBArrayProducts: [],
+      page: 0,
     };
   },
   methods: {
-    register() {
-      console.log(this.formData);
+    async register() {
+      this.isSending = true;
+      try {
+        const res = await this.$store.dispatch("createProduct", this.formData);
+        if (res === 201) {
+          this.isSuccess = true;
+          this.formData = {
+            types: "",
+            name: "",
+            price: "",
+            description: "",
+            categories: "",
+            file: "",
+            quantity: "",
+          };
+          this.isSending = false;
+          await this.setData();
+          setTimeout(() => {
+            this.isSuccess = false;
+          }, 3000);
+          return;
+        }
+        this.isError = true;
+        this.isSending = false;
+
+        setTimeout(() => {
+          this.isSuccess = false;
+        }, 3000);
+        return;
+      } catch (err) {
+        console.log(err);
+      }
+      this.isSending = false;
     },
     enSelect() {
-      if (this.formData.type === "") {
+      if (this.formData.types === "") {
         this.categories = [];
         return;
       }
       this.categories.isVisible = true;
       const categorie = ProductTypes.find(
-        (type) => type.value === this.formData.type
+        (type) => type.value === this.formData.types
       );
       this.categories = categorie.categories;
     },
     selectFile() {
       this.formData.file = this.$refs.file.files[0];
     },
+    async getProducts() {
+      try {
+        const res = await this.$store.dispatch("getProducts");
+        res.data.map((product) => {
+          product.createAt = dateFormat(product.createAt);
+          product.updateAt = dateFormat(product.updateAt);
+          product.imgUrl = this.baseUrl + product.imgUrl;
+        });
+        return res.data.reverse();
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    async setData() {
+      this.products = await this.getProducts();
+      this.arrayProducts = showFive(this.products);
+    },
+  },
+  async mounted() {
+    await this.setData();
+    this.DBArrayProducts = this.arrayProducts;
   },
 };
 </script>

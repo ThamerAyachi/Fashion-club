@@ -2,11 +2,13 @@ import { createStore } from "vuex";
 import instance from "../axios";
 
 import messages from "./messages";
+import products from "./products";
 import users from "./users";
 
 export default createStore({
   state: {
     access_token: sessionStorage.getItem("access_token"),
+    baseUrl: "http://localhost:3000/api/products/",
   },
   mutations: {
     SET_TOKEN(state, data) {
@@ -35,5 +37,6 @@ export default createStore({
   modules: {
     messages: messages,
     users: users,
+    products: products,
   },
 });

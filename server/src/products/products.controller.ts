@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  HttpStatus,
   Param,
   Post,
   Res,
@@ -22,8 +23,7 @@ import { ProductsService } from './products.service';
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
-  @Post('create')
-  @UsePipes(ValidationPipe)
+  @Post('upload')
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(
     FileInterceptor('file', {
@@ -35,11 +35,18 @@ export class ProductsController {
       }),
     }),
   )
-  async createProduct(
-    @Body() createProductsDto: CreateProductsDto,
-    @UploadedFile() file: Express.Multer.File,
-  ) {
-    createProductsDto.imgUrl = file.filename;
+  async uploadFile(@UploadedFile() file: Express.Multer.File) {
+    return {
+      message: 'upload done',
+      data: file.filename,
+      status: HttpStatus.CREATED,
+    };
+  }
+
+  @Post('create')
+  @UsePipes(ValidationPipe)
+  @UseGuards(JwtAuthGuard)
+  async createProduct(@Body() createProductsDto: CreateProductsDto) {
     return await this.productsService.createProduct(createProductsDto);
   }
 
