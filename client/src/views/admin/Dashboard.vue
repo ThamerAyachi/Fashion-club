@@ -166,12 +166,12 @@
                     <td
                       class="px-6 py-4 text-sm font-medium leading-5 text-right border-b border-gray-200 whitespace-nowrap space-x-3"
                     >
-                      <button
-                        href="#"
+                      <router-link
+                        :to="{ name: 'SingleProduct', params: { id: p.id } }"
                         class="text-indigo-600 hover:text-indigo-900"
                       >
                         Edit
-                      </button>
+                      </router-link>
                     </td>
                   </tr>
                 </tbody>

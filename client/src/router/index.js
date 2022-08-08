@@ -27,6 +27,7 @@ import Products from "../views/admin/Products.vue";
 import Profile from "../views/admin/Profile.vue";
 import Users from "../views/admin/Users.vue";
 import Messages from "../views/admin/Messages.vue";
+import SingleProduct from "../views/admin/SingleProduct.vue";
 
 const routes = [
   { path: "/", redirect: "/home" },
@@ -61,6 +62,7 @@ const routes = [
       { path: "/profile", name: "Profile", component: Profile },
       { path: "/users", name: "Users", component: Users },
       { path: "/messages", name: "Messages", component: Messages },
+      { path: "/product/:id", name: "SingleProduct", component: SingleProduct },
     ],
   },
   {
