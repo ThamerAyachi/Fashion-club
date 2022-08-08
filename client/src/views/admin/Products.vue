@@ -25,6 +25,7 @@
                   minlength="3"
                   maxlength="20"
                   v-model="formData.name"
+                  autocomplete="off"
                   required
                 />
               </div>
