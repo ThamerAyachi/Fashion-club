@@ -167,10 +167,12 @@
               <div class="relative">
                 <select
                   class="block w-full h-full rounded-l px-4 py-2 pr-8 leading-tight text-gray-700 bg-white border-t border-b border-r border-gray-400 rounded-r appearance-none sm:rounded-r-none sm:border-r-0 focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500"
+                  v-model="select"
+                  @change="searchedByStatus"
                 >
-                  <option>All</option>
-                  <option>Active</option>
-                  <option>Inactive</option>
+                  <option value="all">All</option>
+                  <option value="1">Defiant</option>
+                  <option value="0">Not Defiant</option>
                 </select>
               </div>
             </div>
@@ -190,6 +192,8 @@
               <input
                 placeholder="Search"
                 class="block w-full py-2 pl-8 pr-6 text-sm text-gray-700 placeholder-gray-400 bg-white border border-b border-gray-400 rounded-l rounded-r appearance-none sm:rounded-l-none focus:bg-white focus:placeholder-gray-600 focus:text-gray-700 focus:outline-none"
+                v-model="search"
+                @input="searchedByName"
               />
             </div>
           </div>
@@ -425,6 +429,8 @@ export default {
       arrayProducts: [],
       DBArrayProducts: [],
       page: 0,
+      select: "all",
+      search: "",
     };
   },
   methods: {
@@ -492,6 +498,42 @@ export default {
     async setData() {
       this.products = await this.getProducts();
       this.arrayProducts = showFive(this.products);
+    },
+    searchedByStatus() {
+      this.page = 0;
+      if (this.select == "all") {
+        this.arrayProducts = this.DBArrayProducts;
+        return;
+      }
+      let newArray = [];
+      this.DBArrayProducts.forEach((products) => {
+        if (this.select == "1") {
+          newArray = newArray.concat(
+            products.filter((product) => product.quantity >= 1)
+          );
+        } else if (this.select == "0") {
+          newArray = newArray.concat(
+            products.filter((product) => product.quantity == 0)
+          );
+        }
+      });
+      this.arrayProducts = showFive(newArray);
+    },
+    searchedByName() {
+      this.page = 0;
+      if (this.search == "") {
+        this.arrayProducts = this.DBArrayProducts;
+        return;
+      }
+      let newArray = [];
+      this.DBArrayProducts.forEach((products) => {
+        newArray = newArray.concat(
+          products.filter((product) =>
+            product.name.toLowerCase().includes(this.search.toLowerCase())
+          )
+        );
+      });
+      this.arrayProducts = showFive(newArray);
     },
   },
   async mounted() {
