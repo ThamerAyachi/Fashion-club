@@ -24,6 +24,8 @@
               <input
                 placeholder="Search"
                 class="block w-full py-2 pl-8 pr-6 text-sm text-gray-700 placeholder-gray-400 bg-white border border-b border-gray-400 rounded appearance-none focus:bg-white focus:placeholder-gray-600 focus:text-gray-700 focus:outline-none"
+                @input="searchedBySubject"
+                v-model="research"
               />
             </div>
           </div>
@@ -83,8 +85,8 @@
                       class="px-5 py-5 text-sm bg-white border-b border-gray-200"
                     >
                       <p class="text-gray-900 whitespace-nowrap">
-                        <!-- {{ u.subject }} -->
-                        <LessParagraph :text="u.subject" />
+                        {{ u.subject }}
+                        <!-- <LessParagraph :text="u.subject" /> -->
                       </p>
                     </td>
 
@@ -247,12 +249,12 @@
 
 <script>
 import { dateFormat, getDeviceType, showFive } from "../../assets/Methods";
-import LessParagraph from "../../components/admin/LessParagraph.vue";
+// import LessParagraph from "../../components/admin/LessParagraph.vue";
 import store from "../../store";
 import icons from "../../icons";
 
 export default {
-  components: { LessParagraph },
+  // components: { LessParagraph },
   data() {
     return {
       messages: [],
@@ -270,6 +272,7 @@ export default {
         createAt: "",
       },
       isSending: false,
+      research: "",
     };
   },
   methods: {
@@ -307,6 +310,22 @@ export default {
     async setData() {
       this.messages = await this.getMessages();
       this.arrayMessages = showFive(this.messages);
+    },
+    searchedBySubject() {
+      this.page = 0;
+      if (this.research == "") {
+        this.arrayMessages = this.DBArrayMessages;
+        return;
+      }
+      let newArray = [];
+      this.DBArrayMessages.forEach((messages) => {
+        newArray = newArray.concat(
+          messages.filter((message) =>
+            message.subject.toLowerCase().includes(this.research.toLowerCase())
+          )
+        );
+      });
+      this.arrayMessages = showFive(newArray);
     },
   },
   async mounted() {
