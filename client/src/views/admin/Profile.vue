@@ -191,7 +191,7 @@ export default {
       data: {
         id: "",
         imgUrl:
-          "https://demos.creative-tim.com/notus-js/assets/img/team-2-800x800.jpg",
+          "https://i.pinimg.com/originals/f5/a7/e5/f5a7e5849ba31101a60c242ed6f857e6.gif",
         email: "",
         username: "",
         role: "",
