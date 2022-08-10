@@ -296,10 +296,6 @@ export default {
           number: "215,542",
         },
       ],
-      user: {
-        name: "Product name",
-        status: "Defiant",
-      },
       products: [],
       arrayProducts: [],
       DBArrayProducts: [],
@@ -310,10 +306,10 @@ export default {
     };
   },
   methods: {
-    async getUsers() {
+    async getLengthUsers() {
       try {
-        const res = await this.$store.dispatch("getUsers");
-        return res.data;
+        const res = await this.$store.dispatch("getLengthUsers");
+        return res;
       } catch (err) {
         throw new Error(err);
       }
@@ -374,8 +370,8 @@ export default {
   },
   async mounted() {
     // get and set number of users
-    let users = await this.getUsers();
-    this.cards[0].number = numberFormate(users.length);
+    let usersLength = await this.getLengthUsers();
+    this.cards[0].number = numberFormate(usersLength);
 
     // get products and set hem in table
     await this.setData();

@@ -123,4 +123,15 @@ export class UsersController {
 
     return { message: 'User Updated', status: HttpStatus.OK };
   }
+
+  @Get('length')
+  @UseGuards(JwtAuthGuard)
+  async fetchLengthUsers() {
+    const users = await this.usersService.getAllUsers();
+
+    return {
+      status: HttpStatus.OK,
+      length: users.length,
+    };
+  }
 }

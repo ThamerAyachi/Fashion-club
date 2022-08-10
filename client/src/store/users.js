@@ -13,6 +13,15 @@ const users = {
         return err;
       }
     },
+    getLengthUsers: async () => {
+      try {
+        const res = await instance.get("users/length");
+
+        return res.data.length;
+      } catch (err) {
+        return err;
+      }
+    },
     createUser: async (test, data) => {
       try {
         const res = await instance.post("users/create", data);
