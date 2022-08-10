@@ -5,7 +5,7 @@ export const dateFormat = (data) => {
   return `${months[date[1] - 1]} ${date[2]}, ${date[0]}`;
 };
 
-const firstLetterUpper = (text) => {
+export const firstLetterUpper = (text) => {
   const fLatter = text.slice(0, 1).toUpperCase();
   return fLatter + text.slice(1, text.length);
 };
