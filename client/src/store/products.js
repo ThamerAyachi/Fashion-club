@@ -27,6 +27,15 @@ const products = {
         return err;
       }
     },
+    async getProductById(r, id) {
+      try {
+        const res = await instance.get(`/products/single/${id}`);
+
+        return res;
+      } catch (err) {
+        return err;
+      }
+    },
   },
 };
 
