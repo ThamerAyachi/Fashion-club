@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Get,
@@ -58,5 +59,16 @@ export class ProductsController {
   @Get()
   async fetchProducts() {
     return await this.productsService.fetchProducts();
+  }
+
+  @Get('single/:id')
+  async fetchById(@Param('id') id: string) {
+    const product = await this.productsService.findOne({ id });
+
+    if (!product) {
+      throw new BadRequestException([`Product with id: ${id} is not found`]);
+    }
+
+    return product;
   }
 }

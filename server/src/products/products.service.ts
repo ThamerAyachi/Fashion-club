@@ -25,4 +25,8 @@ export class ProductsService {
   async fetchProducts() {
     return await this.productsRepository.find();
   }
+
+  async findOne(condition: any) {
+    return await this.productsRepository.findOneBy(condition);
+  }
 }
