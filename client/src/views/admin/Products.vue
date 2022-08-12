@@ -531,6 +531,9 @@ export default {
       });
       this.arrayProducts = showFive(newArray);
     },
+    changePage(i) {
+      this.page = i - 1;
+    },
   },
   async mounted() {
     await this.setData();
