@@ -36,6 +36,24 @@ const products = {
         return err;
       }
     },
+    async deleteProductById(t, id) {
+      try {
+        const res = await instance.delete(`products/${id}`);
+        return res;
+      } catch (err) {
+        return err;
+      }
+    },
+    async updateProduct(t, data) {
+      try {
+        data.price = data.price.toString();
+        data.quantity = data.quantity.toString();
+        const res = await instance.put(`products/update/${data.id}`, data);
+        return res;
+      } catch (err) {
+        return err;
+      }
+    },
   },
 };
 
