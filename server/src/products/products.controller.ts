@@ -2,10 +2,12 @@ import {
   BadRequestException,
   Body,
   Controller,
+  Delete,
   Get,
   HttpStatus,
   Param,
   Post,
+  Put,
   Res,
   UploadedFile,
   UseGuards,
@@ -18,6 +20,8 @@ import { Response } from 'express';
 import { diskStorage } from 'multer';
 import { JwtAuthGuard } from 'src/auth/guard/JwtAuth.guard';
 import { CreateProductsDto, fileName } from './dto/CreateProducts.dto';
+import { UpdateCoverDto } from './dto/UpdateCover.dto';
+import { UpdateProductDto } from './dto/UpdateProduct.dto';
 import { ProductsService } from './products.service';
 
 @Controller('products')
@@ -70,5 +74,55 @@ export class ProductsController {
     }
 
     return product;
+  }
+
+  @Delete(':id')
+  @UseGuards(JwtAuthGuard)
+  async removeById(@Param('id') id: string) {
+    const product = await this.productsService.findOne({ id });
+
+    if (!product) {
+      throw new BadRequestException(`Product with id: ${id} is not found`);
+    }
+
+    await this.productsService.removeOne(id);
+
+    return { message: 'Delete success', status: HttpStatus.OK };
+  }
+
+  @Put('update/:productId')
+  @UsePipes(ValidationPipe)
+  @UseGuards(JwtAuthGuard)
+  async updateProduct(
+    @Param('productId') id: string,
+    @Body() updateProductDto: UpdateProductDto,
+  ) {
+    /* If product found */
+    const product = await this.productsService.findOne({ id });
+    if (!product) {
+      throw new BadRequestException([`Product with id: ${id} not found`]);
+    }
+
+    await this.productsService.updateProduct(updateProductDto, product);
+
+    return { message: 'Product Updated', status: HttpStatus.OK };
+  }
+
+  @Put('update/cover/:productId')
+  @UsePipes(ValidationPipe)
+  @UseGuards(JwtAuthGuard)
+  async updateCover(
+    @Param('productId') id: string,
+    @Body() updateCoverDto: UpdateCoverDto,
+  ) {
+    /* if Product found */
+    const product = await this.productsService.findOne({ id });
+    if (!product) {
+      throw new BadRequestException([`Product with id: ${id} not found`]);
+    }
+
+    await this.productsService.updateCover(updateCoverDto, id);
+
+    return { message: 'Product Updated', status: HttpStatus.OK };
   }
 }
