@@ -76,6 +76,17 @@ export class ProductsController {
     return product;
   }
 
+  @Get('single/type/:type')
+  async fetchByType(@Param('type') type: string) {
+    const products = await this.productsService.find({ types: type });
+
+    if (!products[0]) {
+      throw new BadRequestException(['Products with this type not found']);
+    }
+
+    return products;
+  }
+
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
   async removeById(@Param('id') id: string) {

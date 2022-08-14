@@ -32,6 +32,10 @@ export class ProductsService {
     return await this.productsRepository.findOneBy(condition);
   }
 
+  async find(condition: any) {
+    return await this.productsRepository.findBy(condition);
+  }
+
   async removeOne(condition: any): Promise<void> {
     await this.productsRepository.delete(condition);
 
