@@ -4,15 +4,23 @@
 
     <div class="grid lg:grid-cols-6 grid-cols-1 gap-2 my-8">
       <!-- image -->
-      <div
-        class="lg:col-span-2 lg:h-full bg-white items-center flex justify-center border border-gray-200"
+      <label
+        class="cursor-pointer lg:col-span-2 lg:h-full bg-white items-center flex justify-center border border-gray-200"
+        for="cover"
       >
         <div
           class="flex justify-center overflow-hidden rounded items-center bg-white py-2"
         >
           <img :src="imgUrl" alt="product img" class="" />
         </div>
-      </div>
+        <input
+          type="file"
+          accept="image/png, image/jpg, image/gif, image/jpeg"
+          id="cover"
+          class="hidden"
+          ref="file"
+          @change="selectFile"
+      /></label>
       <!-- form -->
       <div class="lg:col-span-4">
         <div class="p-6 bg-white rounded-md shadow-md">
@@ -273,6 +281,13 @@
           </div>
         </div>
       </transition>
+      <!-- background-sending -->
+      <div
+        class="absolute top-0 left-0 opacity-50 w-full h-full bg-black text-white z-50 flex justify-center items-center"
+        v-if="isUpdate"
+      >
+        <fa-icon icon="rotate" class="text-2xl" :spin="true" />
+      </div>
     </div>
   </div>
 </template>
@@ -293,6 +308,7 @@ export default {
       isSending: false,
       isError: false,
       isSuccess: false,
+      isUpdate: false,
     };
   },
   methods: {
@@ -338,6 +354,25 @@ export default {
       }
       this.isError = false;
       this.isSending = true;
+      setTimeout(() => {
+        this.isError = false;
+      }, 3000);
+    },
+    async selectFile() {
+      this.isUpdate = true;
+      const data = { file: this.$refs.file.files[0], id: this.product.id };
+      try {
+        const res = await this.$store.dispatch("updateCover", data);
+        console.log(res);
+        if (res === 200) {
+          window.location.reload();
+          return;
+        }
+      } catch (err) {
+        console.log(err);
+      }
+      this.isUpdate = false;
+      this.isError = true;
       setTimeout(() => {
         this.isError = false;
       }, 3000);

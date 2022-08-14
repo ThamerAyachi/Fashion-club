@@ -54,6 +54,25 @@ const products = {
         return err;
       }
     },
+    async updateCover(t, data) {
+      const form = new FormData();
+      form.append("file", data.file);
+
+      try {
+        const fRes = await instance.post("products/upload", form);
+        if (fRes.status !== 201) return { message: "file not valid" };
+
+        console.log(fRes.data.data);
+
+        const res = await instance.put(`products/update/cover/${data.id}`, {
+          imgUrl: fRes.data.data,
+        });
+
+        return res.status;
+      } catch (err) {
+        return err;
+      }
+    },
   },
 };
 
