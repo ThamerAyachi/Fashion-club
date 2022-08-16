@@ -36,17 +36,72 @@ const routes = [
     component: UserLayout,
     children: [
       { path: "/home", name: "Home", component: Home },
-      { path: "/women", name: "Women", component: Women },
-      { path: "/men", name: "Men", component: Men },
-      { path: "/kids", name: "Kids", component: Kids },
-      { path: "/party", name: "Party", component: Party },
-      { path: "/jewellery", name: "Jewellery", component: Jewellery },
-      { path: "/watches", name: "Watches", component: Watches },
-      { path: "/shoes", name: "Shoes", component: Shoes },
-      { path: "/handbags", name: "Handbags", component: Handbags },
-      { path: "/about", name: "About", component: About },
-      { path: "/contact", name: "Contact", component: Contact },
-      { path: "/single/:id", name: "Single", component: Single },
+      {
+        path: "/women",
+        name: "Women",
+        component: Women,
+        meta: { title: "Women's Clothing" },
+      },
+      {
+        path: "/men",
+        name: "Men",
+        component: Men,
+        meta: { title: "Men's Clothing" },
+      },
+      {
+        path: "/kids",
+        name: "Kids",
+        component: Kids,
+        meta: { title: "Kid's Wear" },
+      },
+      {
+        path: "/party",
+        name: "Party",
+        component: Party,
+        meta: { title: "Party Wear" },
+      },
+      {
+        path: "/jewellery",
+        name: "Jewellery",
+        component: Jewellery,
+        meta: { title: "Jewellery" },
+      },
+      {
+        path: "/watches",
+        name: "Watches",
+        component: Watches,
+        meta: { title: "Watches" },
+      },
+      {
+        path: "/shoes",
+        name: "Shoes",
+        component: Shoes,
+        meta: { title: "Shoes" },
+      },
+      {
+        path: "/handbags",
+        name: "Handbags",
+        component: Handbags,
+        meta: { title: "Handbags" },
+      },
+      {
+        path: "/about",
+        name: "About",
+        component: About,
+        meta: { title: "About" },
+      },
+      {
+        path: "/contact",
+        name: "Contact",
+        component: Contact,
+        meta: { title: "Contact" },
+      },
+      {
+        path: "/single/:id",
+        name: "Single",
+        component: Single,
+        meta: { title: "Product" },
+      },
       { path: "/cart", name: "Cart", component: Cart },
     ],
   },
@@ -56,20 +111,55 @@ const routes = [
     component: AdminLayout,
     meta: { requireAuth: true },
     children: [
-      { path: "/dashboard", name: "Dashboard", component: Dashboard },
-      { path: "/orders", name: "Orders", component: Orders },
-      { path: "/products", name: "Products", component: Products },
-      { path: "/profile", name: "Profile", component: Profile },
-      { path: "/users", name: "Users", component: Users },
-      { path: "/messages", name: "Messages", component: Messages },
-      { path: "/product/:id", name: "SingleProduct", component: SingleProduct },
+      {
+        path: "/dashboard",
+        name: "Dashboard",
+        component: Dashboard,
+        meta: { title: "Dashboard" },
+      },
+      {
+        path: "/orders",
+        name: "Orders",
+        component: Orders,
+        meta: { title: "Orders" },
+      },
+      {
+        path: "/products",
+        name: "Products",
+        component: Products,
+        meta: { title: "Products" },
+      },
+      {
+        path: "/profile",
+        name: "Profile",
+        component: Profile,
+        meta: { title: "Profile" },
+      },
+      {
+        path: "/users",
+        name: "Users",
+        component: Users,
+        meta: { title: "Users" },
+      },
+      {
+        path: "/messages",
+        name: "Messages",
+        component: Messages,
+        meta: { title: "Messages" },
+      },
+      {
+        path: "/product/:id",
+        name: "SingleProduct",
+        component: SingleProduct,
+        meta: { title: "Product" },
+      },
     ],
   },
   {
     path: "/login",
     name: "Login",
     component: Login,
-    meta: { isGuest: true },
+    meta: { isGuest: true, title: "Sign In" },
   },
   {
     path: "/test",
@@ -80,6 +170,7 @@ const routes = [
     path: "/404",
     name: "PageNotFound",
     component: PageNotFound,
+    meta: { title: "404" },
   },
   { path: "/:catchAll(.*)", redirect: "/404" },
 ];
@@ -90,6 +181,12 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
+  if (to.meta.title) {
+    document.title = to.meta.title + " | Fashion Club";
+  } else {
+    document.title = "Fashion Club";
+  }
+
   if (to.meta.requireAuth && !store.state.access_token) {
     next({ name: "Login" });
   } else if (store.state.access_token && to.meta.isGuest) {
