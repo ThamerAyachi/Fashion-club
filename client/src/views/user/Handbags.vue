@@ -55,17 +55,12 @@
       <!-- col-2 cards-->
       <div class="grid lg:grid-cols-3 col-span-2 grid-cols-2 mx-4 gap-3 my-10">
         <ProductCard
-          img="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTeBW6rq-0XgArdSPiyZTo4HzjY6TSRdoDftA&usqp=CAU"
-        />
-        <ProductCard
-          img="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTeBW6rq-0XgArdSPiyZTo4HzjY6TSRdoDftA&usqp=CAU"
-        />
-        <ProductCard
-          img="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTeBW6rq-0XgArdSPiyZTo4HzjY6TSRdoDftA&usqp=CAU"
-          isNew="true"
-        />
-        <ProductCard
-          img="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTeBW6rq-0XgArdSPiyZTo4HzjY6TSRdoDftA&usqp=CAU"
+          v-for="(p, i) in products"
+          :key="i"
+          :img="p.imgUrl"
+          :_id="p.id"
+          :price="p.price"
+          :name="p.name"
         />
       </div>
     </div>
@@ -79,6 +74,7 @@ export default {
   data() {
     return {
       icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20 12H4" /></svg>`,
+      products: [],
       Data: [
         { name: "dres", categorie: "slacks", size: "m" },
         { name: "Shorts ksd", categorie: "jeans", size: "l" },
@@ -108,11 +104,25 @@ export default {
     filterDataWithSize(size) {
       this.seData = this.Data.filter((res) => res.size == size);
     },
+    async getProducts() {
+      try {
+        const res = await this.$store.dispatch("getProductByType", "handbags");
+        if (res.status != 200) {
+          this.$router.push({ name: "PageNotFound" });
+        }
+        res.data.map((product) => {
+          product.imgUrl = this.$store.state.baseUrl + product.imgUrl;
+        });
+        this.products = res.data;
+      } catch (err) {
+        console.log(err);
+      }
+    },
   },
-  mounted() {
+  async mounted() {
     this.seData = this.Data;
-    console.log(this.seData);
     window.scrollTo(0, 0);
+    await this.getProducts();
   },
   components: {
     ProductCard,

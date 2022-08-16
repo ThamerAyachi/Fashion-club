@@ -76,7 +76,7 @@ export class ProductsController {
     return product;
   }
 
-  @Get('single/type/:type')
+  @Get('type/:type')
   async fetchByType(@Param('type') type: string) {
     const products = await this.productsService.find({ types: type });
 

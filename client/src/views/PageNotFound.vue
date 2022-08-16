@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-center items-center h-screen">
+  <div class="flex justify-center items-center h-screen mx-5">
     <div class="block">
       <div class="text-9xl font-bold text-gray-400 flex justify-center">
         404

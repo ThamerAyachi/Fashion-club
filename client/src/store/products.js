@@ -36,6 +36,15 @@ const products = {
         return err;
       }
     },
+    async getProductByType(t, type) {
+      try {
+        const res = await instance.get(`/products/type/${type}`);
+
+        return res;
+      } catch (err) {
+        return err;
+      }
+    },
     async deleteProductById(t, id) {
       try {
         const res = await instance.delete(`products/${id}`);
