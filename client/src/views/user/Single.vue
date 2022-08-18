@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- grid -->
     <div class="grid md:grid-cols-2 grid-cols-1 lg:mx-32 mx-5 my-10 gap-3">
       <!-- image -->
       <div
@@ -38,36 +39,94 @@
         </div>
       </div>
     </div>
+
+    <div class="lg:mx-32 mx-5 my-10">
+      <h2 class="text-3xl pt-7 text-gray-800 font-medium">More Products</h2>
+      <!-- cards -->
+      <div class="grid lg:grid-cols-4 grid-cols-2 md:mx-32 mx-4 gap-3 my-10">
+        <Card
+          v-for="(p, i) in products"
+          :key="i"
+          :_id="p.id"
+          :img="baseUrl + p.imgUrl"
+          :name="p.name"
+          :price="p.price"
+          @click="getSingleProduct(p.id)"
+        />
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import { dateFormat } from "../../assets/Methods";
 
+import Card from "../../components/user/home/Card.vue";
+
 export default {
+  components: { Card },
   data() {
     return {
       product: {
         imgUrl:
           "https://i.pinimg.com/originals/f5/a7/e5/f5a7e5849ba31101a60c242ed6f857e6.gif",
       },
+      baseUrl: this.$store.state.baseUrl,
+      products: [],
     };
   },
+  methods: {
+    async getProducts() {
+      try {
+        const res = await this.$store.dispatch("getProducts");
+
+        if (res.status != 200) {
+          return;
+        }
+
+        if (res.data.length <= 4) {
+          this.products = res.data;
+          return;
+        }
+
+        // eslint-disable-next-line for-direction
+        for (let i = res.data.length; i > res.data.length - 4; i--) {
+          this.products.push(res.data[i - 1]);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    async getSingleProduct(_id) {
+      let id;
+      if (_id) {
+        id = _id;
+      } else {
+        id = this.$route.params.id;
+      }
+
+      console.log(id);
+      const res = await this.$store.dispatch("getProductById", id);
+
+      if (res.status != 200) {
+        this.$router.push({ name: "PageNotFound" });
+      }
+
+      res.data.createAt = dateFormat(res.data.createAt);
+      res.data.imgUrl = this.$store.state.baseUrl + res.data.imgUrl;
+      console.log(res.data);
+      this.product = res.data;
+      console.log("hello");
+      console.log(this.product);
+      window.scrollTo(0, 0);
+    },
+  },
   async mounted() {
-    window.scrollTo(0, 0);
+    /* get product by id */
+    await this.getSingleProduct();
 
-    const res = await this.$store.dispatch(
-      "getProductById",
-      this.$route.params.id
-    );
-
-    if (res.status != 200) {
-      this.$router.push({ name: "PageNotFound" });
-    }
-
-    res.data.createAt = dateFormat(res.data.createAt);
-    res.data.imgUrl = this.$store.state.baseUrl + res.data.imgUrl;
-    this.product = res.data;
+    /* get more products */
+    await this.getProducts();
   },
 };
 </script>
