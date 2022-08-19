@@ -70,14 +70,14 @@
 
       <!-- cards -->
       <div class="grid lg:grid-cols-4 grid-cols-2 md:mx-32 mx-4 gap-3 my-10">
-        <Card _id="5" img="/img/tp1.jpg" />
-        <Card _id="5" img="/img/tp1.jpg" />
-        <Card _id="5" img="/img/tp1.jpg" />
-        <Card _id="5" img="/img/tp1.jpg" />
-        <Card _id="5" img="/img/tp1.jpg" />
-        <Card _id="5" img="/img/tp1.jpg" />
-        <Card _id="5" img="/img/tp1.jpg" />
-        <Card _id="5" img="/img/tp1.jpg" />
+        <Card
+          v-for="(p, i) in products"
+          :key="i"
+          :_id="p.id"
+          :img="baseUrl + p.imgUrl"
+          :price="p.price"
+          :name="p.name"
+        />
       </div>
 
       <div class="flex justify-center">
@@ -108,6 +108,7 @@ import Card from "../../components/user/home/Card.vue";
 export default {
   data() {
     return {
+      baseUrl: this.$store.state.baseUrl,
       solds: [
         { id: 1, persent: 50, img: "/img/bb2.jpg", path: "/shoes" },
         { id: 2, persent: 55, img: "/img/bb3.jpg", path: "/watches" },
@@ -121,14 +122,38 @@ export default {
         "https://i.postimg.cc/15735CHm/5.png",
         "https://i.postimg.cc/wBjKygTn/6.png",
       ],
+      products: [],
     };
   },
-  methods: {},
+  methods: {
+    async getProducts() {
+      try {
+        const res = await this.$store.dispatch("getProducts");
+
+        if (res.status != 200) {
+          return;
+        }
+
+        if (res.data.length <= 8) {
+          this.products = res.data;
+          return;
+        }
+
+        // eslint-disable-next-line for-direction
+        for (let i = res.data.length; i > res.data.length - 8; i--) {
+          this.products.push(res.data[i - 1]);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    },
+  },
   components: {
     Card,
   },
-  mounted() {
+  async mounted() {
     window.scrollTo(0, 0);
+    await this.getProducts();
   },
 };
 </script>
