@@ -59,17 +59,23 @@
     </div>
 
     <!-- full img -->
-    <div
-      v-if="fullImage"
-      class="fixed top-0 left-0 w-full h-full text-white z-10 flex justify-center items-center"
+    <transition
+      mode="out-in"
+      enter-active-class="animate__animated animate__bounceIn"
+      leave-active-class="animate__animated animate__bounceOut"
     >
       <div
-        class="fixed top-0 left-0 w-full h-full bg-black opacity-50 cursor-pointer"
-        @click="fullImage = false"
-      ></div>
+        v-if="fullImage"
+        class="fixed top-0 left-0 w-full h-full text-white z-10 flex justify-center items-center"
+      >
+        <div
+          class="fixed top-0 left-0 w-full h-full bg-black opacity-50 cursor-pointer"
+          @click="fullImage = false"
+        ></div>
 
-      <img class="opacity-100 z-20" :src="product.imgUrl" alt="" />
-    </div>
+        <img class="opacity-100 z-20" :src="product.imgUrl" alt="" />
+      </div>
+    </transition>
   </div>
 </template>
 
