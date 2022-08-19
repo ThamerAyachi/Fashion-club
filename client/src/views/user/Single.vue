@@ -4,7 +4,8 @@
     <div class="grid md:grid-cols-2 grid-cols-1 lg:mx-32 mx-5 my-10 gap-3">
       <!-- image -->
       <div
-        class="flex justify-center overflow-hidden items-center border border-gray-200 bg-white rounded py-2"
+        class="flex cursor-pointer justify-center overflow-hidden items-center border border-gray-200 bg-white rounded py-2"
+        @click="fullImage = true"
       >
         <img :src="product.imgUrl" alt="product img" class="" />
       </div>
@@ -40,6 +41,7 @@
       </div>
     </div>
 
+    <!-- more product -->
     <div class="lg:mx-32 mx-5 my-10">
       <h2 class="text-3xl pt-7 text-gray-800 font-medium">More Products</h2>
       <!-- cards -->
@@ -54,6 +56,19 @@
           @click="getSingleProduct(p.id)"
         />
       </div>
+    </div>
+
+    <!-- full img -->
+    <div
+      v-if="fullImage"
+      class="fixed top-0 left-0 w-full h-full text-white z-10 flex justify-center items-center"
+    >
+      <div
+        class="fixed top-0 left-0 w-full h-full bg-black opacity-50 cursor-pointer"
+        @click="fullImage = false"
+      ></div>
+
+      <img class="opacity-100 z-20" :src="product.imgUrl" alt="" />
     </div>
   </div>
 </template>
@@ -73,6 +88,7 @@ export default {
       },
       baseUrl: this.$store.state.baseUrl,
       products: [],
+      fullImage: false,
     };
   },
   methods: {
@@ -105,7 +121,6 @@ export default {
         id = this.$route.params.id;
       }
 
-      console.log(id);
       const res = await this.$store.dispatch("getProductById", id);
 
       if (res.status != 200) {
@@ -114,10 +129,7 @@ export default {
 
       res.data.createAt = dateFormat(res.data.createAt);
       res.data.imgUrl = this.$store.state.baseUrl + res.data.imgUrl;
-      console.log(res.data);
       this.product = res.data;
-      console.log("hello");
-      console.log(this.product);
       window.scrollTo(0, 0);
     },
   },

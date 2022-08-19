@@ -19,14 +19,14 @@
         <span>{{ price }} TND</span>
       </div>
     </div>
-    <fa-layer class="text-gray-600 fa-3x absolute top-1 right-1">
+    <!-- <fa-layer class="text-gray-600 fa-3x absolute top-1 right-1">
       <fa-icon icon="tag"></fa-icon>
       <fa-layer-text
         value="NEW"
         transform="shrink-13 rotate-45"
         class="text-white"
       ></fa-layer-text>
-    </fa-layer>
+    </fa-layer> -->
   </router-link>
 </template>
 
