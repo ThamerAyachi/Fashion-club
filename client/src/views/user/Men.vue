@@ -26,12 +26,6 @@
             >
               {{ btn.text }}
             </button>
-            <button
-              @click="seData = Data"
-              class="p-2 rounded block w-full hover:bg-primary hover:text-white transform duration-300 text-left"
-            >
-              All
-            </button>
           </div>
         </div>
 
@@ -58,7 +52,12 @@
       </div>
 
       <!-- col-2 cards-->
-      <div class="grid lg:grid-cols-3 col-span-2 grid-cols-2 mx-4 gap-3 my-10">
+      <transition-group
+        class="grid lg:grid-cols-3 col-span-2 grid-cols-2 mx-4 gap-3 my-10"
+        tag="div"
+        enter-active-class="animate__animated animate__bounceIn"
+        leave-active-class="animate__animated animate__bounceOut"
+      >
         <ProductCard
           v-for="(p, i) in products"
           :key="i"
@@ -67,6 +66,14 @@
           :price="p.price"
           :name="p.name"
         />
+      </transition-group>
+      <div
+        class="text-gray-500 tracking-widest text-xl uppercase flex justify-center w-full sm:col-span-3"
+      >
+        There is {{ products.length }} product{{
+          products.length > 1 ? "s" : ""
+        }}
+        defined
       </div>
     </div>
   </div>
@@ -80,17 +87,12 @@ export default {
     return {
       icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20 12H4" /></svg>`,
       products: [],
-      Data: [
-        { name: "dres", categorie: "slacks", size: "m" },
-        { name: "Shorts ksd", categorie: "jeans", size: "l" },
-        { name: "Jeans Jeans", categorie: "slacks", size: "xl" },
-        { name: "Shirts dres", categorie: "shirts", size: "s" },
-        { name: "dres", categorie: "jeans", size: "xl" },
-      ],
+      DBproducts: [],
       btnsCategories: [
         { text: "Slacks", categorie: "slacks" },
         { text: "Jeans", categorie: "jeans" },
         { text: "Shirts", categorie: "shirts" },
+        { text: "All", categorie: "all" },
       ],
       btnsSize: [
         { text: "Medium", size: "m" },
@@ -103,10 +105,16 @@ export default {
   },
   methods: {
     filterDataWithCategorie(categorie) {
-      this.seData = this.Data.filter((res) => res.categorie == categorie);
-    },
-    filterDataWithSize(size) {
-      this.seData = this.Data.filter((res) => res.size == size);
+      this.products = [];
+      setTimeout(() => {
+        if (categorie == "all") {
+          this.products = this.DBproducts;
+          return;
+        }
+        this.products = this.DBproducts.filter(
+          (res) => res.categories == categorie
+        );
+      }, 700);
     },
     async getProducts() {
       try {
@@ -121,13 +129,13 @@ export default {
           product.imgUrl = this.$store.state.baseUrl + product.imgUrl;
         });
         this.products = res.data;
+        this.DBproducts = this.products;
       } catch (err) {
         console.log(err);
       }
     },
   },
   async mounted() {
-    this.seData = this.Data;
     window.scrollTo(0, 0);
     await this.getProducts();
   },

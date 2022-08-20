@@ -67,6 +67,14 @@
           :name="p.name"
         />
       </transition-group>
+      <div
+        class="text-gray-500 tracking-widest text-xl uppercase flex justify-center w-full sm:col-span-3"
+      >
+        There is {{ products.length }} product{{
+          products.length > 1 ? "s" : ""
+        }}
+        defined
+      </div>
     </div>
   </div>
 </template>
@@ -94,24 +102,22 @@ export default {
         { text: "Extra Large", size: "xl" },
         { text: "Small", size: "s" },
       ],
-      seData: null,
     };
   },
   methods: {
     filterDataWithCategorie(categorie) {
       this.products = [];
+      setTimeout(() => {
+        if (categorie == "all") {
+          this.products = this.DBproducts;
+          return;
+        }
+        this.products = this.DBproducts.filter(
+          (res) => res.categories == categorie
+        );
+      }, 700);
+    },
 
-      if (categorie == "all") {
-        this.products = this.DBproducts;
-        return;
-      }
-      this.products = this.DBproducts.filter(
-        (res) => res.categories == categorie
-      );
-    },
-    filterDataWithSize(size) {
-      this.seData = this.Data.filter((res) => res.size == size);
-    },
     async getProducts() {
       const res = await this.$store.dispatch(
         "getProductByType",
@@ -129,7 +135,6 @@ export default {
     },
   },
   async mounted() {
-    this.seData = this.Data;
     window.scrollTo(0, 0);
     await this.getProducts();
   },
