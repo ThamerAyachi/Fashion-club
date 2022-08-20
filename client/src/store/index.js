@@ -4,6 +4,7 @@ import instance from "../axios";
 import messages from "./messages";
 import products from "./products";
 import users from "./users";
+import whiteList from "./whiteList";
 
 export default createStore({
   state: {
@@ -38,5 +39,6 @@ export default createStore({
     messages: messages,
     users: users,
     products: products,
+    whiteList: whiteList,
   },
 });
