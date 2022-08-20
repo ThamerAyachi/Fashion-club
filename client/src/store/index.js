@@ -2,6 +2,7 @@ import { createStore } from "vuex";
 import instance from "../axios";
 
 import messages from "./messages";
+import orders from "./orders";
 import products from "./products";
 import users from "./users";
 import whiteList from "./whiteList";
@@ -40,5 +41,6 @@ export default createStore({
     users: users,
     products: products,
     whiteList: whiteList,
+    orders: orders,
   },
 });

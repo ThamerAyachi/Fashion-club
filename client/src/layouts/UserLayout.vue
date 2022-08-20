@@ -58,6 +58,7 @@ export default {
   },
   mounted() {
     this.$store.dispatch("setDefaultData");
+    this.$store.dispatch("setDefaultCart");
   },
 };
 </script>
