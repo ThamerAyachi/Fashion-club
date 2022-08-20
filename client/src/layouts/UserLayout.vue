@@ -56,6 +56,9 @@ export default {
     Header,
     Footer,
   },
+  mounted() {
+    this.$store.dispatch("setDefaultData");
+  },
 };
 </script>
 

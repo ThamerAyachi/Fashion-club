@@ -45,14 +45,17 @@ const whiteList = {
       return;
     },
 
-    isFoundInWhiteList: (t, data) => {
-      const productList = JSON.parse(localStorage.getItem("product-list"));
-
+    isFoundInWhiteList: async (t, data) => {
+      const productList = await JSON.parse(
+        localStorage.getItem("product-list")
+      );
+      let result = false;
       productList.forEach((product) => {
-        if (product.id == data.id) return true;
+        if (data.id == product.id) {
+          result = true;
+        }
       });
-
-      return false;
+      return result;
     },
   },
 };

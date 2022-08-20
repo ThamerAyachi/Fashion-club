@@ -85,6 +85,33 @@
       </div>
     </div>
 
+    <div class="lg:mx-12 mx-5 my-5" v-if="whiteListProducts[0]">
+      <h3 class="text-gray-600 text-3xl py-3">White list products :</h3>
+      <transition-group
+        class="grid lg:grid-cols-4 col-span-2 grid-cols-2 mx-4 gap-3 my-10"
+        tag="div"
+        enter-active-class="animate__animated animate__bounceIn"
+        leave-active-class="animate__animated animate__bounceOut"
+      >
+        <ProductCard
+          v-for="(p, i) in whiteListProducts"
+          :key="i"
+          :img="p.imgUrl"
+          :_id="p.id"
+          :price="p.price"
+          :name="p.name"
+        />
+      </transition-group>
+      <div
+        class="text-gray-500 tracking-widest text-xl uppercase flex justify-center w-full sm:col-span-3"
+      >
+        There is {{ whiteListProducts.length }} product{{
+          whiteListProducts.length > 1 ? "s" : ""
+        }}
+        defined
+      </div>
+    </div>
+
     <Model :Open="open">
       <ModelTitle @close="open = false">Shipping information</ModelTitle>
 
@@ -187,6 +214,7 @@ import Model from "../../components/global/Model.vue";
 import ModelTitle from "../../components/global/ModelTitle.vue";
 import ModelBody from "../../components/global/ModelBody.vue";
 import ModelFooter from "../../components/global/ModelFooter.vue";
+import ProductCard from "../../components/user/ProductCard.vue";
 
 import useValidate from "@vuelidate/core";
 import { required } from "@vuelidate/validators";
@@ -233,6 +261,7 @@ export default {
         data: {},
       },
       errors: [],
+      whiteListProducts: [],
     };
   },
   validations() {
@@ -252,6 +281,7 @@ export default {
     ModelTitle,
     ModelBody,
     ModelFooter,
+    ProductCard,
   },
   methods: {
     submit() {
@@ -267,9 +297,15 @@ export default {
         }
       }
     },
+    async getWhiteListProducts() {
+      const res = await this.$store.dispatch("getWhiteList");
+
+      this.whiteListProducts = res;
+    },
   },
-  mounted() {
+  async mounted() {
     window.scrollTo(0, 0);
+    await this.getWhiteListProducts();
   },
 };
 </script>
