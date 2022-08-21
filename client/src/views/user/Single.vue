@@ -27,6 +27,7 @@
         <div class="my-2 md:space-x-7 space-x-2 flex p-3">
           <button
             class="flex items-center bg-primary hover:bg-blue-400 text-white transform duration-300 text-sm py-2 px-4 space-x-2"
+            @click="setInCart"
           >
             <fa-icon icon="cart-shopping" />
             <span class="font-medium">Add to cart</span>
@@ -247,6 +248,18 @@ export default {
       res.data.imgUrl = this.$store.state.baseUrl + res.data.imgUrl;
       this.product = res.data;
       window.scrollTo(0, 0);
+    },
+    async setInCart() {
+      const res = this.$store.dispatch("setCart", this.product);
+
+      if (res) {
+        this.$router.push({ name: "Cart" });
+      } else {
+        this.isError = true;
+        setTimeout(() => {
+          this.isError = false;
+        }, 3000);
+      }
     },
     async setInWhiteList() {
       const ifSaved = await this.$store.dispatch(
