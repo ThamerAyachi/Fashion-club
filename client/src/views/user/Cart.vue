@@ -4,47 +4,84 @@
       <div class="lg:col-span-4 space-y-3">
         <!-- title -->
         <div class="bg-white shadow-sm p-5 rounded-md">
-          <p class="text-gray-800 text-2xl font-bold my-2">Shopping Cart (n)</p>
+          <p class="text-gray-800 text-2xl font-bold my-2">
+            Shopping Cart ({{ orderData.products.length }})
+          </p>
           <!-- cart -->
-          <div class="my-5">
-            <table class="w-full text-left border-collapse">
-              <thead class="border-b">
-                <tr>
-                  <th
-                    class="px-5 py-3 text-sm font-medium text-gray-100 uppercase bg-green-400"
-                  >
-                    Product
-                  </th>
-                  <th
-                    class="px-5 py-3 text-sm font-medium text-gray-100 uppercase bg-green-400"
-                  >
-                    Price
-                  </th>
-                  <th
-                    class="px-5 py-3 text-sm font-medium text-gray-100 uppercase bg-green-400"
-                  >
-                    Actions
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="index in 3" :key="index">
-                  <td
-                    class="px-6 py-4 text-lg text-gray-700 border-b font-bold"
-                  >
-                    Product name
-                  </td>
-                  <td class="px-6 py-4 text-gray-500 border-b">45.00 TND</td>
-                  <td class="px-6 py-4 text-gray-500 border-b">
-                    <button
-                      class="text-red-500 bg-white rounded hover:bg-red-500 hover:text-white duration-150 transform"
-                    >
-                      <fa-icon icon="trash" class="mx-3 my-1" :spin="false" />
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+          <div class="flex flex-col mt-6">
+            <div
+              class="py-2 -my-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8"
+            >
+              <div
+                class="inline-block min-w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg"
+              >
+                <!-- table -->
+                <table class="min-w-full">
+                  <thead>
+                    <tr>
+                      <th
+                        class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase bg-gray-100 border-b border-gray-200"
+                      >
+                        Photo
+                      </th>
+                      <th
+                        class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase bg-gray-100 border-b border-gray-200"
+                      >
+                        Name
+                      </th>
+                      <th
+                        class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase bg-gray-100 border-b border-gray-200"
+                      >
+                        Price
+                      </th>
+                      <th
+                        class="px-6 py-3 bg-gray-100 border-b border-gray-200"
+                      ></th>
+                    </tr>
+                  </thead>
+
+                  <tbody class="bg-white">
+                    <tr v-for="(p, index) in orderData.products" :key="index">
+                      <td
+                        class="px-6 py-4 border-b border-gray-200 whitespace-nowrap"
+                      >
+                        <div class="flex items-center">
+                          <div class="flex-shrink-0 w-10 h-10">
+                            <img
+                              class="w-10 h-10 rounded-full"
+                              :src="p.imgUrl"
+                              alt="profile pic"
+                            />
+                          </div>
+                        </div>
+                      </td>
+                      <td
+                        class="px-6 py-4 text-sm leading-5 text-gray-500 border-b border-gray-200 whitespace-nowrap"
+                      >
+                        <div
+                          class="text-sm font-medium leading-5 text-gray-900"
+                        >
+                          {{ p.name }}
+                        </div>
+                      </td>
+                      <td
+                        class="px-6 py-4 text-sm leading-5 text-gray-500 border-b border-gray-200 whitespace-nowrap"
+                      >
+                        {{ p.price }} TND
+                      </td>
+
+                      <td
+                        class="px-6 py-4 text-sm font-medium leading-5 text-right border-b border-gray-200 whitespace-nowrap"
+                      >
+                        <a href="#" class="text-red-600 hover:text-red-900"
+                          >Delete</a
+                        >
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -60,7 +97,7 @@
           <div class="space-y-3 font-bold border-b pb-3">
             <div class="flex justify-between text-sm">
               <p class="">Subtotal</p>
-              <p class="text-gray-500">TND3,068.00</p>
+              <p class="text-gray-500">{{ total }} TND</p>
             </div>
             <div class="flex justify-between text-sm">
               <p class="">Shipping Fee:</p>
@@ -68,7 +105,7 @@
             </div>
             <div class="flex justify-between text-sm">
               <p class="">Estimated Total:</p>
-              <p class="">TND3,068.00</p>
+              <p class="">{{ total }} TND</p>
             </div>
           </div>
 
@@ -218,6 +255,7 @@ import ProductCard from "../../components/user/ProductCard.vue";
 
 import useValidate from "@vuelidate/core";
 import { required } from "@vuelidate/validators";
+import { numberFormate } from "../../assets/Methods";
 
 export default {
   data() {
@@ -258,10 +296,11 @@ export default {
         street: "",
         zip: "",
         place: "Home",
-        data: {},
+        products: [],
       },
       errors: [],
       whiteListProducts: [],
+      total: "0",
     };
   },
   validations() {
@@ -302,10 +341,24 @@ export default {
 
       this.whiteListProducts = res;
     },
+    async getCartProducts() {
+      const res = await this.$store.dispatch("getCart");
+
+      this.orderData.products = res;
+    },
+    getTotal() {
+      let allPrice = 0;
+      this.orderData.products.map((p) => {
+        allPrice += Number.parseInt(p.price);
+      });
+      this.total = numberFormate(allPrice);
+    },
   },
   async mounted() {
     window.scrollTo(0, 0);
+    await this.getCartProducts();
     await this.getWhiteListProducts();
+    this.getTotal();
   },
 };
 </script>

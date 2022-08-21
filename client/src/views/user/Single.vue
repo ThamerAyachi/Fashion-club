@@ -250,6 +250,15 @@ export default {
       window.scrollTo(0, 0);
     },
     async setInCart() {
+      const ifSaved = await this.$store.dispatch("isFoundInCart", this.product);
+
+      if (ifSaved) {
+        this.isSavedError = true;
+        setTimeout(() => {
+          this.isSavedError = false;
+        }, 3000);
+        return;
+      }
       const res = this.$store.dispatch("setCart", this.product);
 
       if (res) {
