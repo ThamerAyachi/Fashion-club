@@ -73,9 +73,12 @@
                       <td
                         class="px-6 py-4 text-sm font-medium leading-5 text-right border-b border-gray-200 whitespace-nowrap"
                       >
-                        <a href="#" class="text-red-600 hover:text-red-900"
-                          >Delete</a
+                        <button
+                          @click="deleteProductByFromCart(p)"
+                          class="text-red-600 hover:text-red-900"
                         >
+                          Delete
+                        </button>
                       </td>
                     </tr>
                   </tbody>
@@ -352,6 +355,12 @@ export default {
         allPrice += Number.parseInt(p.price);
       });
       this.total = numberFormate(allPrice);
+    },
+    async deleteProductByFromCart(product) {
+      await this.$store.dispatch("removeProductCart", product);
+
+      await this.getCartProducts();
+      this.getTotal();
     },
   },
   async mounted() {
