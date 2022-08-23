@@ -36,6 +36,9 @@ export class Orders {
   @Column({ type: 'datetime', name: 'create_at' })
   createAt: Date;
 
+  @Column()
+  status: boolean;
+
   @ManyToMany(() => Products, (products) => products.orders)
   @JoinTable()
   products: Products[];

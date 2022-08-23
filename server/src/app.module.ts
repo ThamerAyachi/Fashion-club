@@ -6,6 +6,7 @@ import { AuthModule } from './auth/auth.module';
 import { ProductsModule } from './products/products.module';
 import entities from './typeorm';
 import { MulterModule } from '@nestjs/platform-express';
+import { OrdersModule } from './orders/orders.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { MulterModule } from '@nestjs/platform-express';
     UsersModule,
     AuthModule,
     ProductsModule,
+    OrdersModule,
   ],
   controllers: [],
   providers: [],
