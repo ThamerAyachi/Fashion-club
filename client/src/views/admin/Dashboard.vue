@@ -370,11 +370,24 @@ export default {
     changePage(i) {
       this.page = i - 1;
     },
+    async getLengthOrders() {
+      try {
+        const res = await this.$store.dispatch("getOrders");
+
+        return res.data.length;
+      } catch (err) {
+        console.log(err);
+      }
+    },
   },
   async mounted() {
     // get and set number of users
     let usersLength = await this.getLengthUsers();
     this.cards[0].number = numberFormate(usersLength);
+
+    // get and set number of orders
+    let ordersLength = await this.getLengthOrders();
+    this.cards[1].number = numberFormate(ordersLength);
 
     // get products and set hem in table
     await this.setData();
