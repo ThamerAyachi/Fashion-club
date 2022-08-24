@@ -64,6 +64,15 @@ const orders = {
         return err;
       }
     },
+    getOrders: async () => {
+      try {
+        const res = await instance.get("orders");
+
+        return res;
+      } catch (err) {
+        return err;
+      }
+    },
   },
 };
 
