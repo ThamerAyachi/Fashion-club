@@ -1,3 +1,5 @@
+import instance from "../axios";
+
 const orders = {
   stats: () => ({}),
 
@@ -51,6 +53,16 @@ const orders = {
         }
       });
       return result;
+    },
+    createOrder: async (a, data) => {
+      try {
+        data.telephone = data.telephone.toString();
+        const res = await instance.post("orders/create", data);
+
+        return res;
+      } catch (err) {
+        return err;
+      }
     },
   },
 };

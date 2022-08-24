@@ -198,7 +198,7 @@
 
           <input
             type="text"
-            placeholder="Street*"
+            placeholder="Street"
             required
             v-model="orderData.street"
             class="shadow-sm appearance-none block border border-gray-200 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:border-primary focus:outline-none focus:shadow-outline"
@@ -241,11 +241,89 @@
         <button
           @click="submit"
           class="px-6 py-3 font-medium tracking-wide text-white bg-primary rounded-md hover:bg-green-300 focus:outline-none"
+          :disabled="isSending"
         >
-          Action
+          <fa-icon
+            icon="rotate"
+            class="text-xl"
+            :spin="true"
+            v-if="isSending"
+          />
+          <span v-else>Send Order</span>
         </button>
       </ModelFooter>
     </Model>
+
+    <!-- success alert -->
+    <transition
+      mode="out-in"
+      enter-active-class="animate__animated animate__fadeIn"
+      leave-active-class="animate__animated animate__fadeOut"
+    >
+      <div
+        class="px-4 py-20 overflow-x-auto absolute top-1 rounded-md whitespace-nowrap"
+        v-if="isSuccess"
+      >
+        <div
+          class="inline-flex w-full overflow-hidden bg-white rounded-lg shadow-md"
+        >
+          <div class="flex items-center justify-center w-12 bg-green-500">
+            <svg
+              class="w-6 h-6 text-white fill-current"
+              viewBox="0 0 40 40"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M20 3.33331C10.8 3.33331 3.33337 10.8 3.33337 20C3.33337 29.2 10.8 36.6666 20 36.6666C29.2 36.6666 36.6667 29.2 36.6667 20C36.6667 10.8 29.2 3.33331 20 3.33331ZM16.6667 28.3333L8.33337 20L10.6834 17.65L16.6667 23.6166L29.3167 10.9666L31.6667 13.3333L16.6667 28.3333Z"
+              />
+            </svg>
+          </div>
+
+          <div class="px-4 py-2 -mx-3">
+            <div class="mx-3">
+              <span class="font-semibold text-green-500">Success</span>
+              <p class="text-sm text-gray-600">Your order was sending!</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </transition>
+    <!-- error alert -->
+    <transition
+      mode="out-in"
+      enter-active-class="animate__animated animate__fadeIn"
+      leave-active-class="animate__animated animate__fadeOut"
+    >
+      <div
+        class="px-4 py-20 overflow-x-auto absolute top-1 rounded-md whitespace-nowrap"
+        v-if="isError"
+      >
+        <div
+          class="inline-flex w-full overflow-hidden bg-white rounded-lg shadow-md"
+        >
+          <div class="flex items-center justify-center w-12 bg-red-500">
+            <svg
+              class="w-6 h-6 text-white fill-current"
+              viewBox="0 0 40 40"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M20 3.36667C10.8167 3.36667 3.3667 10.8167 3.3667 20C3.3667 29.1833 10.8167 36.6333 20 36.6333C29.1834 36.6333 36.6334 29.1833 36.6334 20C36.6334 10.8167 29.1834 3.36667 20 3.36667ZM19.1334 33.3333V22.9H13.3334L21.6667 6.66667V17.1H27.25L19.1334 33.3333Z"
+              />
+            </svg>
+          </div>
+
+          <div class="px-4 py-2 -mx-3">
+            <div class="mx-3">
+              <span class="font-semibold text-red-500">Error</span>
+              <p class="text-base text-gray-800">
+                Can't get target upload source info
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -257,7 +335,7 @@ import ModelFooter from "../../components/global/ModelFooter.vue";
 import ProductCard from "../../components/user/ProductCard.vue";
 
 import useValidate from "@vuelidate/core";
-import { required } from "@vuelidate/validators";
+import { required, minLength, maxLength } from "@vuelidate/validators";
 import { numberFormate } from "../../assets/Methods";
 
 export default {
@@ -304,17 +382,28 @@ export default {
       errors: [],
       whiteListProducts: [],
       total: "0",
+      isError: false,
+      isSuccess: false,
+      isSending: false,
     };
   },
   validations() {
     return {
       orderData: {
-        fullName: { required },
-        telephone: { required },
-        state: { required },
-        city: { required },
-        street: { required },
-        zip: { required },
+        fullName: {
+          required,
+          minLength: minLength(3),
+          maxLength: maxLength(20),
+        },
+        telephone: {
+          required,
+          minLength: minLength(8),
+          maxLength: maxLength(8),
+        },
+        state: { required, minLength: minLength(3), maxLength: maxLength(20) },
+        city: { required, minLength: minLength(3), maxLength: maxLength(20) },
+        street: {},
+        zip: { required, minLength: minLength(3), maxLength: maxLength(20) },
       },
     };
   },
@@ -326,10 +415,41 @@ export default {
     ProductCard,
   },
   methods: {
-    submit() {
+    async submit() {
       this.v$.$validate();
       if (!this.v$.$error) {
-        console.log(this.orderData);
+        try {
+          this.isSending = true;
+          const res = await this.$store.dispatch("createOrder", this.orderData);
+
+          if (res.status != 201) {
+            this.isError = true;
+            setTimeout(() => {
+              this.isError = false;
+            }, 3000);
+            this.isSending = false;
+            return;
+          }
+          await this.$store.dispatch("removeCart");
+          this.orderData = {
+            fullName: "",
+            telephone: "",
+            state: "",
+            city: "",
+            street: "",
+            zip: "",
+            place: "Home",
+            products: [],
+          };
+          this.isSending = false;
+          this.open = false;
+          this.isSuccess = true;
+          setTimeout(() => {
+            this.isSuccess = false;
+          }, 3000);
+        } catch (err) {
+          console.log(err);
+        }
       } else {
         this.errors = [];
         for (let i = 0; i < this.v$.$errors.length; i++) {
