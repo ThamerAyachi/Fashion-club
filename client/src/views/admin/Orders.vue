@@ -75,7 +75,7 @@
                       class="px-5 py-5 text-sm bg-white border-b border-gray-200"
                     >
                       <a class="text-blue-400" :href="`tel:+216${u.telephone}`"
-                        >+216{{ u.telephone }}</a
+                        >+216 {{ _phoneNumberFormat(u.telephone) }}</a
                       >
                     </td>
 
@@ -201,7 +201,7 @@
                   </div>
 
                   <a class="text-blue-400" :href="`tel:+216${order.telephone}`"
-                    >+216{{ order.telephone }}</a
+                    >+216 {{ _phoneNumberFormat(order.telephone) }}</a
                   >
                 </div>
                 <div>
@@ -329,7 +329,7 @@
 </template>
 
 <script>
-import { dateFormat, showFive } from "../../assets/Methods";
+import { dateFormat, showFive, phoneNumberFormat } from "../../assets/Methods";
 
 export default {
   data() {
@@ -341,7 +341,7 @@ export default {
       page: 0,
       open: false,
       select: "all",
-      order: {},
+      order: { telephone: "12345678" },
       isSending: false,
       baseUrl: this.$store.state.baseUrl,
     };
@@ -356,7 +356,6 @@ export default {
         res.data.map((o) => {
           o.createAt = dateFormat(o.createAt);
         });
-        console.log(res.data);
         return res.data.reverse();
       } catch (err) {
         console.log(err);
@@ -369,6 +368,9 @@ export default {
     showOrder(u) {
       this.order = u;
       this.open = true;
+    },
+    _phoneNumberFormat(num) {
+      return phoneNumberFormat(num);
     },
   },
   async mounted() {
