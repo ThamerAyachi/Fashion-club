@@ -211,6 +211,7 @@
                   </p>
                 </div>
               </div>
+
               <!-- content -->
               <div class="text-gray-800">
                 <div class="text-lg font-semibold text-gray-700">Products:</div>
@@ -306,7 +307,7 @@
                 Close
               </button>
               <button
-                class="p-3 px-6 py-3 mr-2 text-red-500 bg-transparent rounded-lg hover:bg-gray-100 hover:text-red-400 focus:outline-none"
+                class="p-3 px-6 py-3 mr-2 text-green-500 bg-transparent rounded-lg hover:bg-gray-100 hover:text-green-400 focus:outline-none"
                 :disabled="isSending"
               >
                 <fa-icon
@@ -315,7 +316,7 @@
                   :spin="true"
                   v-if="isSending"
                 />
-                <span v-else>Delete</span>
+                <span v-else>Confirm</span>
               </button>
             </div>
           </div>
