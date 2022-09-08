@@ -46,9 +46,9 @@
                         class="px-6 py-4 border-b border-gray-200 whitespace-nowrap"
                       >
                         <div class="flex items-center">
-                          <div class="flex-shrink-0 w-10 h-10">
+                          <div class="flex-shrink-0 w-10 h-10 overflow-hidden">
                             <img
-                              class="w-10 h-10 rounded-full"
+                              class="h-10 rounded-full"
                               :src="p.imgUrl"
                               alt="profile pic"
                             />
