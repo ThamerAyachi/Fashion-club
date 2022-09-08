@@ -173,9 +173,7 @@
           <div class="px-6 py-4 text-left modal-content">
             <!--Title-->
             <div class="flex items-center justify-between pb-3">
-              <p class="text-2xl font-medium text-gray-900">
-                {{ order.fullName }}
-              </p>
+              <p class="text-2xl font-medium text-gray-900">Order details</p>
               <div
                 class="z-50 cursor-pointer modal-close"
                 @click="open = false"
@@ -198,15 +196,23 @@
             <div class="mb-8 mt-6">
               <div class="flex justify-between mb-8 text-gray-600 text-sm">
                 <div>
-                  <p class="text-gray-900 font-bold text-base">
-                    {{ order.state }}
-                  </p>
+                  <div class="font-semibold text-gray-900 text-base">
+                    {{ order.fullName }}
+                  </div>
+
                   <p>{{ order.telephone }}</p>
                 </div>
-                <div>{{ order.createAt }}</div>
+                <div>
+                  <p class="text-gray-900 font-semibold text-base">
+                    {{ order.state }}
+                  </p>
+                  <p>
+                    {{ order.createAt }}
+                  </p>
+                </div>
               </div>
-              <!-- message -->
-              <div class="text-gray-800">products</div>
+              <!-- content -->
+              <div class="text-gray-800"></div>
             </div>
 
             <!--Footer-->
