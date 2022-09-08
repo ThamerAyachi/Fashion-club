@@ -74,9 +74,9 @@
                     <td
                       class="px-5 py-5 text-sm bg-white border-b border-gray-200"
                     >
-                      <p class="text-gray-900 whitespace-nowrap">
-                        {{ u.telephone }}
-                      </p>
+                      <a class="text-blue-400" :href="`tel:+216${u.telephone}`"
+                        >+216{{ u.telephone }}</a
+                      >
                     </td>
 
                     <td
@@ -200,7 +200,9 @@
                     {{ order.fullName }}
                   </div>
 
-                  <p>{{ order.telephone }}</p>
+                  <a class="text-blue-400" :href="`tel:+216${order.telephone}`"
+                    >+216{{ order.telephone }}</a
+                  >
                 </div>
                 <div>
                   <p class="text-gray-900 font-semibold text-base">
