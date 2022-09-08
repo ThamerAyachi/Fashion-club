@@ -170,7 +170,7 @@
           </div>
 
           <!-- Add margin if you want to see some of the overlay behind the modal-->
-          <div class="px-6 py-4 text-left modal-content">
+          <div class="px-4 md:px-6 py-4 text-left modal-content">
             <!--Title-->
             <div class="flex items-center justify-between pb-3">
               <p class="text-2xl font-medium text-gray-900">Order details</p>
@@ -212,7 +212,89 @@
                 </div>
               </div>
               <!-- content -->
-              <div class="text-gray-800"></div>
+              <div class="text-gray-800">
+                <div class="text-lg font-semibold text-gray-700">Products:</div>
+
+                <!-- products -->
+                <div
+                  class="my-5 bg-gray-100 rounded-md overflow-x-scroll md:overflow-auto"
+                >
+                  <table class="min-w-full">
+                    <thead>
+                      <tr>
+                        <th
+                          class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50"
+                        >
+                          Product
+                        </th>
+
+                        <th
+                          class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50"
+                        >
+                          Status
+                        </th>
+                        <th
+                          class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50"
+                        >
+                          Price
+                        </th>
+                      </tr>
+                    </thead>
+
+                    <tbody class="bg-white">
+                      <tr v-for="(p, i) in order.products" :key="i">
+                        <td
+                          class="px-6 py-4 border-b border-gray-200 whitespace-nowrap"
+                        >
+                          <!-- Product -->
+                          <div class="flex items-center">
+                            <div
+                              class="flex justify-center w-10 h-10 rounded-full overflow-hidden"
+                            >
+                              <img
+                                class="h-10"
+                                :src="baseUrl + p.imgUrl"
+                                alt="Product Image"
+                              />
+                            </div>
+
+                            <div class="ml-4">
+                              <div
+                                class="text-sm font-medium leading-5 text-gray-900"
+                              >
+                                {{ p.name }}
+                              </div>
+                            </div>
+                          </div>
+                        </td>
+
+                        <td
+                          class="px-6 py-4 border-b border-gray-200 whitespace-nowrap"
+                        >
+                          <!-- status -->
+                          <span
+                            class="inline-flex px-2 text-xs font-semibold leading-5 text-green-800 bg-green-100 rounded-full"
+                            v-if="p.quantity > 0"
+                            >Defiant</span
+                          >
+                          <span
+                            class="inline-flex px-2 text-xs font-semibold leading-5 text-yellow-800 bg-yellow-100 rounded-full"
+                            v-else
+                            >Not Defiant</span
+                          >
+                        </td>
+
+                        <td
+                          class="px-6 py-4 text-sm leading-5 text-gray-500 border-b border-gray-200 whitespace-nowrap"
+                        >
+                          <!-- price -->
+                          {{ p.price }} TND
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
 
             <!--Footer-->
@@ -258,6 +340,7 @@ export default {
       select: "all",
       order: {},
       isSending: false,
+      baseUrl: this.$store.state.baseUrl,
     };
   },
   methods: {
