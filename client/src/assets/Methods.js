@@ -62,6 +62,16 @@ export const getDeviceType = (data) => {
   return "desktop";
 };
 
-export const phoneNumberFormat = (number) => {
-  return number;
+export const phoneNumberFormat = (phoneNum) => {
+  let newPhoneNum = "";
+
+  for (let i = 0; i <= 7; i++) {
+    if (i == 2 || i == 5) {
+      newPhoneNum += " ";
+    }
+
+    newPhoneNum += phoneNum[i];
+  }
+
+  return newPhoneNum;
 };
