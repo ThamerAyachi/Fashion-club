@@ -112,10 +112,10 @@
                       <!-- Product -->
                       <div class="flex items-center">
                         <div
-                          class="flex-shrink-0 w-10 h-10 rounded-full overflow-hidden"
+                          class="flex justify-center w-10 h-10 rounded-full overflow-hidden"
                         >
                           <img
-                            class="w-10"
+                            class="h-10"
                             :src="p.imgUrl"
                             alt="Product Image"
                           />
