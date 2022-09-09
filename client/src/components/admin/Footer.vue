@@ -41,7 +41,7 @@
           <span>Products</span>
         </router-link>
         <router-link
-          to="/orders"
+          :to="{ name: 'Orders' }"
           class="my-3 block text-sm hover:text-primaryAdmin transform duration-300"
         >
           <span>Orders</span>
