@@ -35,7 +35,7 @@
           <span>Dashboard</span>
         </router-link>
         <router-link
-          to="/products"
+          :to="{ name: 'Products' }"
           class="my-3 block text-sm hover:text-primaryAdmin transform duration-300"
         >
           <span>Products</span>
