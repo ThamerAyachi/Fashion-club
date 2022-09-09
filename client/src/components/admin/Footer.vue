@@ -77,7 +77,7 @@
           <h1 class="text-3xl">My Account</h1>
         </div>
         <router-link
-          to="/profile"
+          :to="{ name: 'Profile' }"
           class="my-3 block text-sm hover:text-primaryAdmin transform duration-300"
         >
           <span>Profile</span>
