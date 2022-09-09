@@ -29,7 +29,7 @@
           <h1 class="text-3xl">Settings</h1>
         </div>
         <router-link
-          to="/dashboard"
+          :to="{ name: 'Dashboard' }"
           class="my-3 block text-sm hover:text-primaryAdmin transform duration-300"
         >
           <span>Dashboard</span>
