@@ -83,7 +83,7 @@
           <span>Profile</span>
         </router-link>
         <router-link
-          to="/users"
+          :to="{ name: 'Users' }"
           class="my-3 block text-sm hover:text-primaryAdmin transform duration-300"
         >
           <span>Users</span>
