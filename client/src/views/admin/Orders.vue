@@ -311,6 +311,7 @@
               <button
                 class="p-3 px-6 py-3 mr-2 text-green-500 bg-transparent rounded-lg hover:bg-gray-100 hover:text-green-400 focus:outline-none"
                 :disabled="isSending"
+                @click="confirmOrder(order.id)"
               >
                 <fa-icon
                   icon="rotate"
@@ -371,6 +372,17 @@ export default {
     },
     _phoneNumberFormat(num) {
       return phoneNumberFormat(num);
+    },
+    async confirmOrder(data) {
+      try {
+        this.isSending = true;
+        await this.$store.dispatch("confirmOrder", data);
+        await this.setData();
+      } catch (err) {
+        console.log(err);
+      }
+      this.isSending = false;
+      this.open = false;
     },
   },
   async mounted() {
