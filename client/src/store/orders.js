@@ -73,6 +73,14 @@ const orders = {
         return err;
       }
     },
+    confirmOrder: async (a, data) => {
+      try {
+        const res = await instance.put(`orders/confirm/${data}`);
+        return res;
+      } catch (err) {
+        return err;
+      }
+    },
   },
 };
 
