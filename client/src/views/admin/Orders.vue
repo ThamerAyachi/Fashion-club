@@ -14,6 +14,7 @@
                 <select
                   class="block w-full h-full rounded px-4 py-2 pr-8 leading-tight text-gray-700 bg-white border border-gray-400 appearance-none focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500"
                   v-model="select"
+                  @change="searchedByStatus"
                 >
                   <option value="all">All</option>
                   <option value="1">Donne</option>
@@ -383,6 +384,22 @@ export default {
       }
       this.isSending = false;
       this.open = false;
+    },
+    searchedByStatus() {
+      this.page = 0;
+      if (this.select == "all") {
+        this.arrayOrders = this.DBArrayOrders;
+        return;
+      }
+      let newArray = [];
+      this.DBArrayOrders.forEach((orders) => {
+        if (this.select == "1") {
+          newArray = newArray.concat(orders.filter((o) => o.status == true));
+        } else if (this.select == "0") {
+          newArray = newArray.concat(orders.filter((o) => o.status == false));
+        }
+      });
+      this.arrayOrders = showFive(newArray);
     },
   },
   async mounted() {
