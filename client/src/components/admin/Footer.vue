@@ -90,6 +90,7 @@
         </router-link>
         <button
           class="my-3 block text-sm hover:text-primaryAdmin transform duration-300 w-full lg:w-auto"
+          @click="logout"
         >
           <span>Logout</span>
         </button>
@@ -106,7 +107,18 @@
 </template>
 
 <script>
-export default {};
+export default {
+  methods: {
+    async logout() {
+      try {
+        await this.$store.dispatch("logout");
+        this.$router.push({ name: "Home" });
+      } catch (err) {
+        console.log(err);
+      }
+    },
+  },
+};
 </script>
 
 <style></style>
