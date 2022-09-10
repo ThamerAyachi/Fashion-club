@@ -89,7 +89,7 @@
           <span>Users</span>
         </router-link>
         <button
-          class="my-3 block text-sm hover:text-primaryAdmin transform duration-300"
+          class="my-3 block text-sm hover:text-primaryAdmin transform duration-300 w-full lg:w-auto"
         >
           <span>Logout</span>
         </button>
