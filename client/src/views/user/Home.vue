@@ -2,7 +2,7 @@
   <div>
     <!-- banner -->
     <div class="banner min-h-52 grid grid-cols-1 md:grid-cols-2">
-      <div class="md:my-40 md:mx-16 my-5 mx-5">
+      <div class="md:my-40 md:mx-16 my-5 mx-5 paragraph">
         <span
           class="uppercase block text-primary md:text-3xl text-xl md:my-5 my-2 font-medium tracking-widest"
           >welcome to</span
@@ -157,11 +157,18 @@ export default {
   },
   async mounted() {
     window.scrollTo(0, 0);
+    gsap.from(".paragraph", {
+      scrollTrigger: ".paragraph",
+      x: -500,
+      opacity: 0,
+      duration: 2,
+    });
+
     for (let i = 1; i <= 5; i++) {
       gsap.from(`.section-${i}`, {
         scrollTrigger: `.section-${i}`,
         opacity: 0,
-        duration: 1,
+        duration: 2,
       });
     }
 
