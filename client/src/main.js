@@ -12,6 +12,10 @@ import {
 } from "@fortawesome/vue-fontawesome";
 import "./icons";
 import "animate.css";
+import gsap from "gsap";
+import ScrollTrigger from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 createApp(App)
   .use(store)
@@ -19,4 +23,5 @@ createApp(App)
   .component("fa-layer", FontAwesomeLayers)
   .component("fa-layer-text", FontAwesomeLayersText)
   .use(router)
+  .use(gsap)
   .mount("#app");
