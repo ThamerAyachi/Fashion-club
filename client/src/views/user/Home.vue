@@ -30,9 +30,10 @@
     <!-- sold % -->
     <div class="md:mx-10 mx-5 my-10">
       <div class="grid md:grid-cols-2 grid-cols-1 space-y-2">
+        <!-- section 1 -->
         <router-link
           to="/women"
-          class="sold-1 flex justify-center items-center hover:scale-110 duration-500 transform md:mx-5 lg:mx-20 text-white"
+          class="section-1 sold-1 flex justify-center items-center hover:scale-110 duration-500 transform md:mx-5 lg:mx-20 text-white"
         >
           <div class="my-28 md:my-44 w-full text-center">
             <span class="uppercase block text-5xl">sale</span>
@@ -41,13 +42,14 @@
             >
           </div>
         </router-link>
+        <!-- section 2 -->
         <div class="grid md:grid-cols-2 grid-cols-1 gap-5">
           <router-link
             :to="doc.path"
             v-for="doc in solds"
             :key="doc.id"
             :style="`background-image: url(${doc.img});`"
-            class="sold-2 flex justify-center items-center hover:scale-110 duration-500 transform text-white"
+            :class="`section-${doc.s} sold-2 flex justify-center items-center hover:scale-110 duration-500 transform text-white`"
           >
             <div class="my-28 md:my-20 w-full text-center">
               <span class="uppercase block text-5xl">sale</span>
@@ -77,6 +79,7 @@
           :img="baseUrl + p.imgUrl"
           :price="p.price"
           :name="p.name"
+          :class="`prod-${i}`"
         />
       </div>
 
@@ -104,16 +107,17 @@
 
 <script>
 import Card from "../../components/user/home/Card.vue";
+import gsap from "gsap";
 
 export default {
   data() {
     return {
       baseUrl: this.$store.state.baseUrl,
       solds: [
-        { id: 1, persent: 50, img: "/img/bb2.jpg", path: "/shoes" },
-        { id: 2, persent: 55, img: "/img/bb3.jpg", path: "/watches" },
-        { id: 3, persent: 65, img: "/img/bb4.jpg", path: "/jewellery" },
-        { id: 4, persent: 60, img: "/img/bb5.jpg", path: "/handbags" },
+        { id: 1, persent: 50, img: "/img/bb2.jpg", path: "/shoes", s: "2" },
+        { id: 2, persent: 55, img: "/img/bb3.jpg", path: "/watches", s: "3" },
+        { id: 3, persent: 65, img: "/img/bb4.jpg", path: "/jewellery", s: "4" },
+        { id: 4, persent: 60, img: "/img/bb5.jpg", path: "/handbags", s: "5" },
       ],
       brands: [
         "https://i.ibb.co/zNtfXKS/7.png",
@@ -153,7 +157,23 @@ export default {
   },
   async mounted() {
     window.scrollTo(0, 0);
+    for (let i = 1; i <= 5; i++) {
+      gsap.from(`.section-${i}`, {
+        scrollTrigger: `.section-${i}`,
+        opacity: 0,
+        duration: 1,
+      });
+    }
+
     await this.getProducts();
+
+    for (let i = 0; i <= 7; i++) {
+      gsap.from(`.prod-${i}`, {
+        scrollTrigger: `.prod-${i}`,
+        opacity: 0,
+        duration: 1,
+      });
+    }
   },
 };
 </script>
