@@ -6,12 +6,12 @@
     ></div>
 
     <div class="flex justify-center my-10">
-      <h1 class="text-4xl font-medium">About Us</h1>
+      <h1 class="text-4xl font-medium title">About Us</h1>
     </div>
 
     <div class="grid md:grid-cols-3 grid-cols-1 gap-1 mb-5">
       <!-- article -->
-      <div class="lg:mx-16 mx-5 text-gray-600 text-sm col-span-2">
+      <div class="lg:mx-16 mx-5 text-gray-600 text-sm col-span-2 article">
         <div class="text-primary text-2xl">
           <h2>Explore us</h2>
         </div>
@@ -37,23 +37,25 @@
 
       <!-- Our Advantages -->
       <div class="mx-5 space-y-10">
-        <div class="text-2xl text-primary"><span>Our Advantages</span></div>
+        <div class="text-2xl text-primary title">
+          <span>Our Advantages</span>
+        </div>
 
-        <div class="my-3 space-x-2 text-gray-600">
+        <div class="my-3 space-x-2 text-gray-600 ad-1">
           <span
             class="border rounded-full border-blue-600 text-blue-600 p-2 text-xl"
             >01</span
           >
           <span>Professionality</span>
         </div>
-        <div class="my-3 space-x-2 text-gray-600">
+        <div class="my-3 space-x-2 text-gray-600 ad-2">
           <span
             class="border rounded-full border-blue-600 text-blue-600 p-2 text-xl"
             >02</span
           >
-          <span>Securety</span>
+          <span>Security</span>
         </div>
-        <div class="my-3 space-x-2 text-gray-600">
+        <div class="my-3 space-x-2 text-gray-600 ad-3">
           <span
             class="border rounded-full border-blue-600 text-blue-600 p-2 text-xl"
             >03</span
@@ -66,9 +68,34 @@
 </template>
 
 <script>
+import gsap from "gsap";
+
 export default {
   mounted() {
     window.scrollTo(0, 0);
+
+    gsap.from(".title", {
+      scrollTrigger: ".title",
+      opacity: 0,
+      duration: 0.5,
+      y: 50,
+    });
+
+    gsap.from(".article", {
+      scrollTrigger: ".article",
+      opacity: 0,
+      duration: 1,
+      y: 50,
+    });
+
+    for (let i = 1; i <= 3; i++) {
+      gsap.from(`.ad-${i}`, {
+        scrollTrigger: `.ad-${i}`,
+        opacity: 0,
+        x: 50,
+        duration: 1 + i * 0.2,
+      });
+    }
   },
 };
 </script>
