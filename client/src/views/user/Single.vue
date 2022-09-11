@@ -4,12 +4,12 @@
     <div class="grid md:grid-cols-2 grid-cols-1 lg:mx-32 mx-5 my-10 gap-3">
       <!-- image -->
       <div
-        class="flex cursor-pointer justify-center overflow-hidden items-center border border-gray-200 bg-white rounded py-2"
+        class="pec flex cursor-pointer justify-center overflow-hidden items-center border border-gray-200 bg-white rounded py-2"
         @click="fullImage = true"
       >
         <img :src="product.imgUrl" alt="product img" class="" />
       </div>
-      <div class="p-1 text-gray-400">
+      <div class="p-1 text-gray-400 det">
         <h2 class="text-primary text-3xl my-3">{{ product.name }}</h2>
         <p class="text-sm my-2">
           Processing Time: Item will be call you within 1-2 working days.
@@ -56,6 +56,7 @@
           :name="p.name"
           :price="p.price"
           @click="getSingleProduct(p.id)"
+          :class="`prod-${i}`"
         />
       </div>
     </div>
@@ -189,6 +190,7 @@
 
 <script>
 import { dateFormat } from "../../assets/Methods";
+import gsap from "gsap";
 
 import Card from "../../components/user/home/Card.vue";
 
@@ -303,8 +305,30 @@ export default {
     /* get product by id */
     await this.getSingleProduct();
 
+    gsap.from(".det", {
+      scrollTrigger: ".det",
+      opacity: 0,
+      duration: 2,
+      x: 50,
+    });
+
+    gsap.from(".pec", {
+      scrollTrigger: ".pec",
+      opacity: 0,
+      duration: 1,
+      y: 50,
+    });
+
     /* get more products */
     await this.getProducts();
+
+    for (let i = 0; i < 4; i++) {
+      gsap.from(`.prod-${i}`, {
+        scrollTrigger: `.prod-${i}`,
+        opacity: 0,
+        duration: 1,
+      });
+    }
   },
 };
 </script>
