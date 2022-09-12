@@ -46,7 +46,8 @@ export class UsersController {
   }
 
   @Post('create')
-  @UseGuards(JwtAuthGuard)
+  @hasRoles('SUPER_ADMIN')
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @UsePipes(ValidationPipe)
   @UseInterceptors(ClassSerializerInterceptor)
   async createUser(@Body() createUserDto: CreateUserDto) {
