@@ -23,6 +23,7 @@ import { RolesGuard } from 'src/auth/guard/roles.guard';
 import { CreateUserDto } from './dto/CreateUser.dto';
 import { UpdateAvatarDto } from './dto/UpdateAvatar.dto';
 import { UpdateUserDto } from './dto/UpdateUser.dto';
+import { UserRole } from './dto/UserRole';
 import { SerializedUser } from './SerializedUser';
 import { UsersService } from './users.service';
 
@@ -33,7 +34,7 @@ export class UsersController {
   ) {}
 
   @Get()
-  @hasRoles('SUPER_ADMIN', 'ADMIN')
+  @hasRoles(UserRole.SUPER_ADMIN, UserRole.ADMIN)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @UseInterceptors(ClassSerializerInterceptor)
   async getUsers() {
@@ -46,7 +47,7 @@ export class UsersController {
   }
 
   @Post('create')
-  @hasRoles('SUPER_ADMIN')
+  @hasRoles(UserRole.SUPER_ADMIN)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @UsePipes(ValidationPipe)
   @UseInterceptors(ClassSerializerInterceptor)
