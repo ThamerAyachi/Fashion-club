@@ -33,7 +33,7 @@ export class UsersController {
   ) {}
 
   @Get()
-  @hasRoles('SUPER_ADMIN')
+  @hasRoles('SUPER_ADMIN', 'ADMIN')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @UseInterceptors(ClassSerializerInterceptor)
   async getUsers() {
