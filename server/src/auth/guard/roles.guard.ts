@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Observable } from 'rxjs';
+import { User } from 'src/typeorm/User';
 import { UsersService } from 'src/users/users.service';
 
 @Injectable()
@@ -24,8 +25,16 @@ export class RolesGuard implements CanActivate {
     }
 
     const request = context.switchToHttp().getRequest();
-    console.log(request);
-    // const user = request.user;
-    return true;
+    const user: User = request.user;
+
+    return this.usersService.findOne({ id: user.id }).then((u) => {
+      const hasRole = () => roles.indexOf(u.role) > -1;
+      let hasPermission = false;
+
+      if (hasRole()) {
+        hasPermission = true;
+      }
+      return user && hasPermission;
+    });
   }
 }
