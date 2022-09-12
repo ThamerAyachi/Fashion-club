@@ -6,6 +6,7 @@ import {
   Get,
   HttpException,
   HttpStatus,
+  Inject,
   Param,
   Post,
   Put,
@@ -16,7 +17,9 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { Request } from 'express';
+import { hasRoles } from 'src/auth/decorators/roles.decorator';
 import { JwtAuthGuard } from 'src/auth/guard/JwtAuth.guard';
+import { RolesGuard } from 'src/auth/guard/roles.guard';
 import { CreateUserDto } from './dto/CreateUser.dto';
 import { UpdateAvatarDto } from './dto/UpdateAvatar.dto';
 import { UpdateUserDto } from './dto/UpdateUser.dto';
@@ -25,10 +28,13 @@ import { UsersService } from './users.service';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    @Inject('USERS_SERVICE') private readonly usersService: UsersService,
+  ) {}
 
   @Get()
-  @UseGuards(JwtAuthGuard)
+  @hasRoles('SUPER_ADMIN')
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @UseInterceptors(ClassSerializerInterceptor)
   async getUsers() {
     const users = await this.usersService.getAllUsers();
