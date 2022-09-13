@@ -85,14 +85,14 @@ export default {
       scrollTrigger: ".article",
       opacity: 0,
       duration: 1,
-      y: 50,
+      y: 100,
     });
 
     for (let i = 1; i <= 3; i++) {
       gsap.from(`.ad-${i}`, {
         scrollTrigger: `.ad-${i}`,
         opacity: 0,
-        x: 50,
+        x: 100,
         duration: 1 + i * 0.2,
       });
     }
