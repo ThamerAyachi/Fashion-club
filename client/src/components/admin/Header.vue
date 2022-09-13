@@ -109,7 +109,6 @@ export default {
   },
   async created() {
     const user = await this.getUser();
-    this.$store.commit("SET_ROLE", user.role);
     this.img = user.imgUrl;
   },
   async mounted() {},

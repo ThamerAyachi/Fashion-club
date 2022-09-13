@@ -25,7 +25,9 @@
           v-for="(router, i) in routers"
           :key="i"
           active-class="bg-gray-600 bg-opacity-25 text-gray-100 border-gray-100"
-          class="flex items-center border-gray-900 px-6 py-2 mt-4 duration-200 border-l-4 hover:bg-gray-600 hover:bg-opacity-25 hover:text-gray-50"
+          :class="`${hasRoles(
+            router.roles
+          )}  flex items-center border-gray-900 px-6 py-2 mt-4 duration-200 border-l-4 hover:bg-gray-600 hover:bg-opacity-25 hover:text-gray-50`"
           :to="{ name: router.to }"
         >
           <span v-html="router.icon"></span>
@@ -48,8 +50,14 @@
 <script>
 import { useSidebar } from "../../hooks/useSidebar";
 import icons from "../../icons";
+// import store from "../../store";
 
 export default {
+  async created() {
+    const user = await this.getUser();
+    this.$store.commit("SET_ROLE", user.role);
+    this.role = user.role;
+  },
   methods: {
     async logout() {
       try {
@@ -59,9 +67,27 @@ export default {
         console.log(err);
       }
     },
+    async getUser() {
+      try {
+        const res = await this.$store.dispatch("getUser");
+        return res.data;
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    hasRoles(roles) {
+      if (!roles) {
+        return;
+      }
+      if (roles.includes(this.role)) {
+        return "";
+      }
+      return "hidden";
+    },
   },
   data: () => {
     return {
+      role: "",
       logoutIcon: icons.logout,
       routers: [
         {
@@ -88,6 +114,7 @@ export default {
           to: "Users",
           icon: icons.users,
           text: "Users",
+          roles: ["SUPER_ADMIN", "ADMIN"],
         },
         {
           to: "Profile",

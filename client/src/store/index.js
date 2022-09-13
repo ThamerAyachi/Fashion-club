@@ -25,6 +25,8 @@ export default createStore({
     LOGOUT: (state) => {
       sessionStorage.removeItem("access_token");
       state.access_token = null;
+      sessionStorage.removeItem("role");
+      state.role = null;
     },
   },
   actions: {
