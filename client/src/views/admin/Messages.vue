@@ -328,10 +328,11 @@ export default {
       this.arrayMessages = showFive(newArray);
     },
   },
-  async mounted() {
+  async created() {
     await this.setData();
     this.DBArrayMessages = this.arrayMessages;
   },
+  async mounted() {},
 };
 </script>
 
