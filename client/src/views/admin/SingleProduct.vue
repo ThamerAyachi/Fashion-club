@@ -378,7 +378,7 @@ export default {
       }, 3000);
     },
   },
-  async mounted() {
+  async created() {
     const res = await this.$store.dispatch(
       "getProductById",
       this.$route.params.id
@@ -392,6 +392,7 @@ export default {
     this.imgUrl = this.$store.state.baseUrl + res.data.imgUrl;
     this.product = res.data;
   },
+  async mounted() {},
 };
 </script>
 
