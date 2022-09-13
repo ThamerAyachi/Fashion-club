@@ -380,7 +380,11 @@ export default {
       }
     },
   },
-  async mounted() {
+  async created() {
+    // get products and set hem in table
+    await this.setData();
+    this.DBArrayProducts = this.arrayProducts;
+
     // get and set number of users
     let usersLength = await this.getLengthUsers();
     this.cards[0].number = numberFormate(usersLength);
@@ -389,13 +393,10 @@ export default {
     let ordersLength = await this.getLengthOrders();
     this.cards[1].number = numberFormate(ordersLength);
 
-    // get products and set hem in table
-    await this.setData();
-    this.DBArrayProducts = this.arrayProducts;
-
     // set number of products
     this.cards[2].number = numberFormate(this.products.length);
   },
+  async mounted() {},
 };
 </script>
 
