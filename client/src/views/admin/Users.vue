@@ -419,12 +419,13 @@ export default {
       this.page = i - 1;
     },
   },
-  async mounted() {
+  async created() {
     this.Users = await this.getUsers();
     this.DBUser = this.Users;
     this.arrayUsers = showFive(this.Users);
     this.DBArrayUsers = this.arrayUsers;
   },
+  async mounted() {},
 };
 </script>
 
