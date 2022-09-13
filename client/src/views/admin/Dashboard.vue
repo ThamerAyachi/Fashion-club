@@ -245,7 +245,7 @@ export default {
               </svg>`,
           color: "bg-blue-600",
           text: "All Users",
-          number: "..",
+          number: "0",
         },
         {
           icon: `<svg
@@ -269,7 +269,7 @@ export default {
               </svg>`,
           color: "bg-indigo-600",
           text: "Total Orders",
-          number: "..",
+          number: "0",
         },
         {
           icon: `<svg
@@ -293,7 +293,7 @@ export default {
               </svg>`,
           color: "bg-pink-600",
           text: "Available Products",
-          number: "..",
+          number: "0",
         },
       ],
       products: [],
