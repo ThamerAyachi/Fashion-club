@@ -139,7 +139,7 @@ const routes = [
         path: "/users",
         name: "Users",
         component: Users,
-        meta: { title: "Users" },
+        meta: { title: "Users", roles: ["SUPER_ADMIN", "ADMIN"] },
       },
       {
         path: "/messages",
@@ -181,13 +181,20 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
+  // ! Info: for change title
   if (to.meta.title) {
     document.title = to.meta.title + " | Fashion Club";
   } else {
     document.title = "Fashion Club";
   }
 
-  if (to.meta.requireAuth && !store.state.access_token) {
+  // ! Info: for roles
+  if (to.meta.roles && !to.meta.roles.includes(store.state.role)) {
+    next({ name: "Dashboard" });
+  }
+
+  // ! Info: for authentication
+  else if (to.meta.requireAuth && !store.state.access_token) {
     next({ name: "Login" });
   } else if (store.state.access_token && to.meta.isGuest) {
     next({ name: "Dashboard" });
