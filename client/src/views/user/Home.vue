@@ -155,30 +155,30 @@ export default {
   components: {
     Card,
   },
+  async created() {
+    await this.getProducts();
+    for (let i = 0; i <= 7; i++) {
+      gsap.from(`.prod-${i}`, {
+        scrollTrigger: `.prod-${i}`,
+        opacity: 0,
+        duration: 1,
+      });
+    }
+  },
   async mounted() {
     window.scrollTo(0, 0);
     gsap.from(".paragraph", {
       scrollTrigger: ".paragraph",
       x: -500,
       opacity: 0,
-      duration: 2,
+      duration: 1,
     });
 
     for (let i = 1; i <= 5; i++) {
       gsap.from(`.section-${i}`, {
         scrollTrigger: `.section-${i}`,
         opacity: 0,
-        duration: 2,
-      });
-    }
-
-    await this.getProducts();
-
-    for (let i = 0; i <= 7; i++) {
-      gsap.from(`.prod-${i}`, {
-        scrollTrigger: `.prod-${i}`,
-        opacity: 0,
-        duration: 1,
+        duration: 1.2,
       });
     }
   },
