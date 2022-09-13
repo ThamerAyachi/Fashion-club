@@ -402,10 +402,11 @@ export default {
       this.arrayOrders = showFive(newArray);
     },
   },
-  async mounted() {
+  async created() {
     await this.setData();
     this.DBArrayOrders = this.arrayOrders;
   },
+  async mounted() {},
 };
 </script>
 
