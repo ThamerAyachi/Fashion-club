@@ -535,10 +535,11 @@ export default {
       this.page = i - 1;
     },
   },
-  async mounted() {
+  async created() {
     await this.setData();
     this.DBArrayProducts = this.arrayProducts;
   },
+  async mounted() {},
 };
 </script>
 
