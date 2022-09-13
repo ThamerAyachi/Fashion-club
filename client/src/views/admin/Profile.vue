@@ -241,10 +241,11 @@ export default {
       }, 3000);
     },
   },
-  async mounted() {
+  async created() {
     const user = await this.getUser();
     this.data = user;
   },
+  async mounted() {},
 };
 </script>
 
