@@ -245,7 +245,7 @@ export default {
               </svg>`,
           color: "bg-blue-600",
           text: "All Users",
-          number: "9,999",
+          number: "..",
         },
         {
           icon: `<svg
@@ -269,7 +269,7 @@ export default {
               </svg>`,
           color: "bg-indigo-600",
           text: "Total Orders",
-          number: "200,521",
+          number: "..",
         },
         {
           icon: `<svg
@@ -293,7 +293,7 @@ export default {
               </svg>`,
           color: "bg-pink-600",
           text: "Available Products",
-          number: "215,542",
+          number: "..",
         },
       ],
       products: [],
@@ -387,13 +387,13 @@ export default {
 
     // get and set number of users
     let usersLength = await this.getLengthUsers();
-    this.cards[0].number = numberFormate(usersLength);
 
     // get and set number of orders
     let ordersLength = await this.getLengthOrders();
-    this.cards[1].number = numberFormate(ordersLength);
 
     // set number of products
+    this.cards[0].number = numberFormate(usersLength);
+    this.cards[1].number = numberFormate(ordersLength);
     this.cards[2].number = numberFormate(this.products.length);
   },
   async mounted() {},
