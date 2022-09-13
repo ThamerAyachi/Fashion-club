@@ -10,12 +10,17 @@ import whiteList from "./whiteList";
 export default createStore({
   state: {
     access_token: sessionStorage.getItem("access_token"),
+    role: sessionStorage.getItem("role"),
     baseUrl: "http://localhost:3000/api/products/",
   },
   mutations: {
     SET_TOKEN(state, data) {
       state.access_token = data.token;
       sessionStorage.setItem("access_token", data.token);
+    },
+    SET_ROLE(state, role) {
+      state.role = role;
+      sessionStorage.setItem("role", role);
     },
     LOGOUT: (state) => {
       sessionStorage.removeItem("access_token");
