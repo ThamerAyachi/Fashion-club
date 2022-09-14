@@ -1,7 +1,7 @@
 <template>
   <div class="mt-8 px-6">
     <!-- form -->
-    <div>
+    <div :class="`${hasRoles(['SUPER_ADMIN'])}`">
       <div class="mt-4">
         <h2 class="text-xl font-semibold leading-tight text-gray-700 my-3">
           Add new user
@@ -320,6 +320,7 @@ export default {
   data() {
     return {
       Users: [],
+      role: this.$store.state.role,
       DBUser: [],
       arrayUsers: [],
       DBArrayUsers: [],
@@ -417,6 +418,15 @@ export default {
     },
     changePage(i) {
       this.page = i - 1;
+    },
+    hasRoles(roles) {
+      if (!roles) {
+        return;
+      }
+      if (roles.includes(this.role)) {
+        return "";
+      }
+      return "hidden";
     },
   },
   async created() {
