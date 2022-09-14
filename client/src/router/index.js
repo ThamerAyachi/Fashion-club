@@ -189,7 +189,11 @@ router.beforeEach((to, from, next) => {
   }
 
   // ! Info: for roles
-  if (to.meta.roles && !to.meta.roles.includes(store.state.role)) {
+  if (
+    to.meta.roles &&
+    !to.meta.roles.includes(store.state.role) &&
+    store.state.access_token
+  ) {
     next({ name: "Dashboard" });
   }
 
