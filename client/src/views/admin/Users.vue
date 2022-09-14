@@ -279,9 +279,18 @@
                     <td
                       class="px-5 py-5 text-sm bg-white border-b border-gray-200"
                     >
-                      <a href="#" class="text-indigo-600 hover:text-indigo-900"
-                        >Edit</a
+                      <button
+                        class="text-indigo-600 hover:text-indigo-900"
+                        v-if="role == 'SUPER_ADMIN'"
                       >
+                        Edit
+                      </button>
+                      <button
+                        class="text-indigo-600 hover:text-indigo-900"
+                        v-else
+                      >
+                        More
+                      </button>
                     </td>
                   </tr>
                 </tbody>
