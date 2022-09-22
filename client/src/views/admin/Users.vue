@@ -332,7 +332,7 @@
       ></div>
 
       <div
-        class="z-50 w-11/12 mx-auto overflow-y-auto bg-white rounded shadow-lg modal-container md:max-w-md"
+        class="z-50 w-5/6 mx-auto overflow-y-auto bg-white rounded shadow-lg modal-container md:max-w-md"
       >
         <div
           class="absolute top-0 right-0 z-50 flex flex-col items-center mt-4 mr-4 text-sm text-white cursor-pointer modal-close"
@@ -377,13 +377,25 @@
 
           <!--Body-->
           <div>
+            <!-- image -->
             <div class="flex justify-center">
-              <!-- image -->
               <div
                 class="rounded-full overflow-hidden w-32 h-32 shadow-md bg-gray-100 border-4 border-gray-200"
               >
                 <img :src="user.imgUrl" class="w-32 rounded-full" alt="" />
               </div>
+            </div>
+
+            <!-- name -->
+            <div
+              class="flex justify-center mt-3 text-lg font-bold text-gray-800"
+            >
+              {{ user.username }}
+            </div>
+
+            <!-- email -->
+            <div class="flex justify-center text-sm text-gray-400">
+              {{ user.email }}
             </div>
           </div>
         </div>
