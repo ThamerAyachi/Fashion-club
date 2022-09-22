@@ -15,6 +15,10 @@ export const roleFormat = (role) => {
   return firstLetterUpper(newRole);
 };
 
+export const roleReverseFormat = (role) => {
+  return role.toUpperCase().replace(" ", "_");
+};
+
 export const showFive = (data) => {
   let num = Math.ceil(data.length / 5);
   let arr = [];
