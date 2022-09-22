@@ -353,9 +353,9 @@
         </div>
 
         <!-- Add margin if you want to see some of the overlay behind the modal-->
-        <div class="px-6 py-4 text-left modal-content">
+        <div class="px-8 py-4 text-left modal-content">
           <!--Title-->
-          <div class="absolute">
+          <div class="relative right-0">
             <div class="flex items-center justify-end pb-3">
               <div
                 class="z-50 cursor-pointer modal-close"
