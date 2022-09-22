@@ -281,7 +281,7 @@
                     >
                       <button
                         class="text-indigo-600 hover:text-indigo-900"
-                        v-if="role == 'SUPER_ADMIN'"
+                        v-if="role == 'SUPER_ADMIN' && u.role != 'Super admin'"
                         @click="openEditUser(u)"
                       >
                         Edit
@@ -396,6 +396,26 @@
             <!-- email -->
             <div class="flex justify-center text-sm text-gray-400">
               {{ user.email }}
+            </div>
+
+            <!-- role -->
+            <div>
+              <select
+                class="bg-gray-50 border border-gray-300 text-gray-900 my-3 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 focus:outline-none block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                required
+              >
+                <option value="">Select Role</option>
+                <option value="ADMIN">Admin</option>
+                <option value="EDITOR">Editor</option>
+              </select>
+            </div>
+
+            <div class="flex justify-end">
+              <button
+                class="px-4 py-2 text-gray-200 bg-gray-800 rounded-md hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
+              >
+                Update User
+              </button>
             </div>
           </div>
         </div>
