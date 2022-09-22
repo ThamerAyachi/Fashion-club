@@ -405,7 +405,6 @@
                 required
                 v-model="user._role"
               >
-                <option value="">Select Role</option>
                 <option value="ADMIN">Admin</option>
                 <option value="EDITOR">Editor</option>
               </select>
