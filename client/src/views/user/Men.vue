@@ -128,7 +128,7 @@ export default {
         res.data.map((product) => {
           product.imgUrl = this.$store.state.baseUrl + product.imgUrl;
         });
-        this.products = res.data;
+        this.products = res.data.reverse();
         this.DBproducts = this.products;
       } catch (err) {
         console.log(err);
