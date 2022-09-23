@@ -414,6 +414,7 @@
             <div class="flex justify-end">
               <button
                 class="px-4 py-2 text-gray-200 bg-gray-800 rounded-md hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
+                @click="updateRole"
               >
                 Update User
               </button>
@@ -646,6 +647,16 @@ export default {
     openMoreUser(user) {
       this.user = user;
       this.moreOpen = true;
+    },
+    async updateRole() {
+      try {
+        const newUser = { ...this.user, role: this.user._role };
+        delete newUser._role, delete newUser.createAt;
+        await this.$store.dispatch("updateUser", newUser);
+        console.log("donne");
+      } catch (err) {
+        console.log(err);
+      }
     },
   },
   async created() {

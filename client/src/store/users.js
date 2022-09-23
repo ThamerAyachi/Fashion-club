@@ -47,6 +47,15 @@ const users = {
         return err;
       }
     },
+    async updateRole(t, user) {
+      try {
+        console.log(user);
+        const res = await instance.put(`users/update/${user.id}`, user);
+        return res;
+      } catch (err) {
+        return err;
+      }
+    },
     async updateAvatar(test, data) {
       const form = new FormData();
       form.append("image", data.image);
