@@ -554,6 +554,42 @@
         </div>
       </div>
     </transition>
+    <!-- error alert -->
+    <transition
+      mode="out-in"
+      enter-active-class="animate__animated animate__fadeIn"
+      leave-active-class="animate__animated animate__fadeOut"
+    >
+      <div
+        class="px-4 py-20 overflow-x-auto absolute top-1 rounded-md whitespace-nowrap"
+        v-if="isError"
+      >
+        <div
+          class="inline-flex w-full overflow-hidden bg-white rounded-lg shadow-md"
+        >
+          <div class="flex items-center justify-center w-12 bg-red-500">
+            <svg
+              class="w-6 h-6 text-white fill-current"
+              viewBox="0 0 40 40"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M20 3.36667C10.8167 3.36667 3.3667 10.8167 3.3667 20C3.3667 29.1833 10.8167 36.6333 20 36.6333C29.1834 36.6333 36.6334 29.1833 36.6334 20C36.6334 10.8167 29.1834 3.36667 20 3.36667ZM19.1334 33.3333V22.9H13.3334L21.6667 6.66667V17.1H27.25L19.1334 33.3333Z"
+              />
+            </svg>
+          </div>
+
+          <div class="px-4 py-2 -mx-3">
+            <div class="mx-3">
+              <span class="font-semibold text-red-500">Error</span>
+              <p class="text-base text-gray-800">
+                Can't get target upload source info
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -593,6 +629,7 @@ export default {
       editOpen: false,
       moreOpen: false,
       isSendingModal: false,
+      isError: false,
     };
   },
   methods: {
@@ -691,22 +728,33 @@ export default {
       this.user = user;
       this.moreOpen = true;
     },
+    async setData() {
+      this.Users = await this.getUsers();
+      this.DBUser = this.Users;
+      this.arrayUsers = showFive(this.Users);
+      this.DBArrayUsers = this.arrayUsers;
+    },
     async updateRole() {
+      this.isSendingModal = true;
       try {
         const newUser = { ...this.user, role: this.user._role };
         delete newUser._role, delete newUser.createAt;
         await this.$store.dispatch("updateUser", newUser);
-        console.log("donne");
+        await this.setData();
+        this.editOpen = false;
+        this.isSendingModal = false;
+        this.isSuccess = true;
+        setTimeout(() => {
+          this.isSuccess = false;
+        }, 3000);
       } catch (err) {
         console.log(err);
       }
+      this.isSendingModal = false;
     },
   },
   async created() {
-    this.Users = await this.getUsers();
-    this.DBUser = this.Users;
-    this.arrayUsers = showFive(this.Users);
-    this.DBArrayUsers = this.arrayUsers;
+    await this.setData();
   },
   async mounted() {},
 };
