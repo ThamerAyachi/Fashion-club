@@ -424,7 +424,7 @@
       </div>
     </div>
 
-    <!-- modal edit user -->
+    <!-- modal 'more' user -->
     <div
       :class="`modal ${
         !moreOpen && 'opacity-0 pointer-events-none'
