@@ -531,7 +531,7 @@
         v-if="isSuccess"
       >
         <div
-          class="inline-flex w-full overflow-hidden bg-white rounded-lg shadow-md"
+          class="inline-flex w-full overflow-hidden bg-white rounded-lg shadow-md pr-5"
         >
           <div class="flex items-center justify-center w-12 bg-green-500">
             <svg
@@ -748,6 +748,10 @@ export default {
           this.isSuccess = false;
         }, 3000);
       } catch (err) {
+        this.isError = true;
+        setTimeout(() => {
+          this.isError = false;
+        }, 3000);
         console.log(err);
       }
       this.isSendingModal = false;
