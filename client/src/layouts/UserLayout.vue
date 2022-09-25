@@ -1,13 +1,16 @@
 <template>
   <div>
     <Header />
-    <transition
-      mode="out-in"
-      enter-active-class="animate__animated animate__fadeIn"
-      leave-active-class="animate__animated animate__fadeOut"
-    >
-      <router-view></router-view>
-    </transition>
+
+    <router-view v-slot="{ Component, route }">
+      <transition
+        mode="out-in"
+        enter-active-class="animate__animated animate__fadeIn"
+        leave-active-class="animate__animated animate__fadeOut"
+      >
+        <component :is="Component" :key="route.path" />
+      </transition>
+    </router-view>
 
     <!-- Newsletter -->
     <div class="grid md:grid-cols-2 grid-cols-1 bg-gray-200 md:px-32 px-5 py-5">
