@@ -6,13 +6,15 @@
 
       <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200">
         <div class="container mx-auto pb-8">
-          <transition
-            mode="out-in"
-            enter-active-class="animate__animated animate__fadeIn"
-            leave-active-class="animate__animated animate__fadeOut"
-          >
-            <router-view></router-view>
-          </transition>
+          <router-view v-slot="{ Component, route }">
+            <transition
+              mode="out-in"
+              enter-active-class="animate__animated animate__fadeIn"
+              leave-active-class="animate__animated animate__fadeOut"
+            >
+              <component :is="Component" :key="route.path" />
+            </transition>
+          </router-view>
         </div>
         <Footer />
       </main>
