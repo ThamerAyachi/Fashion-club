@@ -4,7 +4,6 @@ import { MessagesModule } from './messages/messages.module';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { ProductsModule } from './products/products.module';
-import entities from './typeorm';
 import { MulterModule } from '@nestjs/platform-express';
 import { OrdersModule } from './orders/orders.module';
 import { ConfigModule } from '@nestjs/config';
