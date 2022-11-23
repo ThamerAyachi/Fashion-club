@@ -7,19 +7,13 @@ import { ProductsModule } from './products/products.module';
 import entities from './typeorm';
 import { MulterModule } from '@nestjs/platform-express';
 import { OrdersModule } from './orders/orders.module';
+import { ConfigModule } from '@nestjs/config';
+import { typeOrmConfigAsync } from './config/typeorm.config';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: 'bjigseq8k9fvwbrmzx5k-mysql.services.clever-cloud.com',
-      port: 3306,
-      username: 'uoxdfmcc0ahafmz6',
-      password: 'gkzr4xEoJacvozTDnbeM',
-      database: 'bjigseq8k9fvwbrmzx5k',
-      entities: entities,
-      synchronize: true,
-    }),
+    ConfigModule.forRoot(),
+    TypeOrmModule.forRootAsync(typeOrmConfigAsync),
     MulterModule.register({ dest: './uploads' }),
     MessagesModule,
     UsersModule,
