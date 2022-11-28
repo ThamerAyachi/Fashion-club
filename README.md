@@ -61,6 +61,18 @@ Start client side in directory named `/client`:
 npm run server
 ```
 
+Create file named `.env` (format like `.env.example`) to set your Data base connection information
+
+```
+# DataBase connection information
+DB_TYPE="mysql"
+DB_HOST="localhost"
+DB_PORT=3306
+DB_USERNAME="root"
+DB_PASSWORD=""
+DB_DATABASE="fashion"
+```
+
 Finally, start the server in development mode (in directory `/serve`):
 
 ```
